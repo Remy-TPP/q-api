@@ -63,17 +63,8 @@ WSGI_APPLICATION = 'remy_api.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'remy_api',
-        'USER': 'remy',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+import dj_database_url
+DATABASES = {'default': dj_database_url.config()}
 
 
 # Password validation
