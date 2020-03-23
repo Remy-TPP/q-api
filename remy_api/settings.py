@@ -3,6 +3,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '#dnnv4lpuf+&c6l&i*^m-k$o*sd16pbx@$b9$p4zvpp1ki%8o='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
