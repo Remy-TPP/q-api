@@ -3,7 +3,7 @@ from .models import User
 from .serializers import UserSerializer
 from django.shortcuts import get_object_or_404
 
-class Users(generics.ListAPIView):
+class Users(generics.ListCreateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
