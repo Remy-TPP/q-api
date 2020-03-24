@@ -16,6 +16,11 @@ class UserTypes(generics.ListCreateAPIView):
 	queryset = UserType.objects.all()
 	serializer_class = UserTypeSerializer
 
+class UserType(generics.RetrieveUpdateDestroyAPIView):
+	queryset = UserType.objects.all()
+	serializer_class = UserTypeSerializer
+	lookup_field='pk'
+
 class Groups(generics.ListCreateAPIView):
 	queryset = Group.objects.all()
 	serializer_class = GroupSerializer

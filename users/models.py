@@ -12,7 +12,7 @@ class User(models.Model):
 	email = models.EmailField(max_length=300, unique=True, blank=True)
 	name = models.CharField(max_length=300, blank=True)
 	lastname = models.CharField(max_length=300, blank=True)
-	usertype = models.ForeignKey(UserType, related_name='users', on_delete=models.CASCADE, null=True)
+	usertypes = models.ManyToManyField(UserType, related_name='users')
 
 	def __str__(self):
 		return '%s' % (self.username)

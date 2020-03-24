@@ -8,6 +8,7 @@ urlpatterns = [
 
 urlpatterns += [
 	path('usertypes/', UserTypes.as_view(), name='usertype-list'),
+	path('usertypes/<int:pk>/', UserType.as_view(), name='usertype-detail'),
 ]
 
 urlpatterns += [
