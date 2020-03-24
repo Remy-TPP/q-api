@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import User
-from .serializers import UserSerializer
+from .models import *
+from .serializers import *
 from django.shortcuts import get_object_or_404
 
 class Users(generics.ListCreateAPIView):
@@ -12,3 +12,15 @@ class User(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = UserSerializer
 	lookup_field='pk'
 
+class UserTypes(generics.ListCreateAPIView):
+	queryset = UserType.objects.all()
+	serializer_class = UserTypeSerializer
+
+class Groups(generics.ListCreateAPIView):
+	queryset = Group.objects.all()
+	serializer_class = GroupSerializer
+
+class Group(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Group.objects.all()
+	serializer_class = GroupSerializer
+	lookup_field='pk'
