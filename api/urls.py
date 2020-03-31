@@ -16,4 +16,5 @@ urlpatterns += [
 
 urlpatterns += [
     path('', include('users.urls'), name='users'),
+    path('', include('recipes.urls'), name='recipes'),
 ]
