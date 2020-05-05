@@ -28,9 +28,9 @@ INSTALLED_APPS = [
 
 
     #local
-    'api.apps.ApiConfig',
-    'users.apps.UsersConfig',
-    'recipes.apps.RecipesConfig'
+    'apps.api',
+    'apps.users',
+    'apps.recipes'
 ]
 
 MIDDLEWARE = [
