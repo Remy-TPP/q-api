@@ -1,6 +1,7 @@
 from rest_framework import generics
-from .models import *
 from django.contrib.auth.models import User
+
+from .models import *
 from .serializers import *
 from .permissions import *
 from .mixins import *

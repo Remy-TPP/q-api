@@ -1,5 +1,6 @@
-from .models import *
 from django.contrib.auth.models import User
+
+from .models import *
 from .serializers import *
 
 class UserMixin(object):

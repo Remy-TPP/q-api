@@ -1,9 +1,9 @@
-from .models import *
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
+from .models import *
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", queryset=Profile.objects.all())
