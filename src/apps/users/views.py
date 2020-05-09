@@ -1,10 +1,9 @@
 from rest_framework import generics
 from django.contrib.auth.models import User
 
-from .models import *
-from .serializers import *
-from .permissions import *
-from .mixins import *
+from apps.users.serializers import *
+from apps.users.permissions import *
+from apps.users.mixins import *
 
 class UsersView(UserMixin, generics.ListCreateAPIView):
     pass

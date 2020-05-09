@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import *
+from apps.recipes.models import *
 
 class WeightSerializer(serializers.HyperlinkedModelSerializer):
 
