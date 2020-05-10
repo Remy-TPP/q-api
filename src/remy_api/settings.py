@@ -29,7 +29,7 @@ INSTALLED_APPS = [
 
     #local
     'apps.api',
-    'apps.users',
+    'apps.profiles',
     'apps.recipes'
 ]
 

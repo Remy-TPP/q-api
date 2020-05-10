@@ -31,7 +31,7 @@ class Recipe(models.Model):
 # class Profile(models.Model):
 #     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
     
-#     usertypes = models.ManyToManyField(UserType, related_name='users')
+#     profiletypes = models.ManyToManyField(ProfileType, related_name='users')
 #     friends = models.ManyToManyField("self", blank=True)
 #     groups = models.ManyToManyField(Group, related_name='users')
 

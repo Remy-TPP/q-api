@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
-from apps.users.models import *
+from apps.profiles.models import Profile, ProfileType, Group
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", queryset=Profile.objects.all())
@@ -14,7 +14,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    usertypes = serializers.HyperlinkedRelatedField(many=True, view_name='usertype-detail', queryset=UserType.objects.all())
+    profiletypes = serializers.HyperlinkedRelatedField(many=True, view_name='profiletype-detail', queryset=ProfileType.objects.all())
     groups = serializers.HyperlinkedRelatedField(many=True, view_name='group-detail', queryset=Group.objects.all())
     friends = serializers.HyperlinkedRelatedField(many=True, view_name='profile-detail', queryset=Profile.objects.all())
 
@@ -24,9 +24,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = Profile
         fields = '__all__'
 
-class UserTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = UserType
+        model = ProfileType
         fields = '__all__'
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,9 +1,9 @@
 from rest_framework import generics
 from django.contrib.auth.models import User
 
-from apps.users.serializers import *
-from apps.users.permissions import *
-from apps.users.mixins import *
+from apps.profiles.serializers import *
+from apps.profiles.permissions import *
+from apps.profiles.mixins import *
 
 class UsersView(UserMixin, generics.ListCreateAPIView):
     pass
@@ -20,10 +20,10 @@ class ProfileView(ProfileMixin, generics.RetrieveUpdateDestroyAPIView):
 
     lookup_field='pk'
         
-class UserTypesView(UserTypeMixin, generics.ListCreateAPIView):
+class profiletypesView(ProfileTypeMixin, generics.ListCreateAPIView):
     pass
 
-class UserTypeView(UserTypeMixin, generics.RetrieveUpdateDestroyAPIView):
+class ProfileTypeView(ProfileTypeMixin, generics.RetrieveUpdateDestroyAPIView):
     lookup_field='pk'
 
 class GroupsView(GroupMixin, generics.ListCreateAPIView):

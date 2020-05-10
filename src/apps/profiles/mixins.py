@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 
-from apps.users.models import *
-from apps.users.serializers import *
+from apps.profiles.models import Profile, ProfileType, Group
+from apps.profiles.serializers import ProfileSerializer, ProfileTypeSerializer, GroupSerializer, UserSerializer
 
 class UserMixin(object):
     queryset = User.objects.all()
@@ -11,9 +11,9 @@ class ProfileMixin(object):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
-class UserTypeMixin(object):
-    queryset = UserType.objects.all()
-    serializer_class = UserTypeSerializer
+class ProfileTypeMixin(object):
+    queryset = ProfileType.objects.all()
+    serializer_class = ProfileTypeSerializer
 
 class GroupMixin(object):
     queryset = Group.objects.all()
