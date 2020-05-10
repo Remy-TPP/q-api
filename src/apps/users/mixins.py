@@ -1,6 +1,7 @@
-from .models import *
 from django.contrib.auth.models import User
-from .serializers import *
+
+from apps.users.models import *
+from apps.users.serializers import *
 
 class UserMixin(object):
     queryset = User.objects.all()
