@@ -111,3 +111,6 @@ local_settings.py
 
 #media
 media/images/*
+
+# VS Code
+.vscode
