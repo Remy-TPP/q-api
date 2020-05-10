@@ -21,10 +21,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+
     'rest_framework',
     'rest_framework.authtoken',
-    'drf_yasg',
 
+    'rest_auth',
+    'rest_auth.registration',
+
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'drf_yasg',
 
 
     #local
@@ -91,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',  
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -131,6 +142,12 @@ MEDIA_URL = '/media/'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+
 
 try:
     from .local_settings import *

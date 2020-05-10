@@ -6,11 +6,11 @@ from django.shortcuts import get_object_or_404
 from apps.profiles.models import Profile, ProfileType, Group
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", queryset=Profile.objects.all())
+    profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
 
     class Meta:
         model = User
-        fields = ['profile', 'username', 'first_name', 'last_name', 'email', 'is_active', 'date_joined']
+        exclude = ['user_permissions', 'groups', 'is_staff', 'password']
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
