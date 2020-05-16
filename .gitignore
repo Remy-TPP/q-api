@@ -110,7 +110,7 @@ venv.bak/
 local_settings.py
 
 #media
-media/*
+media/
 
 # VS Code
 .vscode

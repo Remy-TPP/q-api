@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 
 class Weight(models.Model):
     name = models.CharField(max_length=50)
@@ -27,13 +26,3 @@ class Recipe(models.Model):
 
     def __str__(self):
         return '%s' % (self.title)
-
-# class Profile(models.Model):
-#     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
-    
-#     profiletypes = models.ManyToManyField(ProfileType, related_name='users')
-#     friends = models.ManyToManyField("self", blank=True)
-#     groups = models.ManyToManyField(Group, related_name='users')
-
-#     def __str__(self):
-#         return '%s' % (self.user.username)

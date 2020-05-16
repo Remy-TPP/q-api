@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.recipes.models import *
+from apps.recipes.models import Weight, Amount, Ingredient, Recipe
 
 class WeightSerializer(serializers.HyperlinkedModelSerializer):
 

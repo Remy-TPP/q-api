@@ -1,24 +1,16 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import SimpleRouter
 
-from apps.profiles.views import *
+from apps.profiles.views import ProfileViewSet, ProfileTypeViewSet, GroupViewSet, UserViewSet
+
+router = SimpleRouter()
+
+router.register(r"profiles", ProfileViewSet)
+# router.register(r"users", UserViewSet)
+router.register(r"profiletypes", ProfileTypeViewSet)
+router.register(r"groups", GroupViewSet)
+
 
 urlpatterns = [
-	path('profiles/', ProfilesView.as_view(), name='profile-list'),
-	path('profiles/<int:pk>/', ProfileView.as_view(), name='profile-detail'),
+    path("", include(router.urls))
 ]
-
-urlpatterns += [
-	path('users/', UsersView.as_view(), name='user-list'),
-	path('users/<int:pk>/', UserView.as_view(), name='user-detail'),
-]
-
-urlpatterns += [
-	path('profiletypes/', profiletypesView.as_view(), name='profiletype-list'),
-	path('profiletypes/<int:pk>/', ProfileTypeView.as_view(), name='profiletype-detail'),
-]
-
-urlpatterns += [
-	path('groups/', GroupsView.as_view(), name='group-list'),
-	path('groups/<int:pk>/', GroupView.as_view(), name='group-detail'),
-]
-

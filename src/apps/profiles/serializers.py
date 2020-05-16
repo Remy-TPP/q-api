@@ -1,16 +1,15 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from django.db import transaction
-from django.shortcuts import get_object_or_404
 
+from django.contrib.auth.models import User
 from apps.profiles.models import Profile, ProfileType, Group
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
+    last_login = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = User
-        exclude = ['user_permissions', 'groups', 'is_staff', 'password']
+        exclude = ['user_permissions', 'groups', 'is_staff', 'is_superuser', 'password']
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

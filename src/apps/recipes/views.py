@@ -1,34 +1,20 @@
-from rest_framework import generics
-from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 
-from apps.recipes.models import *
-from apps.recipes.serializers import *
+from apps.recipes.models import Weight, Ingredient, Recipe
+from apps.recipes.serializers import WeightSerializer, IngredientSerializer, RecipeSerializer
 
-class Weights(generics.ListCreateAPIView):
-    queryset = Weight.objects.all().order_by("id")
-    serializer_class = WeightSerializer
-
-class Weight(generics.RetrieveUpdateDestroyAPIView):
+class WeightViewSet(viewsets.ModelViewSet):
     queryset = Weight.objects.all().order_by("id")
     serializer_class = WeightSerializer
     lookup_field='pk'
 
-class Ingredients(generics.ListCreateAPIView):
-    queryset = Ingredient.objects.all().order_by("id")
-    serializer_class = IngredientSerializer
-
-class Ingredient(generics.RetrieveUpdateDestroyAPIView):
+class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all().order_by("id")
     serializer_class = IngredientSerializer
     lookup_field='pk'
 
-class Recipes(generics.ListCreateAPIView):
-    queryset = Recipe.objects.all().order_by("id")
-    serializer_class = RecipeSerializer
-    parser_class = (FileUploadParser,)
-
-class Recipe(generics.RetrieveUpdateDestroyAPIView):
+class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all().order_by("id")
     serializer_class = RecipeSerializer
     lookup_field='pk'
