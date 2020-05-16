@@ -6,30 +6,30 @@ from apps.recipes.models import *
 from apps.recipes.serializers import *
 
 class Weights(generics.ListCreateAPIView):
-    queryset = Weight.objects.all()
+    queryset = Weight.objects.all().order_by("id")
     serializer_class = WeightSerializer
 
 class Weight(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Weight.objects.all()
+    queryset = Weight.objects.all().order_by("id")
     serializer_class = WeightSerializer
     lookup_field='pk'
 
 class Ingredients(generics.ListCreateAPIView):
-    queryset = Ingredient.objects.all()
+    queryset = Ingredient.objects.all().order_by("id")
     serializer_class = IngredientSerializer
 
 class Ingredient(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Ingredient.objects.all()
+    queryset = Ingredient.objects.all().order_by("id")
     serializer_class = IngredientSerializer
     lookup_field='pk'
 
 class Recipes(generics.ListCreateAPIView):
-    queryset = Recipe.objects.all()
+    queryset = Recipe.objects.all().order_by("id")
     serializer_class = RecipeSerializer
     parser_class = (FileUploadParser,)
 
 class Recipe(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Recipe.objects.all()
+    queryset = Recipe.objects.all().order_by("id")
     serializer_class = RecipeSerializer
     lookup_field='pk'
     parser_class = (FileUploadParser,)
