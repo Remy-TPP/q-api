@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
 
 
 class ProfileType(models.Model):
@@ -22,6 +21,25 @@ class Profile(models.Model):
     def __str__(self):
         return '%s' % (self.user.username)
 
+class FriendshipStatus(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return '%s' % (self.name)
+
+class FriendshipRequest(models.Model):
+    profile_requesting = models.OneToOneField(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='profile_requesting')
+
+    profile_requested = models.OneToOneField(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='profile_requested')
+
+    status = models.ForeignKey(FriendshipStatus, on_delete=models.CASCADE)
+
 class Group(models.Model):
     name = models.CharField(max_length=300)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -30,3 +48,4 @@ class Group(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
+        

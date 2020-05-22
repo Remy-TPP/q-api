@@ -143,12 +143,14 @@ MEDIA_URL = '/media/'
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# django.contrib.sites
 SITE_ID = 1
 
+# django.allauth
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
 
-
+# settings
 try:
     from .local_settings import *
 except ImportError:
