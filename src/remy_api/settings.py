@@ -159,9 +159,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-# Emails to console
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER':
         'apps.api.serializers.CustomPasswordResetSerializer',
