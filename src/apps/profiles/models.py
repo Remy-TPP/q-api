@@ -9,7 +9,8 @@ class ProfileType(models.Model):
         return '%s' % (self.name)
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE, related_name="profile")
     biography = models.CharField(max_length=240, blank=True)
     avatar = models.ImageField(null=True, blank=True, upload_to='avatars/%Y-%m-%d')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,13 +28,16 @@ class FriendshipStatus(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+    class Meta():
+        verbose_name_plural = "friendship status"
+
 class FriendshipRequest(models.Model):
-    profile_requesting = models.OneToOneField(
+    profile_requesting = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
         related_name='profile_requesting')
 
-    profile_requested = models.OneToOneField(
+    profile_requested = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
         related_name='profile_requested')

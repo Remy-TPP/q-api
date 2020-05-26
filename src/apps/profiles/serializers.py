@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.db.models import Q
 
 from django.contrib.auth.models import User
 from apps.profiles.models import Profile, ProfileType, Group, FriendshipRequest, FriendshipStatus
@@ -14,9 +13,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    profiletypes = serializers.HyperlinkedRelatedField(many=True, view_name='profiletype-detail', queryset=ProfileType.objects.all())
-    groups = serializers.HyperlinkedRelatedField(many=True, view_name='group-detail', queryset=Group.objects.all())
-    friends = serializers.HyperlinkedRelatedField(many=True, view_name='profile-detail', queryset=Profile.objects.all())
+    profiletypes = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='profiletype-detail',
+        queryset=ProfileType.objects.all()
+    )
+    groups = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='group-detail',
+        queryset=Group.objects.all()
+    )
+    friends = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='profile-detail',
+        queryset=Profile.objects.all()
+    )
 
     user = UserSerializer(read_only=True)
 
@@ -50,28 +61,32 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
-    profile_requesting = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
-    profile_requested = serializers.HyperlinkedRelatedField(view_name="profile-detail", queryset=Profile.objects.all())
+    profile_requesting = serializers.HyperlinkedRelatedField(
+        view_name="profile-detail",
+        read_only=True
+    )
+    profile_requested = serializers.HyperlinkedRelatedField(
+        view_name="profile-detail",
+        queryset=Profile.objects.all()
+    )
 
     def create(self, validated_data):
         current_profile = Profile.objects.get(user=self.context['request'].user)
         requested_profile = validated_data['profile_requested']
+        requested_status = FriendshipStatus.objects.get(name='REQUESTED')
 
-        if not (FriendshipRequest.objects.filter(
-                Q(profile_requesting=current_profile), 
-                Q(profile_requested=requested_profile))):
-            
-            requested_status = FriendshipStatus.objects.get(name='REQUESTED')
+        friendship_request, created = FriendshipRequest.objects.get_or_create(
+            profile_requested=requested_profile,
+            profile_requesting=current_profile,
+            defaults={'status': requested_status}
+        )
 
-            return FriendshipRequest.objects.create(
-                profile_requested=requested_profile,
-                profile_requesting=current_profile,
-                status=requested_status
-            )
+        if not created:
+            friendship_request.status = requested_status
+            friendship_request.save()
 
-        raise TypeError('Friendship request cannot be created!')
+        return friendship_request
 
     class Meta:
         model = FriendshipRequest
         fields = '__all__'
-
