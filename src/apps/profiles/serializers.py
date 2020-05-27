@@ -1,7 +1,11 @@
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from apps.profiles.models import Profile, ProfileType, Group, FriendshipRequest, FriendshipStatus
+from apps.profiles.models import (Profile,
+                                  ProfileType,
+                                  Group,
+                                  FriendshipRequest,
+                                  FriendshipStatus)
 
 class UserSerializer(serializers.ModelSerializer):
     profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
@@ -89,4 +93,10 @@ class FriendshipRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FriendshipRequest
+        fields = '__all__'
+
+class FriendshipStatusSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FriendshipStatus
         fields = '__all__'

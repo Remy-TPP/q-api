@@ -1,16 +1,21 @@
-from rest_framework import viewsets, status, mixins
+from rest_framework import viewsets, status, mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 from django.contrib.auth.models import User
-from apps.profiles.models import Profile, ProfileType, Group, FriendshipRequest, FriendshipStatus
+from apps.profiles.models import (Profile,
+                                  ProfileType,
+                                  Group,
+                                  FriendshipRequest,
+                                  FriendshipStatus)
 from apps.profiles.serializers import (ProfileSerializer,
                                        ProfileTypeSerializer,
                                        UserSerializer,
                                        GroupSerializer,
-                                       FriendshipRequestSerializer)
+                                       FriendshipRequestSerializer,
+                                       FriendshipStatusSerializer)
 
 from apps.profiles.permissions import UpdateDestroyOwnProfile
 
@@ -20,18 +25,49 @@ class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    """
+    Manage profiles
+
+    list: Lists all profiles.
+
+    Returns profiles.
+
+    retrieve: Gets profile with id={id}.
+
+    Returns profile.
+
+    create: Creates profile.
+
+    Returns profile.
+
+    partial_update: Partial updates profile with id={id}.
+
+    Returns profile.
+
+    update: Updates profile with id={id}.
+
+    Returns profile.
+
+    delete: Deletes profile with id={id}.
+
+    Returns none.
+    """
     queryset = Profile.objects.all().order_by("id")
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
     permission_classes = [UpdateDestroyOwnProfile]
 
-class FriendshipView(viewsets.GenericViewSet,
-                     mixins.ListModelMixin,
-                     mixins.CreateModelMixin):
+class FriendshipRequestViewSet(viewsets.GenericViewSet,
+                               mixins.ListModelMixin,
+                               mixins.CreateModelMixin):
     """
-    list: List all friendship requests where current user is involved
+    list: List all friendship requests.
 
-    create: Create a friendship request from current user to user sent
+    Only where current user is involved.
+
+    create: Create a friendship request.
+
+    From current user to user sent.
     """
     queryset = FriendshipRequest.objects.all()
     serializer_class = FriendshipRequestSerializer
@@ -46,9 +82,9 @@ class FriendshipView(viewsets.GenericViewSet,
     @action(detail=True, methods=['GET'])
     def accept(self, request, pk=None):
         """
-        Accept the request with {id}
+        Accept the request with {id}.
 
-        Only if the status is REQUESTED and the profile_requested is the current user
+        Only if the status is REQUESTED and the profile_requested is the current user.
         """
         friendship_request = get_object_or_404(FriendshipRequest.objects.all(), id=pk)
 
@@ -63,13 +99,13 @@ class FriendshipView(viewsets.GenericViewSet,
     @action(detail=True, methods=['GET'])
     def reject(self, request, pk=None):
         """
-        Delete the request with {id}
+        Delete the request with {id}.
 
         Only if the status is REQUESTED.
         """
         friendship_request = get_object_or_404(FriendshipRequest.objects.all(), id=pk)
 
-        if (friendship_request.status.name == 'REQUESTED'):
+        if friendship_request.status.name == 'REQUESTED':
             friendship_request.status = FriendshipStatus.objects.get(name='REJECTED')
             friendship_request.save()
             return Response("Friendship Request deleted!", status=status.HTTP_200_OK)
@@ -77,12 +113,103 @@ class FriendshipView(viewsets.GenericViewSet,
 
 
 class ProfileTypeViewSet(viewsets.ModelViewSet):
+    """
+    Manage the types of profiles. (Vegan, Celiac, etc.).
+
+    Only Admin.
+
+    list: Lists all profiletypes.
+
+    Returns profiletypes.
+
+    retrieve: Gets profiletype with id={id}.
+
+    Returns profiletype.
+
+    create: Creates profiletype.
+
+    Returns profiletype.
+
+    partial_update: Partial updates profiletype with id={id}.
+
+    Returns profiletype.
+
+    update: Updates profiletype with id={id}.
+
+    Returns profiletype.
+
+    delete: Deletes profiletype with id={id}.
+
+    Returns none.
+    """
     queryset = ProfileType.objects.all().order_by("id")
     serializer_class = ProfileTypeSerializer
     lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser]
 
 class GroupViewSet(viewsets.ModelViewSet):
-    #permission_classes=[UpdateDestroyOwnProfile]
+    """
+    Manage the groups of profiles.
+
+    list: Lists all groups.
+
+    Returns groups.
+
+    retrieve: Gets group with id={id}.
+
+    Returns group.
+
+    create: Creates group.
+
+    Returns group.
+
+    partial_update: Partial updates group with id={id}.
+
+    Returns group.
+
+    update: Updates group with id={id}.
+
+    Returns group.
+
+    delete: Deletes group with id={id}.
+
+    Returns none.
+    """
     queryset = Group.objects.all().order_by("id")
     serializer_class = GroupSerializer
     lookup_field = 'pk'
+
+class FriendshipStatusViewSet(viewsets.ModelViewSet):
+    """
+    Manage the frienshipstatus of profiles.
+
+    Only Admin.
+
+    list: Lists all frienshipstatus.
+
+    Returns frienshipstatus.
+
+    retrieve: Gets frienshipstatus with id={id}.
+
+    Returns frienshipstatus.
+
+    create: Creates frienshipstatus.
+
+    Returns frienshipstatus.
+
+    partial_update: Partial updates frienshipstatus with id={id}.
+
+    Returns frienshipstatus.
+
+    update: Updates frienshipstatus with id={id}.
+
+    Returns frienshipstatus.
+
+    delete: Deletes frienshipstatus with id={id}.
+
+    Returns none.
+    """
+    queryset = FriendshipStatus.objects.all().order_by("id")
+    serializer_class = FriendshipStatusSerializer
+    lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser]
