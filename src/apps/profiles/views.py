@@ -69,7 +69,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
 
     From current user to user sent.
     """
-    queryset = FriendshipRequest.objects.all()
+    queryset = FriendshipRequest.objects.all().order_by('id')
     serializer_class = FriendshipRequestSerializer
     lookup_field = 'pk'
 
