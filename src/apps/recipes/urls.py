@@ -8,10 +8,10 @@ from apps.recipes.views import (UnitViewSet,
 
 router = SimpleRouter()
 
-router.register(r"units", UnitViewSet)
-router.register(r"ingredients", IngredientViewSet)
-router.register(r"recipes", RecipeViewSet)
-router.register(r"products", ProductViewSet)
+router.register(r"units", UnitViewSet)                          # units/            (only admin)
+#router.register(r"ingredients", IngredientViewSet)             # ingredients/      (not needed)
+router.register(r"recipes", RecipeViewSet)                      # recipes/
+router.register(r"products", ProductViewSet)                    # products/         (only admin)
 
 
 urlpatterns = [

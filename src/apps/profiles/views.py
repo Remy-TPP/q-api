@@ -10,6 +10,7 @@ from apps.profiles.models import (Profile,
                                   Group,
                                   FriendshipRequest,
                                   FriendshipStatus)
+
 from apps.profiles.serializers import (ProfileSerializer,
                                        ProfileTypeSerializer,
                                        UserSerializer,
@@ -17,14 +18,18 @@ from apps.profiles.serializers import (ProfileSerializer,
                                        FriendshipRequestSerializer,
                                        FriendshipStatusSerializer)
 
-from apps.profiles.permissions import UpdateDestroyOwnProfile
+from apps.profiles.permissions import (UpdateOwnProfile,
+                                       IsOwnProfile)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
     lookup_field = 'pk'
 
-class ProfileViewSet(viewsets.ModelViewSet):
+class ProfileViewSet(viewsets.GenericViewSet,
+                     mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin):
     """
     Manage profiles
 
@@ -36,10 +41,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     Returns profile.
 
-    create: Creates profile.
-
-    Returns profile.
-
     partial_update: Partial updates profile with id={id}.
 
     Returns profile.
@@ -47,15 +48,28 @@ class ProfileViewSet(viewsets.ModelViewSet):
     update: Updates profile with id={id}.
 
     Returns profile.
-
-    delete: Deletes profile with id={id}.
-
-    Returns none.
     """
     queryset = Profile.objects.all().order_by("id")
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
-    permission_classes = [UpdateDestroyOwnProfile]
+    permission_classes = [UpdateOwnProfile]
+
+    @action(detail=True, methods=['POST'], permission_classes=[IsOwnProfile])
+    def delete(self, request, pk=None):
+        """
+        Set profile's user is_active to False.
+
+        Only if the user of this profile is active
+        """
+        profile_user = get_object_or_404(Profile.objects.all(), id=pk).user
+        self.check_object_permissions(self.request, profile_user.profile)
+        if profile_user.is_active:
+            profile_user.is_active = False
+            profile_user.save()
+            return Response("The user has been set to inactive!", status=status.HTTP_200_OK)
+        else:
+            return Response("The user is already inactive!", status=status.HTTP_400_BAD_REQUEST)
+
 
 class FriendshipRequestViewSet(viewsets.GenericViewSet,
                                mixins.ListModelMixin,
@@ -79,7 +93,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
             Q(profile_requested__user_id=self.request.user.id)
         )
 
-    @action(detail=True, methods=['GET'])
+    @action(detail=True, methods=['POST'])
     def accept(self, request, pk=None):
         """
         Accept the request with {id}.
@@ -96,7 +110,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
             return Response("Friend added!", status=status.HTTP_202_ACCEPTED)
         return Response("Cannot add friend!", status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['GET'])
+    @action(detail=True, methods=['POST'])
     def reject(self, request, pk=None):
         """
         Delete the request with {id}.

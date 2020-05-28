@@ -13,7 +13,6 @@ class Profile(models.Model):
                                 on_delete=models.CASCADE, related_name="profile")
     biography = models.CharField(max_length=240, blank=True)
     avatar = models.ImageField(null=True, blank=True, upload_to='avatars/%Y-%m-%d')
-    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     profiletypes = models.ManyToManyField(ProfileType, related_name='profile')
