@@ -5,6 +5,8 @@ from apps.recipes.models import (Unit,
                                  Ingredient,
                                  Recipe,
                                  Product)
+                            
+from rest_framework_recursive.fields import RecursiveField
 
 class UnitSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -19,13 +21,14 @@ class AmountSerializer(serializers.ModelSerializer):
         model = Amount
         fields = '__all__'
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Product
         fields = '__all__'
 
-class IngredientSerializer(serializers.HyperlinkedModelSerializer):
+
+class IngredientSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
     product_id = serializers.PrimaryKeyRelatedField(
         write_only=True,
@@ -33,16 +36,27 @@ class IngredientSerializer(serializers.HyperlinkedModelSerializer):
         queryset=Product.objects.all()
     )
     product = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    substitutions = RecursiveField(allow_null=True, many=True)
 
     class Meta:
         model = Ingredient
-        fields = ('url', 'product', 'amount', 'product_id')
+        fields = ['id', 'amount', 'product', 'product_id', 'substitutions']
+
+    # def get_fields(self):
+    #     fields = super(IngredientSerializer, self).get_fields()
+    #     fields['substitutions'] = IngredientSerializer(many=True)
+    #     return fields
 
     def create(self, validated_data):
         amount_serializer = self.fields['amount']
         amount = amount_serializer.create(validated_data.pop('amount'))
         validated_data['amount'] = amount
+
+        substitutions_serializer = self.fields['substitutions'].proxied
+        substitutions = substitutions_serializer.create(validated_data.pop('substitutions'))
+
         ingredient = Ingredient.objects.create(**validated_data)
+        ingredient.substitutions.set(substitutions)
         return ingredient
 
 class RecipeSerializer(serializers.HyperlinkedModelSerializer):

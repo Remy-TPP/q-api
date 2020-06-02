@@ -144,3 +144,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     lookup_field = 'pk'
     parser_class = (FileUploadParser,)
+
+
