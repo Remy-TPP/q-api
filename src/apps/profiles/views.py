@@ -21,6 +21,8 @@ from apps.profiles.serializers import (ProfileSerializer,
 from apps.profiles.permissions import (UpdateOwnProfile,
                                        IsOwnProfile)
 
+from apps.profiles.services.enums import FRIENDSHIP_STATUS
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
@@ -102,9 +104,9 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
         """
         friendship_request = get_object_or_404(FriendshipRequest.objects.all(), id=pk)
 
-        if (friendship_request.status.name == 'REQUESTED' and
+        if (friendship_request.status == FRIENDSHIP_STATUS.REQUESTED.value and
                 friendship_request.profile_requested.user.id == request.user.id):
-            friendship_request.status = FriendshipStatus.objects.get(name='ACCEPTED')
+            friendship_request.status = FRIENDSHIP_STATUS.ACCEPTED.value
             friendship_request.profile_requested.friends.add(friendship_request.profile_requesting)
             friendship_request.save()
             return Response("Friend added!", status=status.HTTP_202_ACCEPTED)
@@ -119,8 +121,8 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
         """
         friendship_request = get_object_or_404(FriendshipRequest.objects.all(), id=pk)
 
-        if friendship_request.status.name == 'REQUESTED':
-            friendship_request.status = FriendshipStatus.objects.get(name='REJECTED')
+        if friendship_request.status == FRIENDSHIP_STATUS.REQUESTED.value:
+            friendship_request.status = FRIENDSHIP_STATUS.REJECTED.value
             friendship_request.save()
             return Response("Friendship Request deleted!", status=status.HTTP_200_OK)
         return Response("Cannot delete frienship request!", status=status.HTTP_400_BAD_REQUEST)
