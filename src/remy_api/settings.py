@@ -1,10 +1,12 @@
 import os
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#dnnv4lpuf+&c6l&i*^m-k$o*sd16pbx@$b9$p4zvpp1ki%8o='
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -21,15 +23,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+
     'rest_framework',
     'rest_framework.authtoken',
-    'drf_yasg',
 
+    'rest_auth',
+    'rest_auth.registration',
+
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'drf_yasg',
 
 
     #local
     'apps.api',
-    'apps.users',
+    'apps.profiles',
     'apps.recipes'
 ]
 
@@ -49,7 +61,7 @@ ROOT_URLCONF = 'remy_api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,7 +79,6 @@ WSGI_APPLICATION = 'remy_api.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-import dj_database_url
 DATABASES = {'default': dj_database_url.config()}
 
 
@@ -91,12 +102,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
 
@@ -132,6 +144,33 @@ MEDIA_URL = '/media/'
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# django.contrib.sites
+SITE_ID = 1
+
+# django.allauth
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+OLD_PASSWORD_FIELD_ENABLED = True
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER':
+        'apps.api.serializers.CustomPasswordResetSerializer',
+}
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'remy.cocina@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+
+# settings
 try:
     from .local_settings import *
 except ImportError:
