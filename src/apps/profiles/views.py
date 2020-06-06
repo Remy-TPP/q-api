@@ -43,11 +43,11 @@ class ProfileViewSet(viewsets.GenericViewSet,
 
     partial_update: Partial updates profile with id={id}.
 
-    Returns profile.
+    Returns profile. Only own profile.
 
     update: Updates profile with id={id}.
 
-    Returns profile.
+    Returns profile. Only own profile.
     """
     queryset = Profile.objects.all().order_by("id")
     serializer_class = ProfileSerializer
@@ -61,13 +61,15 @@ class ProfileViewSet(viewsets.GenericViewSet,
 
         Only if the user of this profile is active
         """
-        profile_user = get_object_or_404(Profile.objects.all(), id=pk).user
-        self.check_object_permissions(self.request, profile_user.profile)
-        breakpoint()
-        if profile_user.is_active:
-            profile_user.is_active = False
-            profile_user.save()
-            return Response("The user has been set to inactive!", status=status.HTTP_200_OK)
+        profile = get_object_or_404(Profile.objects.all(), id=pk)
+
+        self.check_object_permissions(self.request, profile)
+
+        if profile.user.is_active:
+            profile.user.is_active = False
+            profile.user.save()
+            serializer = self.get_serializer(profile)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("The user is already inactive!", status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -109,7 +111,8 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
             friendship_request.status = status_accepted
             friendship_request.profile_requested.friends.add(friendship_request.profile_requesting)
             friendship_request.save()
-            return Response("Friend added!", status=status.HTTP_202_ACCEPTED)
+            serializer = self.get_serializer(friendship_request)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response("Cannot add friend!", status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['POST'])
@@ -126,7 +129,8 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
         if friendship_request.status == status_requested:
             friendship_request.status = status_rejected
             friendship_request.save()
-            return Response("Friendship Request deleted!", status=status.HTTP_200_OK)
+            serializer = self.get_serializer(friendship_request)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("Cannot delete frienship request!", status=status.HTTP_400_BAD_REQUEST)
 
 

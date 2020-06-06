@@ -1,0 +1,23 @@
+[
+    {
+        "model": "recipes.unit",
+        "pk": 1,
+        "fields": {
+            "name": "g"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 2,
+        "fields": {
+            "name": "Kg"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 3,
+        "fields": {
+            "name": "L"
+        }
+    }
+]

@@ -1,0 +1,9 @@
+[
+    {
+        "model": "profiles.profiletype",
+        "pk": 1,
+        "fields": {
+            "name": "Vegetariano"
+        }
+    }
+]

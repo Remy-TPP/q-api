@@ -11,6 +11,10 @@ def detail_url(profile_id):
     """Return profile detail url"""
     return reverse('profile-detail', args=[profile_id])
 
+def detail_url_inactivate(profile_id):
+    """Return profile inactivate detail url"""
+    return reverse('profile-inactivate', args=[profile_id])
+
 users = {
     'user_1': {
         'email': 'test@test.com',
@@ -53,7 +57,11 @@ class RegisterTests(TestCase):
             'password2': users['user_1']['password'],
         }
 
-        res = self.client.post(REGISTER_USER, payload)
+        res = self.client.post(
+            REGISTER_USER,
+            payload
+        )
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         user = get_user_model().objects.get(
@@ -82,6 +90,95 @@ class ProfileTests(TestCase):
         """Test when get a profile with id, should return the profile"""
         u_1 = sample_user_1()
 
-        res = self.client.get(detail_url(u_1.id))
+        res = self.client.get(
+            detail_url(u_1.profile.id)
+        )
         self.assertTrue(res.data)
         self.assertEqual(u_1.id, res.data['user']['id'])
+
+    def test_patch_profile_not_login(self):
+        """Test when trying to patch a profile WITHOUT login, must return 403 Forbidden"""
+        u_1 = sample_user_1()
+
+        payload = {
+            'biography': 'Test biography'
+        }
+
+        res = self.client.patch(
+            detail_url(u_1.profile.id),
+            payload
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_patch_profile_login_diff_profile(self):
+        """Test when trying to patch a profile WITH login but NOT OWN profile,
+        must return 403 Forbidden"""
+        u_1 = sample_user_1()
+        u_2 = sample_user_2()
+
+        self.client.force_authenticate(user=u_1)
+
+        payload = {
+            'biography': 'Test biography'
+        }
+
+        res = self.client.patch(
+            detail_url(u_2.profile.id),
+            payload
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_patch_profile_login_own_profile(self):
+        """Test when trying to patch OWN profile WITH login,
+        must return the updated profile"""
+        u_1 = sample_user_1()
+
+        self.client.force_authenticate(user=u_1)
+
+        self.assertEqual(u_1.profile.biography, '')
+
+        payload = {
+            'biography': 'Test biography'
+        }
+
+        res = self.client.patch(
+            detail_url(u_1.profile.id),
+            payload
+        )
+
+        self.assertTrue(res.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['biography'], 'Test biography')
+
+    def test_post_profile_inactivate_not_own_profile(self):
+        """Test when trying to inactivate a profile WITH login but NOT OWN profile,
+        must return 403 Forbidden"""
+        u_1 = sample_user_1()
+        u_2 = sample_user_2()
+
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.post(
+            detail_url_inactivate(u_2.profile.id),
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_profile_inactivate_own_profile(self):
+        """Test when trying to inactivate OWN profile WITH login,
+        must profile with inactivate user"""
+        u_1 = sample_user_1()
+
+        self.client.force_authenticate(user=u_1)
+
+        self.assertTrue(u_1.is_active)
+
+        res = self.client.post(
+            detail_url_inactivate(u_1.profile.id),
+        )
+
+        self.assertTrue(res.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertFalse(res.data['user']['is_active'])
