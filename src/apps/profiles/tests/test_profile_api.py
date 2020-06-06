@@ -77,7 +77,6 @@ class ProfileTests(TestCase):
         res = self.client.get(PROFILES)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(res.data)
-        self.assertEqual(len(res.data), 2)
 
     def test_get_profile(self):
         """Test when get a profile with id, should return the profile"""
@@ -85,5 +84,4 @@ class ProfileTests(TestCase):
 
         res = self.client.get(detail_url(u_1.id))
         self.assertTrue(res.data)
-        self.assertTrue(len(res.data), 1)
         self.assertEqual(u_1.id, res.data['user']['id'])
