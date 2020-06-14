@@ -65,12 +65,10 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
-    profile_requesting = serializers.HyperlinkedRelatedField(
-        view_name="profile-detail",
+    profile_requesting = serializers.PrimaryKeyRelatedField(
         read_only=True
     )
-    profile_requested = serializers.HyperlinkedRelatedField(
-        view_name="profile-detail",
+    profile_requested = serializers.PrimaryKeyRelatedField(
         queryset=Profile.objects.all()
     )
 

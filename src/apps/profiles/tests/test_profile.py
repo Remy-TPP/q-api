@@ -1,8 +1,7 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 
 REGISTER_USER = reverse('rest_register')
 PROFILES = reverse('profile-list')
@@ -29,25 +28,21 @@ users = {
 }
 
 def sample_user_1():
-    return get_user_model().objects.create_user(
+    return get_user_model().objects.get_or_create(
         username=users['user_1']['username'],
         email=users['user_1']['email'],
         password=users['user_1']['password'],
-    )
+    )[0]
 
 def sample_user_2():
-    return get_user_model().objects.create_user(
+    return get_user_model().objects.get_or_create(
         username=users['user_2']['username'],
         email=users['user_2']['email'],
         password=users['user_2']['password'],
-    )
+    )[0]
 
 
-class RegisterTests(TestCase):
-
-    def setUp(self):
-        self.client = APIClient()
-
+class RegisterTests(APITestCase):
     def test_create_user_successful(self):
         """Test when registrating an user correctly, must create a profile"""
         payload = {
@@ -74,10 +69,7 @@ class RegisterTests(TestCase):
         self.assertTrue(profile)
 
 
-class ProfileTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-
+class ProfileTests(APITestCase):
     def test_get_profiles(self):
         """Test when trying to access profiles endpoint not login, must return Profiles"""
         sample_user_1()

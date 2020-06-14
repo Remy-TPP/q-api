@@ -93,7 +93,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
         return FriendshipRequest.objects.filter(
             Q(profile_requesting__user_id=self.request.user.id) |
             Q(profile_requested__user_id=self.request.user.id)
-        )
+        ).order_by("id")
 
     @action(detail=True, methods=['POST'])
     def accept(self, request, pk=None):
