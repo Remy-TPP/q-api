@@ -1,0 +1,17 @@
+[
+    {
+        "model": "profiles.friendshipstatus",
+        "pk": "ACCEPTED",
+        "fields": {}
+    },
+    {
+        "model": "profiles.friendshipstatus",
+        "pk": "REJECTED",
+        "fields": {}
+    },
+    {
+        "model": "profiles.friendshipstatus",
+        "pk": "REQUESTED",
+        "fields": {}
+    }
+]
