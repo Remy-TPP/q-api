@@ -1,4 +1,3 @@
 # q-api
 
-Recomiendo usar un ambiente virtual (como venv, virtualenv(wrapper), pipenv).
-
+Se recomienda el uso de un ambiente virtual (e.g. pipenv, venv, virtualenvwrapper).
