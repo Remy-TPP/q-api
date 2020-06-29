@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     # local
     'apps.api',
     'apps.profiles',
-    'apps.recipes'
+    'apps.recipes',
 ]
 
 MIDDLEWARE = [
@@ -160,7 +160,7 @@ AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 REST_AUTH_SERIALIZERS = {

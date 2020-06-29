@@ -2,6 +2,7 @@ from django.conf import settings
 
 from rest_auth.serializers import PasswordResetSerializer
 
+
 class CustomPasswordResetSerializer(PasswordResetSerializer):
     def get_email_options(self):
         return {

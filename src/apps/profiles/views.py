@@ -21,10 +21,12 @@ from apps.profiles.serializers import (ProfileSerializer,
 from apps.profiles.permissions import (UpdateOwnProfile,
                                        IsOwnProfile)
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
     lookup_field = 'pk'
+
 
 class ProfileViewSet(viewsets.GenericViewSet,
                      mixins.ListModelMixin,
@@ -169,6 +171,7 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
 
+
 class GroupViewSet(viewsets.ModelViewSet):
     """
     Manage the groups of profiles.
@@ -200,6 +203,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by("id")
     serializer_class = GroupSerializer
     lookup_field = 'pk'
+
 
 class FriendshipStatusViewSet(viewsets.ModelViewSet):
     """
