@@ -19,9 +19,9 @@ def detail_url_inactivate(profile_id):
 
 users = {
     'user_1': {
-        'email': 'test@test.com',
-        'username': 'soyTest',
-        'password': 'Testpass123',
+        'email': 'test1@test.com',
+        'username': 'soyTest1',
+        'password': 'Test1pass123',
     },
     'user_2': {
         'email': 'test2@test2.com',

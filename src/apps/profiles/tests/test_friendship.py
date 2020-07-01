@@ -20,9 +20,9 @@ def detail_url_reject(id):
 
 users = {
     'user_1': {
-        'email': 'test@test.com',
-        'username': 'soyTest',
-        'password': 'Testpass123',
+        'email': 'test1@test.com',
+        'username': 'soyTest1',
+        'password': 'Test1pass123',
     },
     'user_2': {
         'email': 'test2@test2.com',
@@ -231,7 +231,7 @@ class FriendshipTests(APITestCase):
         )
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue(res.data, 'Cannot delete frienship request!')
+        self.assertTrue(res.data, 'Cannot delete friendship request!')
 
     def test_accept_u_1(self):
         """Test when post an accept to a friendshiprequest where the requested is NOT me

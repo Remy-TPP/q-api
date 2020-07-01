@@ -133,7 +133,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
             friendship_request.save()
             serializer = self.get_serializer(friendship_request)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response("Cannot delete frienship request!", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Cannot delete friendship request!", status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileTypeViewSet(viewsets.ModelViewSet):
@@ -207,31 +207,31 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class FriendshipStatusViewSet(viewsets.ModelViewSet):
     """
-    Manage the frienshipstatus of profiles.
+    Manage the friendshipstatus of profiles.
 
     Only Admin.
 
-    list: Lists all frienshipstatus.
+    list: Lists all friendshipstatus.
 
-    Returns frienshipstatus.
+    Returns friendshipstatus.
 
-    retrieve: Gets frienshipstatus with id={id}.
+    retrieve: Gets friendshipstatus with id={id}.
 
-    Returns frienshipstatus.
+    Returns friendshipstatus.
 
-    create: Creates frienshipstatus.
+    create: Creates friendshipstatus.
 
-    Returns frienshipstatus.
+    Returns friendshipstatus.
 
-    partial_update: Partial updates frienshipstatus with id={id}.
+    partial_update: Partial updates friendshipstatus with id={id}.
 
-    Returns frienshipstatus.
+    Returns friendshipstatus.
 
-    update: Updates frienshipstatus with id={id}.
+    update: Updates friendshipstatus with id={id}.
 
-    Returns frienshipstatus.
+    Returns friendshipstatus.
 
-    delete: Deletes frienshipstatus with id={id}.
+    delete: Deletes friendshipstatus with id={id}.
 
     Returns none.
     """
