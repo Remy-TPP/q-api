@@ -8,6 +8,7 @@ class ProfileType(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE, related_name="profile")
@@ -21,14 +22,16 @@ class Profile(models.Model):
     def __str__(self):
         return '%s' % (self.user.username)
 
+
 class FriendshipStatus(models.Model):
     name = models.CharField(max_length=50, unique=True, primary_key=True)
 
     def __str__(self):
         return '%s' % (self.name)
 
-    class Meta():
+    class Meta:
         verbose_name_plural = "friendship status"
+
 
 class FriendshipRequest(models.Model):
     profile_requesting = models.ForeignKey(
@@ -43,6 +46,7 @@ class FriendshipRequest(models.Model):
 
     status = models.ForeignKey(FriendshipStatus, on_delete=models.CASCADE)
 
+
 class Group(models.Model):
     name = models.CharField(max_length=300)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -51,4 +55,3 @@ class Group(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
-        

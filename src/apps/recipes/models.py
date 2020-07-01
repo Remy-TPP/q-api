@@ -1,10 +1,12 @@
 from django.db import models
 
+
 class Unit(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return '%s' % (self.name)
+
 
 class Amount(models.Model):
     weight = models.FloatField()
@@ -15,6 +17,7 @@ class Product(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
+
 
 class Ingredient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -27,6 +30,7 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return '%s of %s' % (self.amount, self.product)
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=300)

@@ -7,13 +7,16 @@ from apps.profiles.models import FriendshipRequest, FriendshipStatus
 
 FRIENDSHIP = reverse('friendshiprequest-list')
 
+
 def detail_url_accept(id):
     """Return friendship detail accept url"""
     return reverse('friendshiprequest-accept', args=[id])
 
+
 def detail_url_reject(id):
     """Return friendship detail reject url"""
     return reverse('friendshiprequest-reject', args=[id])
+
 
 users = {
     'user_1': {
@@ -34,6 +37,7 @@ users = {
 
 }
 
+
 def sample_user_1():
     return get_user_model().objects.get_or_create(
         username=users['user_1']['username'],
@@ -41,12 +45,14 @@ def sample_user_1():
         password=users['user_1']['password'],
     )[0]
 
+
 def sample_user_2():
     return get_user_model().objects.get_or_create(
         username=users['user_2']['username'],
         email=users['user_2']['email'],
         password=users['user_2']['password'],
     )[0]
+
 
 def sample_user_3():
     return get_user_model().objects.get_or_create(

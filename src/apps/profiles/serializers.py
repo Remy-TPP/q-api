@@ -7,6 +7,7 @@ from apps.profiles.models import (Profile,
                                   FriendshipRequest,
                                   FriendshipStatus)
 
+
 class UserSerializer(serializers.ModelSerializer):
     profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
@@ -39,10 +40,13 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = Profile
         fields = '__all__'
 
+
 class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = ProfileType
         fields = '__all__'
+
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HyperlinkedRelatedField(view_name='profile-detail', read_only=True)
@@ -62,6 +66,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'
+
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
@@ -92,6 +97,7 @@ class FriendshipRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendshipRequest
         fields = '__all__'
+
 
 class FriendshipStatusSerializer(serializers.ModelSerializer):
 
