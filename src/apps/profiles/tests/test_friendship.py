@@ -7,19 +7,22 @@ from apps.profiles.models import FriendshipRequest, FriendshipStatus
 
 FRIENDSHIP = reverse('friendshiprequest-list')
 
+
 def detail_url_accept(id):
     """Return friendship detail accept url"""
     return reverse('friendshiprequest-accept', args=[id])
+
 
 def detail_url_reject(id):
     """Return friendship detail reject url"""
     return reverse('friendshiprequest-reject', args=[id])
 
+
 users = {
     'user_1': {
-        'email': 'test@test.com',
-        'username': 'soyTest',
-        'password': 'Testpass123',
+        'email': 'test1@test.com',
+        'username': 'soyTest1',
+        'password': 'Test1pass123',
     },
     'user_2': {
         'email': 'test2@test2.com',
@@ -34,6 +37,7 @@ users = {
 
 }
 
+
 def sample_user_1():
     return get_user_model().objects.get_or_create(
         username=users['user_1']['username'],
@@ -41,12 +45,14 @@ def sample_user_1():
         password=users['user_1']['password'],
     )[0]
 
+
 def sample_user_2():
     return get_user_model().objects.get_or_create(
         username=users['user_2']['username'],
         email=users['user_2']['email'],
         password=users['user_2']['password'],
     )[0]
+
 
 def sample_user_3():
     return get_user_model().objects.get_or_create(
@@ -225,7 +231,7 @@ class FriendshipTests(APITestCase):
         )
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue(res.data, 'Cannot delete frienship request!')
+        self.assertTrue(res.data, 'Cannot delete friendship request!')
 
     def test_accept_u_1(self):
         """Test when post an accept to a friendshiprequest where the requested is NOT me

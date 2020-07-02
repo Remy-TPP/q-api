@@ -6,19 +6,22 @@ from rest_framework.test import APITestCase
 REGISTER_USER = reverse('rest_register')
 PROFILES = reverse('profile-list')
 
+
 def detail_url(profile_id):
     """Return profile detail url"""
     return reverse('profile-detail', args=[profile_id])
+
 
 def detail_url_inactivate(profile_id):
     """Return profile inactivate detail url"""
     return reverse('profile-inactivate', args=[profile_id])
 
+
 users = {
     'user_1': {
-        'email': 'test@test.com',
-        'username': 'soyTest',
-        'password': 'Testpass123',
+        'email': 'test1@test.com',
+        'username': 'soyTest1',
+        'password': 'Test1pass123',
     },
     'user_2': {
         'email': 'test2@test2.com',
@@ -27,12 +30,14 @@ users = {
     }
 }
 
+
 def sample_user_1():
     return get_user_model().objects.get_or_create(
         username=users['user_1']['username'],
         email=users['user_1']['email'],
         password=users['user_1']['password'],
     )[0]
+
 
 def sample_user_2():
     return get_user_model().objects.get_or_create(

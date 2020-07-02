@@ -5,8 +5,9 @@ from apps.recipes.models import (Unit,
                                  Ingredient,
                                  Recipe,
                                  Product)
-                            
+
 from rest_framework_recursive.fields import RecursiveField
+
 
 class UnitSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -14,12 +15,14 @@ class UnitSerializer(serializers.HyperlinkedModelSerializer):
         model = Unit
         fields = '__all__'
 
+
 class AmountSerializer(serializers.ModelSerializer):
     unit = serializers.SlugRelatedField(slug_field='name', queryset=Unit.objects.all())
 
     class Meta:
         model = Amount
         fields = '__all__'
+
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -59,9 +62,14 @@ class IngredientSerializer(serializers.ModelSerializer):
         ingredient.substitutions.set(substitutions)
         return ingredient
 
+
 class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     image = serializers.ImageField(max_length=None, use_url=False, allow_null=True)
     ingredients = IngredientSerializer(many=True)
+
+    class Meta:
+        model = Recipe
+        fields = '__all__'
 
     def create(self, validated_data):
         ingredients_serializer = self.fields['ingredients']
@@ -69,7 +77,3 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.ingredients.set(ingredients)
         return recipe
-
-    class Meta:
-        model = Recipe
-        fields = '__all__'

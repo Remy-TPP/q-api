@@ -10,6 +10,7 @@ from apps.recipes.serializers import (UnitSerializer,
                                       RecipeSerializer,
                                       ProductSerializer)
 
+
 class UnitViewSet(viewsets.ModelViewSet):
     """
     Manage units.
@@ -44,6 +45,7 @@ class UnitViewSet(viewsets.ModelViewSet):
     serializer_class = UnitSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -80,6 +82,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
 
+
 class IngredientViewSet(viewsets.ModelViewSet):
     """
     Manage ingredients.
@@ -111,6 +114,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all().order_by("id")
     serializer_class = IngredientSerializer
     lookup_field = 'pk'
+
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """
@@ -144,5 +148,3 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     lookup_field = 'pk'
     parser_class = (FileUploadParser,)
-
-

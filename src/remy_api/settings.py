@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config('DEBUG', False)
 
 ALLOWED_HOSTS = ['localhost', '.herokuapp.com']
 
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     # local
     'apps.api',
     'apps.profiles',
-    'apps.recipes'
+    'apps.recipes',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +79,19 @@ WSGI_APPLICATION = 'remy_api.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = {'default': dj_database_url.config()}
+if DEBUG and not config('DATABASE_URL', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'remy_api',
+            'USER': config('DB_USER', 'remy'),
+            'PASSWORD': config('DB_PASS', ''),
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+else:
+    DATABASES = {'default': dj_database_url.config()}
 
 
 # Password validation
@@ -160,7 +172,7 @@ AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 REST_AUTH_SERIALIZERS = {
@@ -172,10 +184,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'remy.cocina@gmail.com'
+# TODO: add '' default so it's not needed in local development?
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
-
-# settings
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+EMAIL_BACKEND = config('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')

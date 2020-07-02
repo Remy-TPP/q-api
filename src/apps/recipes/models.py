@@ -1,20 +1,28 @@
 from django.db import models
 
+
 class Unit(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return '%s' % (self.name)
 
+
 class Amount(models.Model):
+    # TODO: maybe DecimalField would be better?
     weight = models.FloatField()
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{round(self.weight, 2)}, self.unit'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=300, unique=True)
 
     def __str__(self):
         return '%s' % (self.name)
+
 
 class Ingredient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -27,6 +35,7 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return '%s of %s' % (self.amount, self.product)
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=300)
