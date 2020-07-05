@@ -3,21 +3,79 @@
         "model": "recipes.unit",
         "pk": 1,
         "fields": {
-            "name": "g"
+            "name": "unit",
+            "short_name": ""
         }
     },
     {
         "model": "recipes.unit",
         "pk": 2,
         "fields": {
-            "name": "Kg"
+            "name": "gram",
+            "short_name": "g"
         }
     },
     {
         "model": "recipes.unit",
         "pk": 3,
         "fields": {
-            "name": "L"
+            "name": "kilogram",
+            "short_name": "kg"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 4,
+        "fields": {
+            "name": "liter",
+            "short_name": "L"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 5,
+        "fields": {
+            "name": "milliliter",
+            "short_name": "mL"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 6,
+        "fields": {
+            "name": "cup"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 7,
+        "fields": {
+            "name": "teaspoon",
+            "short_name": "tsp"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 8,
+        "fields": {
+            "name": "tablespoon",
+            "short_name": "Tbsp"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 9,
+        "fields": {
+            "name": "pound",
+            "short_name": "lb"
+        }
+    },
+    {
+        "model": "recipes.unit",
+        "pk": 10,
+        "fields": {
+            "name": "ounce",
+            "short_name": "oz"
         }
     }
 ]

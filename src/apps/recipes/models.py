@@ -14,7 +14,7 @@ class Amount(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{round(self.weight, 2)}, self.unit'
+        return f'{round(self.weight, 2)} {self.unit}'
 
 
 class Product(models.Model):
