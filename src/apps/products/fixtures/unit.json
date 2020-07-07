@@ -43,8 +43,7 @@
         "model": "products.unit",
         "pk": 6,
         "fields": {
-            "name": "cup",
-            "short_name": "cup"
+            "name": "cup"
         }
     },
     {
