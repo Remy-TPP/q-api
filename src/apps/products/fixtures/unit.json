@@ -1,6 +1,6 @@
 [
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 1,
         "fields": {
             "name": "unit",
@@ -8,7 +8,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 2,
         "fields": {
             "name": "gram",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 3,
         "fields": {
             "name": "kilogram",
@@ -24,7 +24,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 4,
         "fields": {
             "name": "liter",
@@ -32,7 +32,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 5,
         "fields": {
             "name": "milliliter",
@@ -40,14 +40,15 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 6,
         "fields": {
-            "name": "cup"
+            "name": "cup",
+            "short_name": "cup"
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 7,
         "fields": {
             "name": "teaspoon",
@@ -55,7 +56,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 8,
         "fields": {
             "name": "tablespoon",
@@ -63,7 +64,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 9,
         "fields": {
             "name": "pound",
@@ -71,7 +72,7 @@
         }
     },
     {
-        "model": "recipes.unit",
+        "model": "products.unit",
         "pk": 10,
         "fields": {
             "name": "ounce",

@@ -3,6 +3,7 @@ from django.contrib.auth import views
 
 from apps.api.views import schema_view
 
+
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
@@ -19,5 +20,6 @@ urlpatterns += [
 
 urlpatterns += [
     path('', include('apps.profiles.urls'), name='profiles'),
+    path('', include('apps.products.urls'), name='products'),
     path('', include('apps.recipes.urls'), name='recipes'),
 ]
