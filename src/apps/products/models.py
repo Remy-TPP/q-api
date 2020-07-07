@@ -10,7 +10,7 @@ class Unit(models.Model):
 
 
 class Amount(models.Model):
-    quantity = models.DecimalField(decimal_places=5)
+    quantity = models.DecimalField(max_digits=12, decimal_places=5)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
