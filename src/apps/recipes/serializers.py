@@ -1,34 +1,10 @@
 from rest_framework import serializers
-
-from apps.recipes.models import (Unit,
-                                 Amount,
-                                 Ingredient,
-                                 Recipe,
-                                 Product)
-
 from rest_framework_recursive.fields import RecursiveField
 
-
-class UnitSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Unit
-        fields = '__all__'
-
-
-class AmountSerializer(serializers.ModelSerializer):
-    unit = serializers.SlugRelatedField(slug_field='name', queryset=Unit.objects.all())
-
-    class Meta:
-        model = Amount
-        fields = '__all__'
-
-
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Product
-        fields = '__all__'
+from apps.recipes.models import (Ingredient,
+                                 Recipe)
+from apps.products.models import Product
+from apps.products.serializers import AmountSerializer
 
 
 class IngredientSerializer(serializers.ModelSerializer):

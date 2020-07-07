@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # local
     'apps.api',
     'apps.profiles',
+    'apps.products',
     'apps.recipes',
 ]
 
