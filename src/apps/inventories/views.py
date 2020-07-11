@@ -29,23 +29,27 @@ class InventoryViewSet(viewsets.ModelViewSet):
     serializer_class = InventorySerializer
     lookup_field = 'pk'
 
-class InventoryItemViewSet(viewsets.GenericViewSet):
+class InventoryItemViewSet(viewsets.GenericViewSet,
+                           mixins.CreateModelMixin,
+                           mixins.ListModelMixin,
+                           mixins.RetrieveModelMixin,
+                           mixins.UpdateModelMixin,
+                           mixins.DestroyModelMixin):
     queryset = InventoryItem.objects.all().order_by("id")
     serializer_class = InventoryItemSerializer
     lookup_field = 'pk'
 
-    @action(detail=True, methods=['POST'])
-    def add_item(self, request, pk=None):
+    def get_queryset(self):
+        return InventoryItem.objects.filter(inventory__place=self.kwargs['place_pk'])
+
+    def create(self, request, *args, **kwargs):
         breakpoint()
-        inventory = get_object_or_404(Place.objects.all(), id=pk).inventory
+        inventory = get_object_or_404(Place.objects.all(), id=kwargs['place_pk']).inventory
 
         serializer = InventoryItemSerializer(data=request.data)
-        #TODO: solo tiene que enviar product y amount, ver el model y sino el serializer para cambiar
         if serializer.is_valid():
-            #TODO: crear el item y agregarlo al inventario
-            item = InventoryItem.objects.create(serializer.data)
-            inventory.items.add(item)
-            return Response(inventory, status=status.HTTP_201_CREATED)
+            item = InventoryItem.objects.create(**serializer.validated_data, inventory=inventory)
+            return Response(InventoryItemSerializer(item).data, status=status.HTTP_201_CREATED)
         return Response(
             {
                 'msg': "Cannot add Item!",
