@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from apps.inventories.models import (Place,
-                                     Inventory)
+                                     Inventory,
+                                     InventoryItem)
 
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +10,6 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        breakpoint()
         current_profile = self.context['request'].user.profile
 
         members = validated_data.pop('members') if 'members' in validated_data else []
@@ -25,4 +25,10 @@ class InventorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Inventory
-        fields = ['id', 'name', 'items']
+        fields = ['id', 'name', 'items', 'products']
+
+class InventoryItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InventoryItem
+        fields = '__all__'
