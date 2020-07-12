@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.profiles',
     'apps.recipes',
     'apps.inventories',
+    'apps.cooking',
 ]
 
 MIDDLEWARE = [
