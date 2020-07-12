@@ -8,14 +8,14 @@ from apps.profiles.models import FriendshipRequest, FriendshipStatus
 FRIENDSHIP = reverse('friendshiprequest-list')
 
 
-def detail_url_accept(id):
+def detail_url_accept(friendship_id):
     """Return friendship detail accept url"""
-    return reverse('friendshiprequest-accept', args=[id])
+    return reverse('friendshiprequest-accept', args=[friendship_id])
 
 
-def detail_url_reject(id):
+def detail_url_reject(friendship_id):
     """Return friendship detail reject url"""
-    return reverse('friendshiprequest-reject', args=[id])
+    return reverse('friendshiprequest-reject', args=[friendship_id])
 
 
 users = {
@@ -217,7 +217,6 @@ class FriendshipTests(APITestCase):
     def test_reject_after_reject(self):
         """Test when post a reject after rejected
         must return status_code=400 and error message"""
-        u_1 = sample_user_1()
         u_2 = sample_user_2()
 
         self.client.force_authenticate(user=u_2)
@@ -237,7 +236,6 @@ class FriendshipTests(APITestCase):
         """Test when post an accept to a friendshiprequest where the requested is NOT me
         must return status_code=400 and error message"""
         u_1 = sample_user_1()
-        u_2 = sample_user_2()
 
         self.client.force_authenticate(user=u_1)
 
