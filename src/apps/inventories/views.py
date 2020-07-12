@@ -43,13 +43,12 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         return InventoryItem.objects.filter(inventory__place=self.kwargs['place_pk'])
 
     def create(self, request, *args, **kwargs):
-        breakpoint()
         inventory = get_object_or_404(Place.objects.all(), id=kwargs['place_pk']).inventory
 
-        serializer = InventoryItemSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            item = InventoryItem.objects.create(**serializer.validated_data, inventory=inventory)
-            return Response(InventoryItemSerializer(item).data, status=status.HTTP_201_CREATED)
+            serializer.save(inventory=inventory)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(
             {
                 'msg': "Cannot add Item!",

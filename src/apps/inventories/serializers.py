@@ -4,6 +4,7 @@ from apps.inventories.models import (Place,
                                      Inventory,
                                      InventoryItem)
 from apps.recipes.models import (Product)
+from apps.recipes.serializers import (AmountSerializer)
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -29,6 +30,15 @@ class InventorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'items', 'products']
 
 class InventoryItemSerializer(serializers.ModelSerializer):
+    amount = AmountSerializer()
     class Meta:
         model = InventoryItem
         fields = ['id', 'product', 'amount']
+
+    def create(self, validated_data):
+        amount_serializer = self.fields['amount']
+        amount = amount_serializer.create(validated_data.pop('amount'))
+        validated_data['amount'] = amount
+
+        item = InventoryItem.objects.create(**validated_data)
+        return item
