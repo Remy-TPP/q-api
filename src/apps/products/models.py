@@ -9,9 +9,13 @@ class Unit(models.Model):
         return self.name
 
 
+def unit_default():
+    return Unit.objects.get(name='unit')
+
+
 class Amount(models.Model):
     quantity = models.DecimalField(max_digits=12, decimal_places=5)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, default=unit_default)
 
     def __str__(self):
         return f'{self.displayable_quantity()} {self.unit.short_name}'
