@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     last_login = serializers.DateTimeField(read_only=True)
 
     class Meta:
+        # TODO: should use `get_user_model()`?
         model = User
         exclude = ['user_permissions', 'groups', 'is_staff', 'is_superuser', 'password']
 

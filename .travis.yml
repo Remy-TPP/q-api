@@ -4,7 +4,7 @@ python:
   - "3.7"
 
 env:
-  
+
 
 install:
   - pip install -r requirements.txt
@@ -18,4 +18,5 @@ before_script:
   - python manage.py migrate
 
 scripts:
-  - python manage.py test
+  - coverage run --source='apps' manage.py test
+  - coverage report --skip-covered --skip-empty --precision=1 --fail-under=65

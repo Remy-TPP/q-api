@@ -43,6 +43,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage.json
 *.cover
 .hypothesis/
 .pytest_cache/
@@ -123,3 +124,5 @@ Pipfile*
 # Editorconfig
 # (remove if team starts using it)
 .editorconfig
+
+*.tags*
