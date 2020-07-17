@@ -8,6 +8,11 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
+    # TODO: revisit later
+    @property
+    def pluralized_name(self):
+        return self.name + 's'
+
 
 def unit_default():
     return Unit.objects.get(name='unit')
@@ -18,10 +23,20 @@ class Amount(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, default=unit_default)
 
     def __str__(self):
-        return f'{self.displayable_quantity()} {self.unit.short_name}'
+        return f'{self.displayable_quantity}{self.displayable_unit}'
 
+    @property
+    def displayable_unit(self):
+        if self.unit.short_name is None:
+            return f' {self.unit.name if self.quantity == 1.0 else self.unit.pluralized_name}'
+        elif self.unit.short_name == '':
+            return ''
+        else:
+            return f' {self.unit.short_name}'
+
+    @property
     def displayable_quantity(self):
-        return round(self.quantity, 2)
+        return self.quantity
 
 
 class Product(models.Model):
