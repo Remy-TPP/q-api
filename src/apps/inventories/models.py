@@ -18,6 +18,9 @@ class InventoryItem(models.Model):
     def __str__(self):
         return '%s of %s' % (self.amount, self.product)
 
+    def reduce_amount(self, amount):
+        self.amount - amount
+
 class Place(models.Model):
     name = models.CharField(max_length=300)
     members = models.ManyToManyField(Profile, related_name='places', blank=True)

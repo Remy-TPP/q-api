@@ -16,6 +16,12 @@ class Amount(models.Model):
     def __str__(self):
         return f'{round(self.weight, 2)}, self.unit'
 
+    def __sub__(self, other):
+        #TODO: implementar segun la unit
+        weight_result = self.weight - other.weight
+        self.weight = weight_result
+        self.save()
+
 
 class Product(models.Model):
     name = models.CharField(max_length=300, unique=True)
