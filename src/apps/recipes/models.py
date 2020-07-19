@@ -17,10 +17,15 @@ class Amount(models.Model):
         return f'{round(self.weight, 2)}, self.unit'
 
     def __sub__(self, other):
+        """
+        Makes the logic to decrease the amount.
+        Returns True or False whether the amount is not longer usable or it is.
+        """
         #TODO: implementar segun la unit
         weight_result = self.weight - other.weight
         self.weight = weight_result
         self.save()
+        return weight_result <= 0
 
 
 class Product(models.Model):
