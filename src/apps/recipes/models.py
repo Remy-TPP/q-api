@@ -58,7 +58,7 @@ class Recipe(models.Model):
                                         on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title if self.title else self.dish.title
+        return self.title if self.title else self.dish.name
 
 
 class Ingredient(models.Model):
@@ -68,5 +68,4 @@ class Ingredient(models.Model):
     amount = models.OneToOneField(Amount, on_delete=models.CASCADE)
 
     def __str__(self):
-        # TODO: make more human (e.g. '2 apples' instead of '2.00 of apple')
-        return f'{self.amount} of {self.product}'
+        return f'{self.amount} {self.product}'
