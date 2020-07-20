@@ -15,7 +15,7 @@ class Unit(models.Model):
 
 
 def unit_default():
-    return Unit.objects.get(name='unit')
+    return Unit.objects.get_or_create(name='unit', short_name='')[0].pk
 
 
 class Amount(models.Model):

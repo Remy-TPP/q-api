@@ -10,7 +10,7 @@ class AmountTests(TestCase):
 
     def setUp(self):
         # TODO: would it be better to use Units independent from fixture?
-        self.plain_unit = Unit.objects.get(name="unit")
+        self.plain_unit = Unit.objects.get(name='unit')
         self.kg_unit = Unit.objects.get(short_name='kg')
         self.liter_unit = Unit.objects.get(short_name='L')
         self.cup_unit = Unit.objects.get(name='cup')
