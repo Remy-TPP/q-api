@@ -117,10 +117,6 @@ media/
 .vscode
 
 
-# Pipfiles (pipenv)
-# (remove if team starts using it)
-Pipfile*
-
 # Editorconfig
 # (remove if team starts using it)
 .editorconfig
