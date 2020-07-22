@@ -1,8 +1,8 @@
 from rest_framework import serializers
 # from rest_framework_recursive.fields import RecursiveField
 
-from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
 # from apps.products.models import Product
+from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
 from apps.products.serializers import AmountSerializer, ProductSerializer
 
 
@@ -37,6 +37,8 @@ class RecipeMinimalSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'title']
 
 
+# TODO: IngredientSerializer (and RecipeMinimalSerializer) not used because
+# because we don't need ingredients/ endpoint... right?
 class IngredientSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     recipe = RecipeMinimalSerializer()
@@ -66,34 +68,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 #         return ingredient
 
 
-# class Ingredient2Serializer(serializers.HyperlinkedModelSerializer):
-#     id = serializers.ReadOnlyField(source='recipe.id')
-#     name = serializers.ReadOnlyField(source='recipe.name')
-#     amount = AmountSerializer()
-#
-#     class Meta:
-#         model = Ingredient
-#         fields = '__all__'
-
-
-# class IngredientProductSerializer(serializers.HyperlinkedModelSerializer):
-#     recipes = Ingredient2Serializer(source='ingredient_set', many=True)
-#
-#     class Meta:
-#         model = Product
-#         fields = '__all__'
-#
-#
-# class Ingredient3Serializer(serializers.ModelSerializer):
-#     product = ProductSerializer()
-#
-#     class Meta:
-#         model = Ingredient
-#         # fields = ['amount']
-#         fields = '__all__'
-#         # queryset = Ingredient.objects.all()
-
-
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     amount = AmountSerializer()
@@ -106,12 +80,6 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     image = serializers.ImageField(max_length=None, use_url=False, allow_null=True)
     instructions = serializers.SlugRelatedField(slug_field='steps', read_only=True)
-    # ingredients = IngredientSerializer(many=True, read_only=True)
-    # ingredients = ProductSerializer(many=True, read_only=True)
-    # ingredients = IngredientProductSerializer(many=True, read_only=True)
-    # filter()
-    # ingredients = Ingredient3Serializer(many=True, read_only=True)
-    # ingredientss = IngredientSerializer(source='ingredients', many=True, read_only=True)
     ingredients = serializers.SerializerMethodField(method_name='get_ingredients')
 
     class Meta:

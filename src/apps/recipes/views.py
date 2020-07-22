@@ -1,12 +1,33 @@
 from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 
-from apps.recipes.models import (Ingredient,
-                                 Recipe)
-from apps.recipes.serializers import (IngredientSerializer,
-                                      RecipeSerializer)
+from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
+from apps.recipes.serializers import (DishCategorySerializer, DishLabelSerializer, DishSerializer,
+                                      IngredientSerializer, RecipeSerializer)
 
 
+class DishCategoryViewSet(viewsets.ModelViewSet):
+    # TODO: document, verify
+    queryset = DishCategory.objects.all().order_by("id")
+    serializer_class = DishCategorySerializer
+    lookup_field = 'pk'
+
+
+class DishLabelViewSet(viewsets.ModelViewSet):
+    # TODO: document, verify
+    queryset = DishLabel.objects.all().order_by("id")
+    serializer_class = DishLabelSerializer
+    lookup_field = 'pk'
+
+
+class DishViewSet(viewsets.ModelViewSet):
+    # TODO: document, verify
+    queryset = Dish.objects.all().order_by("id")
+    serializer_class = DishSerializer
+    lookup_field = 'pk'
+
+
+# TODO: IngredientViewSet is not needed, because we don't need ingredients/ endpoint... right?
 class IngredientViewSet(viewsets.ModelViewSet):
     """
     Manage ingredients.

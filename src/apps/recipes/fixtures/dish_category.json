@@ -1,6 +1,6 @@
 [
     {
-        "model": "recipes.dish_category",
+        "model": "recipes.dishcategory",
         "pk": 1,
         "fields": {
             "name": "vegano",
@@ -8,7 +8,7 @@
         }
     },
     {
-        "model": "recipes.dish_category",
+        "model": "recipes.dishcategory",
         "pk": 2,
         "fields": {
             "name": "vegetariano",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "model": "recipes.dish_category",
+        "model": "recipes.dishcategory",
         "pk": 3,
         "fields": {
             "name": "apto celíaco",
