@@ -8,12 +8,18 @@ class DishCategory(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=300)
 
+    class Meta:
+        verbose_name_plural = "dish categories"
+
     def __str__(self):
         return self.name
 
 
 class DishLabel(models.Model):
     name = models.CharField(max_length=60)
+
+    class Meta:
+        verbose_name_plural = "dish labels"
 
     def __str__(self):
         return self.name
@@ -25,6 +31,9 @@ class Dish(models.Model):
     # TODO: `related_name='+'` for either of categories or labels?
     categories = models.ManyToManyField(DishCategory)
     labels = models.ManyToManyField(DishLabel)
+
+    class Meta:
+        verbose_name_plural = "dishes"
 
     def __str__(self):
         return self.name
