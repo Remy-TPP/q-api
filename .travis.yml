@@ -19,4 +19,4 @@ before_script:
 
 scripts:
   - coverage run --source='apps' manage.py test
-  - coverage report --skip-covered --skip-empty --precision=1 --fail-under=65
+  - coverage report --skip-covered --skip-empty --precision=1 --sort=cover --fail-under=65
