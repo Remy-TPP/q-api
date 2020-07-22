@@ -30,3 +30,10 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+
+class ProductMinimalSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = ['url', 'name']

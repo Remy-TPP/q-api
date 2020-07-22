@@ -26,6 +26,8 @@ class DishLabel(models.Model):
 
 
 class Dish(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=300)
     description = models.TextField()
     # TODO: `related_name='+'` for either of categories or labels?
@@ -57,6 +59,8 @@ class RecipeInstructions(models.Model):
 
 
 class Recipe(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     dish = models.ForeignKey(Dish, on_delete=models.SET_NULL, null=True, related_name='recipes')
     title = models.CharField(max_length=300, blank=True)
     description = models.TextField()

@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 # from apps.products.models import Product
 from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
-from apps.products.serializers import AmountSerializer, ProductSerializer
+from apps.products.serializers import AmountSerializer, ProductSerializer, ProductMinimalSerializer
 
 
 class DishCategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -37,7 +37,7 @@ class RecipeMinimalSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'title']
 
 
-# TODO: IngredientSerializer (and RecipeMinimalSerializer) not used because
+# TODO: IngredientSerializer (and RecipeMinimalSerializer) are not used because
 # because we don't need ingredients/ endpoint... right?
 class IngredientSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
@@ -69,7 +69,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
+    product = ProductMinimalSerializer()
     amount = AmountSerializer()
 
     class Meta:
