@@ -20,5 +20,6 @@ before_script:
 
 scripts:
   - pipenv run lint
+  - pipenv run pylint
   - pipenv run test
   - pipenv run cov-report

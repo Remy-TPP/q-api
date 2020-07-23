@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 lint = "flake8"
+pylint = "bash -c \"cd src/ 2> /dev/null; cd ..; pylint src/ -ry\""
 test = "coverage run --source='apps' manage.py test"
 cov-report = "coverage report --skip-covered --skip-empty --precision=1 --sort=cover --fail-under=65"
 cov = "bash -c \"cd src/ 2> /dev/null; coverage run --source='apps' manage.py test && coverage report --skip-covered --skip-empty --precision=1 --sort=cover --fail-under=65 && coverage html && echo file://$PWD/htmlcov/index.html\""
