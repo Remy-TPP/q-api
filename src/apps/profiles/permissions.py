@@ -7,12 +7,7 @@ class UpdateOwnProfile(permissions.BasePermission):
         user_editing = request.user.id
         user_edited = obj.user_id
 
-        # TODO: these can be simplified, e.g.
-        # return request.method not in ['PUT', 'PATCH'] or user_editing == user_edited
-        if request.method in ['PUT', 'PATCH'] and user_editing != user_edited:
-            return False
-        else:
-            return True
+        return request.method not in ['PUT', 'PATCH'] or user_editing == user_edited
 
 
 class DestroyOwnProfile(permissions.BasePermission):
@@ -21,10 +16,7 @@ class DestroyOwnProfile(permissions.BasePermission):
         user_editing = request.user.id
         user_edited = obj.user_id
 
-        if request.method in ['DELETE'] and user_editing != user_edited:
-            return False
-        else:
-            return True
+        return request.method not in ['DELETE'] or user_editing == user_edited
 
 
 class IsOwnProfile(permissions.BasePermission):
@@ -33,7 +25,4 @@ class IsOwnProfile(permissions.BasePermission):
         user_editing = request.user.id
         user_edited = obj.user_id
 
-        if request.method in ['POST'] and user_editing != user_edited:
-            return False
-        else:
-            return True
+        return request.method not in ['POST'] or user_editing == user_edited
