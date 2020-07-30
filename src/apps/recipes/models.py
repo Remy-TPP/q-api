@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.recipes.utils import sub_weights_with_units
+
 
 class Unit(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -21,8 +23,7 @@ class Amount(models.Model):
         Makes the logic to decrease the amount.
         Returns True or False whether the amount is not longer usable or it is.
         """
-        #TODO: implementar segun la unit
-        weight_result = self.weight - other.weight
+        weight_result = sub_weights_with_units(self.weight, self.unit, other.weight, other.unit)
         self.weight = weight_result
         self.save()
         return weight_result <= 0

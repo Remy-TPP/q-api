@@ -1,4 +1,4 @@
-from django.shortcuts import _get_queryset
+
 
 def get_place_or_default(profile, place_id):
     """
@@ -12,5 +12,5 @@ def get_place_or_default(profile, place_id):
     try:
         return queryset.get(id=place_id)
     except queryset.model.DoesNotExist:
-        #TODO: por ahora devuelve el primero, pero debe devolver el default
+        # TODO: por ahora devuelve el primero, pero debe devolver el default
         return queryset.first()
