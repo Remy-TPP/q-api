@@ -12,6 +12,7 @@ from apps.inventories.serializers import (PlaceSerializer,
                                           InventorySerializer,
                                           InventoryItemSerializer)
 
+
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all the places the user has.",
     operation_description="Returns places."
@@ -50,6 +51,7 @@ class InventoryViewSet(viewsets.ModelViewSet):
     queryset = Inventory.objects.all().order_by("id")
     serializer_class = InventorySerializer
     lookup_field = 'pk'
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
