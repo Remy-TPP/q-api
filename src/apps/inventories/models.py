@@ -1,7 +1,7 @@
 from django.db import models
 
 from apps.profiles.models import Profile
-from apps.recipes.models import Product, Amount
+from apps.products.models import Product, Amount
 
 
 class Inventory(models.Model):
