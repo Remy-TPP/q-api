@@ -1,6 +1,5 @@
 from django.urls import include, path
 from rest_framework_nested import routers
-from rest_framework.routers import SimpleRouter
 
 from apps.inventories.views import (PlaceViewSet,
                                     InventoryViewSet,

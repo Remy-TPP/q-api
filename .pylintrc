@@ -39,7 +39,9 @@ confidence=
 disable=missing-module-docstring,
         missing-class-docstring,
         missing-function-docstring,
-        too-many-ancestors
+        too-many-ancestors,
+        abstract-method,
+        R0801
 #         print-statement,
 #         parameter-unpacking,
 #         unpacking-in-except,

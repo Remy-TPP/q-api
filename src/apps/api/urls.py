@@ -1,7 +1,6 @@
 from django.urls import path, include
-from django.contrib.auth import views
 
-from apps.api.views import schema_view
+from apps.api.views import SchemaView
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
@@ -12,8 +11,8 @@ urlpatterns = [
 
 
 urlpatterns += [
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('swagger/', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', SchemaView.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 
