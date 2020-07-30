@@ -22,4 +22,5 @@ urlpatterns += [
     path('', include('apps.profiles.urls'), name='profiles'),
     path('', include('apps.products.urls'), name='products'),
     path('', include('apps.recipes.urls'), name='recipes'),
+    path('', include('apps.inventories.urls'), name='inventories'),
 ]
