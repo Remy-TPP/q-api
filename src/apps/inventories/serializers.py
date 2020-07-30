@@ -3,8 +3,8 @@ from rest_framework import serializers
 from apps.inventories.models import (Place,
                                      Inventory,
                                      InventoryItem)
-from apps.recipes.models import (Product)
-from apps.recipes.serializers import (AmountSerializer)
+from apps.products.serializers import (AmountSerializer)
+
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -23,14 +23,17 @@ class PlaceSerializer(serializers.HyperlinkedModelSerializer):
         place.members.set(members)
         return place
 
+
 class InventorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Inventory
         fields = ['id', 'name', 'items', 'products']
 
+
 class InventoryItemSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
+
     class Meta:
         model = InventoryItem
         fields = ['id', 'product', 'amount']
