@@ -1,12 +1,11 @@
 from rest_framework import serializers
+from rest_framework_recursive.fields import RecursiveField
 
 from apps.recipes.models import (Unit,
                                  Amount,
                                  Ingredient,
                                  Recipe,
                                  Product)
-
-from rest_framework_recursive.fields import RecursiveField
 
 
 class UnitSerializer(serializers.HyperlinkedModelSerializer):

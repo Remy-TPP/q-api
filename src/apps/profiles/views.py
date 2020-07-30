@@ -29,6 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     lookup_field = 'pk'
 
+
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all profiles.",
     operation_description="Returns profiles."
@@ -71,6 +72,7 @@ class ProfileViewSet(viewsets.GenericViewSet,
             serializer = self.get_serializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("The user is already inactive!", status=status.HTTP_400_BAD_REQUEST)
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="List all friendship requests.",
@@ -131,6 +133,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("Cannot delete friendship request!", status=status.HTTP_400_BAD_REQUEST)
 
+
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all profiletypes.",
     operation_description="Returns profiletypes."
@@ -166,6 +169,7 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
 
+
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all groups.",
     operation_description="Returns groups."
@@ -197,6 +201,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by("id")
     serializer_class = GroupSerializer
     lookup_field = 'pk'
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all friendshipstatus.",

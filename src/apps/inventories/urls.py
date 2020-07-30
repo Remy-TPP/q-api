@@ -1,6 +1,5 @@
 from django.urls import include, path
 from rest_framework_nested import routers
-from rest_framework.routers import SimpleRouter
 
 from apps.inventories.views import (PlaceViewSet,
                                     InventoryViewSet,
@@ -13,7 +12,7 @@ router.register(r'inventories', InventoryViewSet)                    # inventori
 
 places_router = routers.NestedSimpleRouter(router, r'places', lookup='place')
 places_router.register(r'items', InventoryItemViewSet)
-# router.register(r'places', InventoryItemViewSet)                    # places/{id}/add_item 
+# router.register(r'places', InventoryItemViewSet)                    # places/{id}/add_item
 # router.register(r'items', InventoryItemViewSet)                    # items/
 
 urlpatterns = [

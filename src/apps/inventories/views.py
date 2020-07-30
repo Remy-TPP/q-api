@@ -1,5 +1,4 @@
-from rest_framework import viewsets, status, mixins, permissions
-from rest_framework.decorators import action
+from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -11,6 +10,7 @@ from apps.inventories.models import (Place,
 from apps.inventories.serializers import (PlaceSerializer,
                                           InventorySerializer,
                                           InventoryItemSerializer)
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all the places the user has.",
@@ -50,6 +50,7 @@ class InventoryViewSet(viewsets.ModelViewSet):
     queryset = Inventory.objects.all().order_by("id")
     serializer_class = InventorySerializer
     lookup_field = 'pk'
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
