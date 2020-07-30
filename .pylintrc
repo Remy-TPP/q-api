@@ -2,7 +2,7 @@
 
 # Specify a score threshold to be exceeded before program exits with error.
 # Default: 10.
-fail-under=9
+fail-under=7
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
@@ -374,8 +374,9 @@ ignore-on-opaque-inference=yes
 # List of class names for which member attributes should not be checked (useful
 # for classes with dynamically set attributes). This supports the use of
 # qualified names.
-ignored-classes=optparse.Values,thread._local,_thread._local
-#               Client
+ignored-classes=optparse.Values,thread._local,_thread._local,
+# APITestCase.member (APIClient) seems to be misidentified; just ignore it
+                Client
 
 # List of module names for which member attributes should not be checked
 # (useful for modules/projects where namespaces are manipulated during runtime
