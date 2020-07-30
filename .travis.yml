@@ -4,18 +4,22 @@ python:
   - "3.7"
 
 env:
-  
+
 
 install:
-  - pip install -r requirements.txt
+  - pip install pipenv --upgrade
+  - pipenv install --dev
 
 services:
   - postgresql
 
 before_script:
   - psql -c 'create database test_db;' -U postgres
-  - cd src
+  - cd src/
   - python manage.py migrate
 
 scripts:
-  - python manage.py test
+  - pipenv run lint --exit-zero
+  - pipenv run pylint
+  - pipenv run test
+  - pipenv run cov-report
