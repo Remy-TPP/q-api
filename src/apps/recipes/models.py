@@ -16,14 +16,14 @@ class Amount(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{round(self.weight, 2)}, self.unit'
+        return f'{round(self.weight, 2), str(self.unit)}'
 
     def __sub__(self, other):
         """
         Makes the logic to decrease the amount.
         Returns True or False whether the amount is not longer usable or it is.
         """
-        weight_result = sub_weights_with_units(self.weight, self.unit, other.weight, other.unit)
+        weight_result = sub_weights_with_units(self.weight, self.unit.name, other.weight, other.unit.name)
         self.weight = weight_result
         self.save()
         return weight_result <= 0

@@ -1,4 +1,20 @@
 from django.shortcuts import _get_queryset
+from django.utils.http import urlencode
+from django.urls import reverse
+
+
+def query_reverse(viewname, kwargs=None, query_kwargs=None):
+    """
+    Custom reverse to add a query string after the url
+    Example usage:
+    url = my_reverse('my_test_url', kwargs={'pk': object.id}, query_kwargs={'next': reverse('home')})
+    """
+    url = reverse(viewname, kwargs=kwargs)
+
+    if query_kwargs:
+        return u'%s?%s' % (url, urlencode(query_kwargs))
+
+    return url
 
 
 def get_object_or_none(klass, *args, **kwargs):

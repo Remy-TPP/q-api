@@ -189,3 +189,9 @@ EMAIL_HOST_USER = 'remy.cocina@gmail.com'
 # TODO: add '' default so it's not needed in local development?
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 EMAIL_BACKEND = config('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+
+
+# where to look up the fixtures - MUST be a tuple or list
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'common', 'testing', 'fixtures'),
+    )

@@ -1,0 +1,148 @@
+[
+    {
+        "model": "recipes.amount",
+        "pk": 1,
+        "fields": {
+            "unit": 3,
+            "weight": 1
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 2,
+        "fields": {
+            "unit": 2,
+            "weight": 1
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 3,
+        "fields": {
+            "unit": 4,
+            "weight": 500
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 4,
+        "fields": {
+            "unit": 4,
+            "weight": 500
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 5,
+        "fields": {
+            "unit": 1,
+            "weight": 500
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 6,
+        "fields": {
+            "unit": 3,
+            "weight": 0.5
+        }
+    },
+    {
+        "model": "recipes.amount",
+        "pk": 7,
+        "fields": {
+            "unit": 2,
+            "weight": 0.5
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 1,
+        "fields": {
+            "amount": 4,
+            "product": 1
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 2,
+        "fields": {
+            "amount": 5,
+            "product": 3
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 3,
+        "fields": {
+            "amount": 6,
+            "product": 2
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 4,
+        "fields": {
+            "amount": 7,
+            "product": 3
+        }
+    },
+    {
+        "model": "recipes.recipe",
+        "pk": 1,
+        "fields": {
+            "title": "Cafe con leche",
+            "description": "Un muy rico cafe con leche",
+            "ingredients": [
+                1,
+                2
+            ]
+        }
+    },
+    {
+        "model": "recipes.recipe",
+        "pk": 2,
+        "fields": {
+            "title": "Cafe con leche descremada",
+            "description": "Un muy rico cafe con leche descremada",
+            "ingredients": [
+                3,
+                4
+            ]
+        }
+    },
+    {
+        "model": "inventories.inventory",
+        "pk": 1,
+        "fields": {
+            "name": "Mi inventario"
+        }
+    },
+    {
+        "model": "inventories.inventoryitem",
+        "pk": 1,
+        "fields": {
+            "inventory": 1,
+            "product": 1,
+            "amount": 1
+        }
+    },
+    {
+        "model": "inventories.inventoryitem",
+        "pk": 2,
+        "fields": {
+            "inventory": 1,
+            "product": 3,
+            "amount": 2
+        }
+    },
+    {
+        "model": "inventories.inventoryitem",
+        "pk": 3,
+        "fields": {
+            "inventory": 1,
+            "product": 2,
+            "amount": 3
+        }
+    }
+]

@@ -1,9 +1,8 @@
 from django.urls import path
 
-from apps.cooking.views import hello_world, cook_recipe
+from apps.cooking.views import cook_recipe
 
 
 urlpatterns = [
-    path('hello', hello_world),
-    path('cook_recipe', cook_recipe)
+    path('cook_recipe', cook_recipe, name='cook-recipe')
 ]
