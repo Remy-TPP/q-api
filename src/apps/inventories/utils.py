@@ -1,16 +1,19 @@
+from common.utils import get_object_or_none
+
+from apps.inventories.models import PlaceMember
 
 
 def get_place_or_default(profile, place_id):
     """
     Uses get() to return an place by its id.
-    If profile is None or doesn't have this place, it will return Profile's default place.
+    If profile doesn't have this place, it will return Profile's default place.
 
-    profile may be a Profile.
+    profile must be a Profile.
     place_id is optional.
     """
-    queryset = profile.places.all()
-    try:
-        return queryset.get(id=place_id)
-    except queryset.model.DoesNotExist:
-        # TODO: por ahora devuelve el primero, pero debe devolver el default
-        return queryset.first()
+    place_member = get_object_or_none(
+        PlaceMember,
+        member_id=profile.id,
+        place_id=place_id
+    )
+    return place_member.place if place_member else get_object_or_none(PlaceMember, member_id=profile.id, is_the_default_one=True).place
