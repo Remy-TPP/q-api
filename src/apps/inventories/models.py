@@ -20,6 +20,11 @@ class InventoryItem(models.Model):
     def __str__(self):
         return '%s of %s' % (self.amount, self.product)
 
+    def reduce_amount(self, amount):
+        must_be_deleted = self.amount - amount
+        if must_be_deleted:
+            self.delete()
+
 
 class Place(models.Model):
     name = models.CharField(max_length=300)

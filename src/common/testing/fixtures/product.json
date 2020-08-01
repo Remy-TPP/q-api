@@ -1,0 +1,23 @@
+[
+    {
+        "model": "recipes.product",
+        "pk": 1,
+        "fields": {
+            "name": "Leche"
+        }
+    },
+    {
+        "model": "recipes.product",
+        "pk": 2,
+        "fields": {
+            "name": "Leche Descremada"
+        }
+    },
+    {
+        "model": "recipes.product",
+        "pk": 3,
+        "fields": {
+            "name": "Cafe"
+        }
+    }
+]
