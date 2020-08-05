@@ -2,9 +2,9 @@ from rest_framework import viewsets, permissions
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 
+from common.permissions import ReadOnly
 from apps.products.models import Unit, Product
 from apps.products.serializers import UnitSerializer, ProductSerializer
-from apps.products.permissions import ReadOnly
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
