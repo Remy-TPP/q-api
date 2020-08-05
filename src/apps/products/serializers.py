@@ -24,6 +24,8 @@ class AmountSerializer(serializers.ModelSerializer):
         model = Amount
         fields = ['quantity', 'unit']
 
+    # TODO: create() that receives unit.[short_]name and stores corresponding pk
+
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
 

@@ -1,7 +1,7 @@
+# TODO: test CRUD'ing using serializers
 from rest_framework import serializers
 # from rest_framework_recursive.fields import RecursiveField
 
-# from apps.products.models import Product
 from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
 from apps.products.serializers import AmountSerializer, ProductSerializer, ProductMinimalSerializer
 
@@ -37,8 +37,6 @@ class RecipeMinimalSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'title']
 
 
-# TODO: IngredientSerializer (and RecipeMinimalSerializer) are not used because
-# because we don't need ingredients/ endpoint... right?
 class IngredientSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     recipe = RecipeMinimalSerializer()
@@ -49,23 +47,13 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         exclude = ['id']
 
-# TODO: recheck and clean up
-#     # def get_fields(self):
-#     #     fields = super(IngredientSerializer, self).get_fields()
-#     #     fields['substitutions'] = IngredientSerializer(many=True)
-#     #     return fields
-#
-#     def create(self, validated_data):
-#         amount_serializer = self.fields['amount']
-#         amount = amount_serializer.create(validated_data.pop('amount'))
-#         validated_data['amount'] = amount
-#
-#         # substitutions_serializer = self.fields['substitutions'].proxied
-#         # substitutions = substitutions_serializer.create(validated_data.pop('substitutions'))
-#
-#         ingredient = Ingredient.objects.create(**validated_data)
-#         # ingredient.substitutions.set(substitutions)
-#         return ingredient
+    def create(self, validated_data):
+        amount_serializer = self.fields['amount']
+        amount = amount_serializer.create(validated_data.pop('amount'))
+        validated_data['amount'] = amount
+
+        ingredient = Ingredient.objects.create(**validated_data)
+        return ingredient
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
@@ -91,10 +79,9 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
             Ingredient.objects.filter(recipe=obj), many=True, context=self.context
         ).data
 
-    # TODO: recheck and clean up
-    # def create(self, validated_data):
-    #     ingredients_serializer = IngredientSerializer(many=True, read_only=True)
-    #     ingredients = ingredients_serializer.create(validated_data.pop('ingredients'))
-    #     recipe = Recipe.objects.create(**validated_data)
-    #     recipe.ingredients.set(ingredients)
-    #     return recipe
+    def create(self, validated_data):
+        ingredients_serializer = IngredientSerializer(many=True, read_only=True)
+        ingredients = ingredients_serializer.create(validated_data.pop('ingredients'))
+        recipe = Recipe.objects.create(**validated_data)
+        recipe.ingredients.set(ingredients)
+        return recipe
