@@ -4,6 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from apps.products.models import Unit, Product
 from apps.products.serializers import UnitSerializer, ProductSerializer
+from apps.products.permissions import ReadOnly
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -34,12 +35,12 @@ class UnitViewSet(viewsets.ModelViewSet):
     """
     Manage units.
 
-    Only Admin.
+    Only Admin or read-only.
     """
     queryset = Unit.objects.all().order_by("id")
     serializer_class = UnitSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser | ReadOnly]
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -70,9 +71,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     Manage products.
 
-    Only Admin.
+    Only Admin or read-only.
     """
     queryset = Product.objects.all().order_by("id")
     serializer_class = ProductSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser | ReadOnly]
