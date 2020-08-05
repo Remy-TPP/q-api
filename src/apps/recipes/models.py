@@ -75,7 +75,7 @@ class Recipe(models.Model):
 
 
 class Ingredient(models.Model):
-    # TODO: add related_name='+' to product's FK? Verify on_delete for product
+    # TODO: add `related_name='+'` to product's FK? Verify on_delete for product
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True)
     amount = models.OneToOneField(Amount, on_delete=models.CASCADE)

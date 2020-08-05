@@ -116,38 +116,6 @@ class DishViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | ReadOnly]
 
 
-# TODO: IngredientViewSet is not needed, because we don't need ingredients/ endpoint... right?
-# (Because we could get/modify/create ingredients through the recipes/ endpoint)
-# @method_decorator(name='list', decorator=swagger_auto_schema(
-#     operation_summary="Lists all ingredients.",
-#     operation_description="Returns ingredients."
-# ))
-# @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-#     operation_summary="Gets ingredient with id={id}.",
-#     operation_description="Returns ingredient."
-# ))
-# @method_decorator(name='create', decorator=swagger_auto_schema(
-#     operation_summary="Creates ingredient.",
-#     operation_description="Returns ingredient."
-# ))
-# @method_decorator(name='partial_update', decorator=swagger_auto_schema(
-#     operation_summary="Partial updates ingredient with id={id}.",
-#     operation_description="Returns ingredient."
-# ))
-# @method_decorator(name='update', decorator=swagger_auto_schema(
-#     operation_summary="Updates ingredient with id={id}.",
-#     operation_description="Returns ingredient."
-# ))
-# @method_decorator(name='destroy', decorator=swagger_auto_schema(
-#     operation_summary="Deletes ingredient with id={id}.",
-#     operation_description="Returns none."
-# ))
-# class IngredientViewSet(viewsets.ModelViewSet):
-#     queryset = Ingredient.objects.all().order_by("id")
-#     serializer_class = IngredientSerializer
-#     lookup_field = 'pk'
-
-
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all recipes.",
     operation_description="Returns recipes."
