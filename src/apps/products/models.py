@@ -41,10 +41,11 @@ class Amount(models.Model):
     def displayable_unit(self):
         if self.unit.short_name is None:
             return f' {self.unit.name if self.quantity == 1.0 else self.unit.pluralized_name}'
-        elif self.unit.short_name == '':
+
+        if self.unit.short_name == '':
             return ''
-        else:
-            return f' {self.unit.short_name}'
+
+        return f' {self.unit.short_name}'
 
     @property
     def displayable_quantity(self):
