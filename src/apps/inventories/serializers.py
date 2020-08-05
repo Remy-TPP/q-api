@@ -7,6 +7,8 @@ from apps.products.serializers import (AmountSerializer)
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+    inventory = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Place
         fields = '__all__'

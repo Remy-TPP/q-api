@@ -1,10 +1,10 @@
 from django.urls import include, path
 from rest_framework_nested import routers
-from rest_framework.routers import SimpleRouter
 
 from apps.inventories.views import (PlaceViewSet,
                                     InventoryViewSet,
-                                    InventoryItemViewSet)
+                                    InventoryItemViewSet,
+                                    default_place)
 
 router = routers.SimpleRouter()
 
@@ -19,4 +19,5 @@ places_router.register(r'items', InventoryItemViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("", include(places_router.urls)),
+    path('default_place', default_place, name='default-place'),
 ]

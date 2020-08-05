@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.products.utils import sub_quantities_with_units
+
 
 class Unit(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -24,6 +26,16 @@ class Amount(models.Model):
 
     def __str__(self):
         return f'{self.displayable_quantity}{self.displayable_unit}'
+
+    def __sub__(self, other):
+        """Decrease own quantity with other's.
+
+        Returns True if this amount is no longer usable.
+        """
+        quantity_result = sub_quantities_with_units(self.quantity, self.unit.name, other.quantity, other.unit.name)
+        self.quantity = quantity_result
+        self.save()
+        return quantity_result <= 0
 
     @property
     def displayable_unit(self):
