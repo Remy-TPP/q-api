@@ -39,7 +39,7 @@ def cook_recipe(request):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         place = get_place_or_default(request.user.profile, place_id)
 
-        for ingredient in recipe.ingredients.all():
+        for ingredient in recipe.ingredient_set.all():
             # TODO: en la linea de abajo, que pasa si cocina con algo que no tiene?? sustitutos??
             item = place.inventory.items.filter(product=ingredient.product).first()
             if item:
