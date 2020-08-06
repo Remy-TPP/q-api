@@ -51,22 +51,22 @@ def run_seed(self, mode, seed_file, n):
         clear_data()
 
     if mode == Mode.CLEAR.value:
-        return
+        return 0
 
     dish_parser = DishParser()
 
     with open(seed_file) as csvf:
         reader = csv.DictReader(csvf, delimiter=',')
         # Only grab the first N rows
-        for i in range(n):
+        for _ in range(n):
             row = next(reader, None)
             if not row:
                 break
             dish_parser.parse_and_create_dish(row)
 
     print('\nWords not recognized as conventional units and treated as product names\n-----')
-    for un in sorted(dish_parser.unrecognized_unit_names().items(), key=lambda x: x[0]):
-        print(f'{un[0]}: {un[1]}')
+    for unn in sorted(dish_parser.unrecognized_unit_names().items(), key=lambda x: x[0]):
+        print(f'{unn[0]}: {unn[1]}')
     print('')
 
     return dish_parser.rows_added_count

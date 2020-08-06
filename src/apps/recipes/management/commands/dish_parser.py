@@ -15,7 +15,7 @@ from apps.recipes.models import Dish, DishLabel, Recipe, RecipeInstructions, Ing
 #     sys.stdout.write(s)
 
 
-unicode_vulgar_fractions = '¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞'
+UNICODE_VULGAR_FRACTIONS = '¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞'
 
 possible_units = [
     'unit: unit',
@@ -55,7 +55,7 @@ def parse_ingredient(ingr_line, section_name):
     quantity, unit, remarks = None, None, None
 
     # look for number at beginning of string
-    if (quantity_match := re.match(rf'^\s*(?:([0-9{unicode_vulgar_fractions}.,/]+)\s*)+', ingr_line)):
+    if (quantity_match := re.match(rf'^\s*(?:([0-9{UNICODE_VULGAR_FRACTIONS}.,/]+)\s*)+', ingr_line)):
         quantity = Decimal()
         # convert each part to Decimal and get full quantity (e.g. '2 ½' => Decimal('2.5'))
         # TODO: parse decimal comma
@@ -93,7 +93,7 @@ def parse_ingredient(ingr_line, section_name):
 def seems_like_ingredient(line):
     """Check whether `line` starts with number."""
     return bool(
-        re.search(rf'^[0-9{unicode_vulgar_fractions}]', line)
+        re.search(rf'^[0-9{UNICODE_VULGAR_FRACTIONS}]', line)
     )
 
 
@@ -214,9 +214,10 @@ class DishParser:
             dish.delete()
             return False
 
-        [dish.labels.add(
-            DishLabel.objects.get_or_create(name=t.strip().lower())[0]
-         ) for t in row['tags']]
+        for tag in row['tags']:
+            dish.labels.add(
+                DishLabel.objects.get_or_create(name=tag.strip().lower())[0]
+            )
 
         self.rows_added_count += 1
         return True
