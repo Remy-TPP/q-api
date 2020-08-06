@@ -79,6 +79,7 @@ class Ingredient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     amount = models.OneToOneField(Amount, on_delete=models.CASCADE, null=True)
+    notes = models.CharField(max_length=300, blank=True)
     section = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
