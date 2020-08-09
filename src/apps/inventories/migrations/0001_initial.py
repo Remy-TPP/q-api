@@ -10,7 +10,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('profiles', '0008_manually_fix'),
-        ('recipes', '0008_auto_20200602_1825'),
+        ('products', '0004_auto_20200722_2041'),
+        ('recipes', '0012_auto_20200722_2041'),
     ]
 
     operations = [
@@ -34,9 +35,9 @@ class Migration(migrations.Migration):
             name='InventoryItem',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.Amount')),
+                ('amount', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.Amount')),
                 ('inventory', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='inventories.Inventory')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.Product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.Product')),
             ],
         ),
     ]

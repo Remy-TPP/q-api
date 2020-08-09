@@ -1,0 +1,81 @@
+[
+    {
+        "model": "products.unit",
+        "pk": 1,
+        "fields": {
+            "name": "unit",
+            "short_name": ""
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 2,
+        "fields": {
+            "name": "gram",
+            "short_name": "g"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 3,
+        "fields": {
+            "name": "kilogram",
+            "short_name": "kg"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 4,
+        "fields": {
+            "name": "liter",
+            "short_name": "L"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 5,
+        "fields": {
+            "name": "milliliter",
+            "short_name": "mL"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 6,
+        "fields": {
+            "name": "cup"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 7,
+        "fields": {
+            "name": "teaspoon",
+            "short_name": "tsp"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 8,
+        "fields": {
+            "name": "tablespoon",
+            "short_name": "Tbsp"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 9,
+        "fields": {
+            "name": "pound",
+            "short_name": "lb"
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": 10,
+        "fields": {
+            "name": "ounce",
+            "short_name": "oz"
+        }
+    }
+]

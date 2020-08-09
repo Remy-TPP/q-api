@@ -3,13 +3,11 @@ from rest_framework import serializers
 from apps.inventories.models import (Place,
                                      Inventory,
                                      InventoryItem)
-from apps.recipes.serializers import (AmountSerializer)
+from apps.products.serializers import (AmountSerializer)
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
-    inventory = serializers.PrimaryKeyRelatedField(
-        read_only=True
-    )
+    inventory = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Place

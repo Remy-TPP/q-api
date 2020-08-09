@@ -30,7 +30,7 @@ class FriendshipStatus(models.Model):
         return '%s' % (self.name)
 
     class Meta:
-        verbose_name_plural = "friendship status"
+        verbose_name_plural = "friendship statuses"
 
 
 class FriendshipRequest(models.Model):

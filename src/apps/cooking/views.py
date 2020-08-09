@@ -18,14 +18,14 @@ from apps.inventories.utils import get_place_or_default
         openapi.Parameter(
             'recipe_id',
             in_=openapi.IN_QUERY,
-            description='Id of a recipe',
+            description='ID of a recipe',
             type=openapi.TYPE_INTEGER,
             required=True
         ),
         openapi.Parameter(
             'place_id',
             in_=openapi.IN_QUERY,
-            description='Id of a place',
+            description='ID of a place',
             type=openapi.TYPE_INTEGER
         ),
     ]
@@ -39,7 +39,7 @@ def cook_recipe(request):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         place = get_place_or_default(request.user.profile, place_id)
 
-        for ingredient in recipe.ingredients.all():
+        for ingredient in recipe.ingredient_set.all():
             # TODO: en la linea de abajo, que pasa si cocina con algo que no tiene?? sustitutos??
             item = place.inventory.items.filter(product=ingredient.product).first()
             if item:

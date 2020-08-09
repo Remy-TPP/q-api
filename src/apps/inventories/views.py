@@ -118,7 +118,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         openapi.Parameter(
             'place_id',
             in_=openapi.IN_QUERY,
-            description='Id of a place',
+            description='ID of a place',
             type=openapi.TYPE_INTEGER,
             required=True
         ),

@@ -41,7 +41,8 @@ disable=missing-module-docstring,
         missing-function-docstring,
         too-many-ancestors,
         abstract-method,
-        R0801
+        superfluous-parens,
+        duplicate-code
 #         print-statement,
 #         parameter-unpacking,
 #         unpacking-in-except,
@@ -222,7 +223,7 @@ argument-naming-style=snake_case
 
 # Regular expression matching correct argument names. Overrides argument-
 # naming-style.
-# Custom: snake_case but allows 2 char args (mainly to allow '.pk')
+# Custom: snake_case but allows 2 char args (mainly to allow arg 'pk')
 argument-rgx=([^\\W\\dA-Z][^\\WA-Z]{1,}|_[^\\WA-Z]*|__[^\\WA-Z\\d_][^\\WA-Z]+__)$
 
 # Naming style matching correct attribute names.

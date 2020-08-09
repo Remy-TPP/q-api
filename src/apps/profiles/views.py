@@ -25,6 +25,7 @@ from apps.profiles.permissions import (UpdateOwnProfile,
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    # TODO: should use `get_user_model()`?
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
     lookup_field = 'pk'

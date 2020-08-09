@@ -19,5 +19,5 @@ places_router.register(r'items', InventoryItemViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("", include(places_router.urls)),
-    path('default_place', default_place, name='default-place')
+    path('default_place', default_place, name='default-place'),
 ]

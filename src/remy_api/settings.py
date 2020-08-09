@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # local
     'apps.api',
     'apps.profiles',
+    'apps.products',
     'apps.recipes',
     'apps.inventories',
     'apps.cooking',
@@ -121,6 +122,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        # TODO: change to
+        # 'rest_framework.permissions.IsAdminUser',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -191,7 +194,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 EMAIL_BACKEND = config('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 
 
-# where to look up the fixtures - MUST be a tuple or list
+# Where to look up the fixtures - MUST be a tuple or list
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'common', 'testing', 'fixtures'),
-    )
+)

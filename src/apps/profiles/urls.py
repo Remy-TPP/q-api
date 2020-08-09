@@ -21,5 +21,5 @@ router.register(r'friendshipstatus', FriendshipStatusViewSet)   # friendshipstat
 
 urlpatterns = [
     path("", include(router.urls)),
-    # path("", include(friendship_router.urls))
+    # path("", include(friendship_router.urls)),
 ]

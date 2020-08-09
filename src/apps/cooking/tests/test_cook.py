@@ -3,7 +3,6 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from common.utils import query_reverse
-
 from apps.inventories.models import Place, Inventory
 from apps.recipes.models import Recipe
 
@@ -52,8 +51,7 @@ class CookingTest(APITestCase):
         place.members.add(u_1.profile.id)
 
     def test_cook_without_recipe_id(self):
-        """Test when cook without passing recipe_id must return 400 Bad Request
-        """
+        """Test when cook without passing recipe_id must return 400 Bad Request."""
         u_1 = sample_user_1()
         place = Place.objects.get(id=1)
 
@@ -72,7 +70,7 @@ class CookingTest(APITestCase):
 
     def test_cook_with_big_inventory(self):
         """Test when cook a recipe with more inventoryitems' amount
-        than ingredients' amount, must reduce the amount and maintain the inventoryitems"""
+        than ingredients' amount, must reduce the amount and maintain the inventoryitems."""
         u_1 = sample_user_1()
         recipe = Recipe.objects.get(id=1)
         place = Place.objects.get(id=1)
@@ -83,22 +81,22 @@ class CookingTest(APITestCase):
             cook_recipe(recipe.id, place.id)
         )
 
-        # id=1: 1l leche - 500ml leche = 0.5l leche
-        # id=2: 1kg cafe - 500g cafe = 0.5kg cafe
-        # id=3: 500ml leche descremada - 0 = 500ml leche descremada
+        # id=1: 1 L leche - 500 mL leche = 0.5 L leche
+        # id=2: 1 kg cafe - 500 g cafe = 0.5 kg cafe
+        # id=3: 500 mL leche descremada - 0 = 500 mL leche descremada
         items = place.inventory.items.all()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(items.get(id=1).amount.weight, 0.5)
-        self.assertEqual(items.get(id=1).amount.unit.name, 'l')
-        self.assertEqual(items.get(id=2).amount.weight, 0.5)
-        self.assertEqual(items.get(id=2).amount.unit.name, 'Kg')
-        self.assertEqual(items.get(id=3).amount.weight, 500)
-        self.assertEqual(items.get(id=3).amount.unit.name, 'ml')
+        self.assertEqual(items.get(id=1).amount.quantity, 0.5)
+        self.assertEqual(items.get(id=1).amount.unit.name, 'liter')
+        self.assertEqual(items.get(id=2).amount.quantity, 0.5)
+        self.assertEqual(items.get(id=2).amount.unit.name, 'kilogram')
+        self.assertEqual(items.get(id=3).amount.quantity, 500)
+        self.assertEqual(items.get(id=3).amount.unit.name, 'milliliter')
 
     def test_cook_with_small_inventory(self):
         """Test when cook a recipe with equal inventoryitems' amount
-        than ingredients' amount, must delete the inventoryitems"""
+        than ingredients' amount, must delete the inventoryitems."""
         u_1 = sample_user_1()
         recipe = Recipe.objects.get(id=2)
         place = Place.objects.get(id=1)
@@ -116,7 +114,7 @@ class CookingTest(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(items), 2)
-        self.assertEqual(items.get(id=1).amount.weight, 1)
-        self.assertEqual(items.get(id=1).amount.unit.name, 'l')
-        self.assertEqual(items.get(id=2).amount.weight, 0.5)
-        self.assertEqual(items.get(id=2).amount.unit.name, 'Kg')
+        self.assertEqual(items.get(id=1).amount.quantity, 1)
+        self.assertEqual(items.get(id=1).amount.unit.name, 'liter')
+        self.assertEqual(items.get(id=2).amount.quantity, 0.5)
+        self.assertEqual(items.get(id=2).amount.unit.name, 'kilogram')

@@ -1,0 +1,26 @@
+[
+    {
+        "model": "recipes.dishcategory",
+        "pk": 1,
+        "fields": {
+            "name": "vegano",
+            "description": "No consume productos animales"
+        }
+    },
+    {
+        "model": "recipes.dishcategory",
+        "pk": 2,
+        "fields": {
+            "name": "vegetariano",
+            "description": "No consume carne animal pero sí productos derivados, como leche y huevos; generalmente usado para decir ovolactovegetariano"
+        }
+    },
+    {
+        "model": "recipes.dishcategory",
+        "pk": 3,
+        "fields": {
+            "name": "apto celíaco",
+            "description": "Intolerancia al gluten, conjunto de proteínas presentes en productos TACC (trigo, avena, cebada, centeno) y derivados"
+        }
+    }
+]

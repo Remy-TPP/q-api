@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('recipes', '0008_auto_20200602_1825'),
+        ('products', '0004_auto_20200722_2041'),
         ('inventories', '0002_auto_20200705_2114'),
     ]
 
@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='inventory',
             name='products',
-            field=models.ManyToManyField(through='inventories.InventoryItem', to='recipes.Product'),
+            field=models.ManyToManyField(through='inventories.InventoryItem', to='products.Product'),
         ),
         migrations.AlterField(
             model_name='inventoryitem',
             name='amount',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='recipes.Amount'),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='products.Amount'),
         ),
     ]
