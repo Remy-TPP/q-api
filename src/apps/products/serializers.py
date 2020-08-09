@@ -10,21 +10,12 @@ class UnitSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class UnitMinimalSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Unit
-        fields = ['url', 'short_name']
-
-
 class AmountSerializer(serializers.ModelSerializer):
-    unit = UnitMinimalSerializer()
+    unit = serializers.SlugRelatedField(slug_field='short_name', queryset=Unit.objects.all())
 
     class Meta:
         model = Amount
         fields = ['quantity', 'unit']
-
-    # TODO: create() that receives unit.[short_]name and stores corresponding pk
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):

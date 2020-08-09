@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.products.utils import sub_quantities_with_units
+from apps.products.utils import sub_quantities_with_units, add_quantities_with_units
 
 
 class Unit(models.Model):
@@ -32,10 +32,17 @@ class Amount(models.Model):
 
         Returns True if this amount is no longer usable.
         """
-        quantity_result = sub_quantities_with_units(self.quantity, self.unit.name, other.quantity, other.unit.name)
+        quantity_result = sub_quantities_with_units(self.quantity, self.unit.short_name, other.quantity, other.unit.short_name)
         self.quantity = quantity_result
         self.save()
         return quantity_result <= 0
+    
+    def __add__(self, other):
+        """Add own quantity with other's.
+        """
+        quantity_result = add_quantities_with_units(self.quantity, self.unit.short_name, other.quantity, other.unit.short_name)
+        self.quantity = quantity_result
+        self.save()
 
     @property
     def displayable_unit(self):
