@@ -53,7 +53,7 @@ class InventoryItemTests(APITestCase):
                 'product': 1,
                 'amount': {
                     'quantity': 1,
-                    'unit': 'L'
+                    'unit': 'liter'
                 }
             },
             format='json'
@@ -74,7 +74,7 @@ class InventoryItemTests(APITestCase):
                 'product': 1,
                 'amount': {
                     'quantity': 1,
-                    'unit': 'L'
+                    'unit': 'liter'
                 }
             },
             format='json'
@@ -86,7 +86,7 @@ class InventoryItemTests(APITestCase):
                 'product': 1,
                 'amount': {
                     'quantity': 1000,
-                    'unit': 'mL'
+                    'unit': 'milliliter'
                 }
             },
             format='json'

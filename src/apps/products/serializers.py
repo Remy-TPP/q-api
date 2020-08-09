@@ -12,7 +12,7 @@ class UnitSerializer(serializers.HyperlinkedModelSerializer):
 
 class AmountSerializer(serializers.ModelSerializer):
     unit = serializers.SlugRelatedField(
-        slug_field='short_name',
+        slug_field='name',
         queryset=Unit.objects.all()
     )
 
