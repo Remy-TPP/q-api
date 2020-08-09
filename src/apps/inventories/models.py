@@ -26,7 +26,7 @@ class InventoryItem(models.Model):
             self.delete()
 
     def add_amount(self, amount):
-        self.amount + amount
+        _ = self.amount + amount
         # must delete the amount object created only for adding purposes
         amount.delete()
 
