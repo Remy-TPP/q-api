@@ -41,9 +41,17 @@ class InventoryItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'amount']
 
     def create(self, validated_data):
-        amount_serializer = self.fields['amount']
-        amount = amount_serializer.create(validated_data.pop('amount'))
-        validated_data['amount'] = amount
+        amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
+        if not amount_serializer.is_valid():
+            raise TypeError(amount_serializer.errors)
 
-        item = InventoryItem.objects.create(**validated_data)
+        product = validated_data['product']
+        existing_items = validated_data['inventory'].items.filter(product=product)
+        if existing_items.exists():
+            item = existing_items.first()
+            item.add_amount(amount_serializer.data)
+        else:
+            validated_data['amount'] = amount_serializer.save()
+            item = InventoryItem.objects.create(**validated_data)
+
         return item

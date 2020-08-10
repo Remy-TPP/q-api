@@ -1,12 +1,13 @@
 from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db.transaction import atomic
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+
+from apps.inventories.utils import get_place_or_default
 
 from apps.inventories.models import (Place,
                                      Inventory,
@@ -95,7 +96,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         operation_description="Returns the item."
     )
     def create(self, request, *args, **kwargs):
-        inventory = get_object_or_404(Place.objects.all(), id=kwargs['place_pk']).inventory
+        inventory = get_place_or_default(request.user.profile, kwargs['place_pk']).inventory
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():

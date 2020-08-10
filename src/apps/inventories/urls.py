@@ -12,9 +12,7 @@ router.register(r'places', PlaceViewSet)                             # places/
 router.register(r'inventories', InventoryViewSet)                    # inventories/
 
 places_router = routers.NestedSimpleRouter(router, r'places', lookup='place')
-places_router.register(r'items', InventoryItemViewSet)
-# router.register(r'places', InventoryItemViewSet)                    # places/{id}/add_item
-# router.register(r'items', InventoryItemViewSet)                    # items/
+places_router.register(r'items', InventoryItemViewSet, basename='items')
 
 urlpatterns = [
     path("", include(router.urls)),

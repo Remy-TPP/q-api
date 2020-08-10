@@ -25,6 +25,9 @@ class InventoryItem(models.Model):
         if must_be_deleted:
             self.delete()
 
+    def add_amount(self, amount):
+        _ = self.amount + amount
+
 
 class Place(models.Model):
     name = models.CharField(max_length=300)
