@@ -19,10 +19,9 @@ class PlaceSerializer(serializers.HyperlinkedModelSerializer):
         members = validated_data.pop('members') if 'members' in validated_data else []
         members.append(current_profile)
 
-        new_inventory = Inventory.objects.create()
-
-        place = Place.objects.create(**validated_data, inventory=new_inventory)
+        place = Place.objects.create(**validated_data)
         place.members.set(members)
+
         return place
 
 
@@ -45,13 +44,20 @@ class InventoryItemSerializer(serializers.ModelSerializer):
         if not amount_serializer.is_valid():
             raise TypeError(amount_serializer.errors)
 
-        product = validated_data['product']
-        existing_items = validated_data['inventory'].items.filter(product=product)
-        if existing_items.exists():
-            item = existing_items.first()
-            item.add_amount(amount_serializer.data)
+        product = validated_data.get('product')
+        inventory = validated_data.get('inventory')
+
+        if inventory:
+            existing_items = validated_data['inventory'].items.filter(product=product)
+            if existing_items.exists():
+                item = existing_items.first()
+                item.add_amount(amount_serializer.data)
+            else:
+                validated_data['amount'] = amount_serializer.save()
+                item = InventoryItem.objects.create(**validated_data)
         else:
             validated_data['amount'] = amount_serializer.save()
-            item = InventoryItem.objects.create(**validated_data)
+            place = PlaceSerializer.create(self, {'name': 'Home'})
+            item = InventoryItem.objects.create(**validated_data, inventory=place.inventory)
 
         return item

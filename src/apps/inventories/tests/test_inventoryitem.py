@@ -4,15 +4,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-PLACE_URL = reverse('place-list')
-
-
-def items_url(place_id):
-    """Return items url"""
-    return reverse('items-list', kwargs={
-        'place_pk': place_id
-    })
-
+ITEMS_URL = reverse('inventoryitems-list')
 
 users = {
     'user_1': {
@@ -34,21 +26,12 @@ def sample_user_1():
 class InventoryItemTests(APITestCase):
     fixtures = ['unit', 'product']
 
-    def setUp(self):
-        self.u_1 = sample_user_1()
-
-        self.client.force_authenticate(user=self.u_1)
-
-        self.client.post(
-            PLACE_URL,
-            data={
-                'name': 'Mi casa'
-            }
-        )
-
     def test_adding_a_item_that_does_not_exist_should_create_it(self):
+        u_1 = sample_user_1()
+        self.client.force_authenticate(user=u_1)
+
         res = self.client.post(
-            items_url(self.u_1.profile.places.first().id),
+            ITEMS_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -60,7 +43,7 @@ class InventoryItemTests(APITestCase):
         )
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
-        items = self.u_1.profile.places.first().inventory.items
+        items = u_1.profile.places.first().inventory.items
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)
@@ -68,8 +51,11 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(item.amount.unit.short_name, 'L')
 
     def test_adding_a_item_that_exists_should_add_amount(self):
+        u_1 = sample_user_1()
+        self.client.force_authenticate(user=u_1)
+
         _ = self.client.post(
-            items_url(self.u_1.profile.places.first().id),
+            ITEMS_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -81,7 +67,7 @@ class InventoryItemTests(APITestCase):
         )
 
         res = self.client.post(
-            items_url(self.u_1.profile.places.first().id),
+            ITEMS_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -94,7 +80,7 @@ class InventoryItemTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
-        items = self.u_1.profile.places.first().inventory.items
+        items = u_1.profile.places.first().inventory.items
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)
