@@ -1,21 +1,16 @@
 from django.urls import include, path
-from rest_framework_nested import routers
+from rest_framework.routers import SimpleRouter
 
 from apps.inventories.views import (PlaceViewSet,
-                                    InventoryViewSet,
                                     InventoryItemViewSet,
                                     default_place)
 
-router = routers.SimpleRouter()
+router = SimpleRouter()
 
-router.register(r'places', PlaceViewSet)                             # places/
-router.register(r'inventories', InventoryViewSet)                    # inventories/
-
-places_router = routers.NestedSimpleRouter(router, r'places', lookup='place')
-places_router.register(r'items', InventoryItemViewSet, basename='items')
+router.register(r'places', PlaceViewSet, basename='place')                             # places/
+router.register(r'inventoryitems', InventoryItemViewSet, basename='inventoryitems')             # inventoryitems/
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("", include(places_router.urls)),
     path('default_place', default_place, name='default-place'),
 ]

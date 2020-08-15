@@ -43,7 +43,6 @@ class PlaceViewSet(viewsets.GenericViewSet,
                    mixins.UpdateModelMixin,
                    mixins.ListModelMixin,
                    mixins.RetrieveModelMixin):
-    queryset = Place.objects.all().order_by("id")
     serializer_class = PlaceSerializer
     lookup_field = 'pk'
 
@@ -60,7 +59,15 @@ class InventoryViewSet(viewsets.ModelViewSet):
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
-    operation_description="Returns items."
+    operation_description="Returns items.",
+    manual_parameters=[
+        openapi.Parameter(
+            'place_id',
+            in_=openapi.IN_QUERY,
+            description='ID of a place',
+            type=openapi.TYPE_INTEGER
+        ),
+    ]
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
     operation_summary="Gets the item with id={id}..",
@@ -84,23 +91,36 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
                            mixins.RetrieveModelMixin,
                            mixins.UpdateModelMixin,
                            mixins.DestroyModelMixin):
-    queryset = InventoryItem.objects.all().order_by("id")
     serializer_class = InventoryItemSerializer
     lookup_field = 'pk'
 
     def get_queryset(self):
-        return InventoryItem.objects.filter(inventory__place=self.kwargs['place_pk'])
+        place = get_place_or_default(self.request.user.profile, self.kwargs.get('place_pk'))
+        return InventoryItem.objects.filter(inventory__place=place).order_by('id')
 
     @swagger_auto_schema(
         operation_summary="Create an item for that place.",
-        operation_description="Returns the item."
+        operation_description="Returns the item.",
+        manual_parameters=[
+            openapi.Parameter(
+                'place_id',
+                in_=openapi.IN_QUERY,
+                description='ID of a place',
+                type=openapi.TYPE_INTEGER,
+            ),
+        ],
     )
     def create(self, request, *args, **kwargs):
-        inventory = get_place_or_default(request.user.profile, kwargs['place_pk']).inventory
+        place = get_place_or_default(request.user.profile, kwargs.get('place_pk'))
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(inventory=inventory)
+            if place:
+                # place_id is correct for this user or has default one
+                serializer.save(inventory=place.inventory)
+            else:
+                # user does not have a place yet
+                serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(
             {

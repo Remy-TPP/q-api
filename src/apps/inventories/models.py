@@ -37,6 +37,12 @@ class Place(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+    def save(self, *args, **kwargs):
+        if not hasattr(self, 'inventory'):
+            self.inventory = Inventory.objects.create(name="Inventory of " + self.name)
+
+        super().save(*args, **kwargs)
+
 
 class PlaceMember(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
