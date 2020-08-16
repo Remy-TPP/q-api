@@ -39,6 +39,13 @@ def cook_recipe(request):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         place = get_place_or_default(request.user.profile, place_id)
 
+        if not place:
+            return Response(
+                {
+                    'message': 'Must have at least one item in your inventory!'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
         for ingredient in recipe.ingredient_set.all():
             # TODO: en la linea de abajo, que pasa si cocina con algo que no tiene?? sustitutos??
             item = place.inventory.filter(product=ingredient.product).first()
