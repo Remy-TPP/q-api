@@ -41,7 +41,7 @@ def cook_recipe(request):
 
         for ingredient in recipe.ingredient_set.all():
             # TODO: en la linea de abajo, que pasa si cocina con algo que no tiene?? sustitutos??
-            item = place.inventory.items.filter(product=ingredient.product).first()
+            item = place.inventory.filter(product=ingredient.product).first()
             if item:
                 item.reduce_amount(ingredient.amount)
         return Response({'message': 'Happy cook!'}, status=status.HTTP_200_OK)

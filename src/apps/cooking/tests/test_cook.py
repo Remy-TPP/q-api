@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from common.utils import query_reverse
-from apps.inventories.models import Place, Inventory
+from apps.inventories.models import Place
 from apps.recipes.models import Recipe
 
 
@@ -42,10 +42,8 @@ class CookingTest(APITestCase):
         # create a sample profile with a place
         u_1 = sample_user_1()
 
-        place = Place.objects.create(
-            id=1,
-            name="Mi casa",
-            inventory=Inventory.objects.first()  # there is only one
+        place = Place.objects.get(
+            id=1
         )
 
         place.members.add(u_1.profile.id)
@@ -84,7 +82,7 @@ class CookingTest(APITestCase):
         # id=1: 1 L leche - 500 mL leche = 0.5 L leche
         # id=2: 1 kg cafe - 500 g cafe = 0.5 kg cafe
         # id=3: 500 mL leche descremada - 0 = 500 mL leche descremada
-        items = place.inventory.items.all()
+        items = place.inventory.all()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(items.get(id=1).amount.quantity, 0.5)
@@ -110,7 +108,7 @@ class CookingTest(APITestCase):
         # id=1: 1l leche - 0 = 1l leche
         # id=2: 1kg cafe - 500g cafe = 0.5kg cafe
         # id=3: 500ml leche descremada - 0.5l leche descremada = 500ml leche descremada
-        items = place.inventory.items.all()
+        items = place.inventory.all()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(items), 2)

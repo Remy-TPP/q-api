@@ -10,11 +10,9 @@ from drf_yasg.utils import swagger_auto_schema
 from apps.inventories.utils import get_place_or_default
 
 from apps.inventories.models import (Place,
-                                     Inventory,
                                      InventoryItem,
                                      PlaceMember)
 from apps.inventories.serializers import (PlaceSerializer,
-                                          InventorySerializer,
                                           InventoryItemSerializer)
 
 
@@ -49,12 +47,6 @@ class PlaceViewSet(viewsets.GenericViewSet,
     def get_queryset(self):
         user = self.request.user
         return Place.objects.filter(members=user.profile).order_by("id")
-
-
-class InventoryViewSet(viewsets.ModelViewSet):
-    queryset = Inventory.objects.all().order_by("id")
-    serializer_class = InventorySerializer
-    lookup_field = 'pk'
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -117,7 +109,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         if serializer.is_valid():
             if place:
                 # place_id is correct for this user or has default one
-                serializer.save(inventory=place.inventory)
+                serializer.save(place=place)
             else:
                 # user does not have a place yet
                 serializer.save()
