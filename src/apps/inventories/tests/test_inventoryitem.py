@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-ITEMS_URL = reverse('inventoryitems-list')
+ITEM_URL = reverse('inventoryitems-list')
+ITEMS_URL = reverse('inventoryitems-add-items')
 
 users = {
     'user_1': {
@@ -31,7 +32,7 @@ class InventoryItemTests(APITestCase):
         self.client.force_authenticate(user=u_1)
 
         res = self.client.post(
-            ITEMS_URL,
+            ITEM_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -55,7 +56,7 @@ class InventoryItemTests(APITestCase):
         self.client.force_authenticate(user=u_1)
 
         _ = self.client.post(
-            ITEMS_URL,
+            ITEM_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -67,7 +68,7 @@ class InventoryItemTests(APITestCase):
         )
 
         res = self.client.post(
-            ITEMS_URL,
+            ITEM_URL,
             data={
                 'product': 1,
                 'amount': {
@@ -86,3 +87,85 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(item.product.id, 1)
         self.assertEqual(item.amount.quantity, 2)
         self.assertEqual(item.amount.unit.short_name, 'L')
+
+    def test_adding_multiple_items_should_create_them(self):
+        u_1 = sample_user_1()
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.post(
+            ITEMS_URL,
+            data={
+                "items": [
+                    {
+                        'product': 1,
+                        'amount': {
+                            'quantity': 1,
+                            'unit': 'liter'
+                        }
+                    },
+                    {
+                        'product': 1,
+                        'amount': {
+                            'quantity': 2,
+                            'unit': 'liter'
+                        }
+                    },
+                    {
+                        'product': 2,
+                        'amount': {
+                            'quantity': 1,
+                            'unit': 'gram'
+                        }
+                    }
+                ]
+            },
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        items = u_1.profile.places.first().inventory
+        self.assertEqual(items.count(), 2)
+        item = items.first()
+        self.assertEqual(item.product.id, 1)
+        self.assertEqual(item.amount.quantity, 3)
+        self.assertEqual(item.amount.unit.short_name, 'L')
+        item = items.last()
+        self.assertEqual(item.product.id, 2)
+        self.assertEqual(item.amount.quantity, 1)
+        self.assertEqual(item.amount.unit.short_name, 'g')
+
+    def test_adding_multiple_items_with_one_wrong_should_not_create_them(self):
+        u_1 = sample_user_1()
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.post(
+            ITEMS_URL,
+            data={
+                "items": [
+                    {
+                        'product': 1,
+                        'amount': {
+                            'quantity': 1,
+                            'unit': 'liter'
+                        }
+                    },
+                    {
+                        'product': 1,
+                        'amount': {
+                            'quantity': 2,
+                            'unit': 'liter'
+                        }
+                    },
+                    {
+                        'product': 2,
+                        'amount': {
+                            'quantity': 1,
+                            'unit': 'not real unit'
+                        }
+                    }
+                ]
+            },
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIsNotNone(res.data)
+        self.assertEqual(u_1.profile.places.count(), 0)

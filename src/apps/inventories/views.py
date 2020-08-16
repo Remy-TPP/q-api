@@ -140,10 +140,13 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
     @atomic
     def add_items(self, request):
         sid = savepoint()
-        for item in request.data:
-            #TODO: mejorar para que no tenga que pedir el place siempre
+        if 'items' not in request.data:
+            return Response({'message': 'Should provide items key!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        for item in request.data.get('items'):
+            # TODO: mejorar para que no tenga que pedir el place siempre
             place = get_place_or_default(request.user.profile, request.query_params.get('place_pk'))
-            
+
             serializer = self.get_serializer(data=item)
             if serializer.is_valid():
                 if place:
