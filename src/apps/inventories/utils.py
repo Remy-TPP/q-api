@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from common.utils import get_object_or_none
 
 from apps.inventories.models import PlaceMember

@@ -4,16 +4,16 @@ from apps.profiles.models import Profile
 from apps.products.models import Product, Amount
 
 
-class Inventory(models.Model):
+class Place(models.Model):
     name = models.CharField(max_length=300)
-    products = models.ManyToManyField(Product, through='InventoryItem')
+    members = models.ManyToManyField(Profile, related_name='places', blank=True, through='PlaceMember')
 
     def __str__(self):
         return '%s' % (self.name)
 
 
 class InventoryItem(models.Model):
-    inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='items')
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='inventory')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.OneToOneField(Amount, on_delete=models.CASCADE)
 
@@ -27,21 +27,6 @@ class InventoryItem(models.Model):
 
     def add_amount(self, amount):
         _ = self.amount + amount
-
-
-class Place(models.Model):
-    name = models.CharField(max_length=300)
-    members = models.ManyToManyField(Profile, related_name='places', blank=True, through='PlaceMember')
-    inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, blank=True)
-
-    def __str__(self):
-        return '%s' % (self.name)
-
-    def save(self, *args, **kwargs):
-        if not hasattr(self, 'inventory'):
-            self.inventory = Inventory.objects.create(name="Inventory of " + self.name)
-
-        super().save(*args, **kwargs)
 
 
 class PlaceMember(models.Model):

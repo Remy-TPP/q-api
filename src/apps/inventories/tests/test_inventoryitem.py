@@ -43,7 +43,7 @@ class InventoryItemTests(APITestCase):
         )
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
-        items = u_1.profile.places.first().inventory.items
+        items = u_1.profile.places.first().inventory
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)
@@ -80,7 +80,7 @@ class InventoryItemTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
-        items = u_1.profile.places.first().inventory.items
+        items = u_1.profile.places.first().inventory
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)

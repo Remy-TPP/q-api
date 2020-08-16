@@ -118,10 +118,10 @@
 
 
     {
-        "model": "inventories.inventory",
+        "model": "inventories.place",
         "pk": 1,
         "fields": {
-            "name": "Mi inventario"
+            "name": "Mi casa"
         }
     },
 
@@ -130,7 +130,7 @@
         "model": "inventories.inventoryitem",
         "pk": 1,
         "fields": {
-            "inventory": 1,
+            "place": 1,
             "product": 1,
             "amount": 1
         }
@@ -139,7 +139,7 @@
         "model": "inventories.inventoryitem",
         "pk": 2,
         "fields": {
-            "inventory": 1,
+            "place": 1,
             "product": 3,
             "amount": 2
         }
@@ -148,7 +148,7 @@
         "model": "inventories.inventoryitem",
         "pk": 3,
         "fields": {
-            "inventory": 1,
+            "place": 1,
             "product": 2,
             "amount": 3
         }
