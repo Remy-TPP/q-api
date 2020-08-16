@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status, mixins
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from django.db.models import Q
-from django.db.transaction import atomic
+from django.db.transaction import atomic, savepoint, savepoint_commit, savepoint_rollback
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -88,7 +88,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.kwargs.get('place_pk'))
-        return InventoryItem.objects.filter(inventory__place=place).order_by('id')
+        return InventoryItem.objects.filter(place=place).order_by('id')
 
     @swagger_auto_schema(
         operation_summary="Create an item for that place.",
@@ -122,6 +122,48 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
             status=status.HTTP_400_BAD_REQUEST
         )
 
+    @swagger_auto_schema(
+        method='post',
+        operation_summary='Create a list of items for that place.',
+        operation_description='Choose a place you are member as a default place',
+        manual_parameters=[
+            openapi.Parameter(
+                'place_id',
+                in_=openapi.IN_QUERY,
+                description='ID of a place',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=False, methods=['POST'])
+    @atomic
+    def add_items(self, request):
+        sid = savepoint()
+        for item in request.data:
+            #TODO: mejorar para que no tenga que pedir el place siempre
+            place = get_place_or_default(request.user.profile, request.query_params.get('place_pk'))
+            
+            serializer = self.get_serializer(data=item)
+            if serializer.is_valid():
+                if place:
+                    # place_id is correct for this user or has default one
+                    serializer.save(place=place)
+                else:
+                    # user does not have a place yet
+                    serializer.save()
+            else:
+                savepoint_rollback(sid)
+                return Response(
+                    {
+                        'msg': "Cannot add Item!",
+                        'errors': serializer.errors
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        savepoint_commit(sid)
+        return Response({'message': 'All the items were created!'}, status=status.HTTP_201_CREATED)
+
 
 @swagger_auto_schema(
     method='post',
@@ -138,7 +180,6 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
     ]
 )
 @api_view(['POST'])
-@atomic
 def default_place(request):
     place_id = request.query_params.get('place_id')
 
