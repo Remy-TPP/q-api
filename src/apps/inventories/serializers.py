@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.products.models import Product
 from apps.inventories.models import (Place,
                                      InventoryItem)
 from apps.products.serializers import (AmountSerializer)
@@ -26,10 +27,12 @@ class PlaceSerializer(serializers.HyperlinkedModelSerializer):
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
+    product = serializers.StringRelatedField()
+    product_id = serializers.PrimaryKeyRelatedField(source='product', write_only=True, queryset=Product.objects.all())
 
     class Meta:
         model = InventoryItem
-        fields = ['id', 'product', 'amount']
+        fields = ['id', 'product', 'amount', 'product_id']
 
     def create(self, validated_data):
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
