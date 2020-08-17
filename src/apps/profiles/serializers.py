@@ -56,7 +56,6 @@ class EventSerializer(serializers.ModelSerializer):
         queryset=Profile.objects.all()
     )
 
-
     def create(self, validated_data):
         current_profile = self.context.get('request').user.profile
         place = validated_data.get('place')
