@@ -34,7 +34,7 @@ class InventoryItemTests(APITestCase):
         res = self.client.post(
             ITEM_URL,
             data={
-                'product': 1,
+                'product_id': 1,
                 'amount': {
                     'quantity': 1,
                     'unit': 'liter'
@@ -58,7 +58,7 @@ class InventoryItemTests(APITestCase):
         _ = self.client.post(
             ITEM_URL,
             data={
-                'product': 1,
+                'product_id': 1,
                 'amount': {
                     'quantity': 1,
                     'unit': 'liter'
@@ -70,7 +70,7 @@ class InventoryItemTests(APITestCase):
         res = self.client.post(
             ITEM_URL,
             data={
-                'product': 1,
+                'product_id': 1,
                 'amount': {
                     'quantity': 1000,
                     'unit': 'milliliter'
@@ -97,21 +97,21 @@ class InventoryItemTests(APITestCase):
             data={
                 "items": [
                     {
-                        'product': 1,
+                        'product_id': 1,
                         'amount': {
                             'quantity': 1,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product': 1,
+                        'product_id': 1,
                         'amount': {
                             'quantity': 2,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product': 2,
+                        'product_id': 2,
                         'amount': {
                             'quantity': 1,
                             'unit': 'gram'
@@ -142,21 +142,21 @@ class InventoryItemTests(APITestCase):
             data={
                 "items": [
                     {
-                        'product': 1,
+                        'product_id': 1,
                         'amount': {
                             'quantity': 1,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product': 1,
+                        'product_id': 1,
                         'amount': {
                             'quantity': 2,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product': 2,
+                        'product_id': 2,
                         'amount': {
                             'quantity': 1,
                             'unit': 'not real unit'
