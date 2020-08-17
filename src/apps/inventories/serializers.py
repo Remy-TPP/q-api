@@ -6,7 +6,6 @@ from apps.products.serializers import (AmountSerializer)
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
-    inventory = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Place
@@ -34,7 +33,7 @@ class InventoryItemSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
         if not amount_serializer.is_valid():
-            raise TypeError(amount_serializer.errors)
+            raise serializers.ValidationError(amount_serializer.errors)
 
         product = validated_data.get('product')
         place = validated_data.get('place')
