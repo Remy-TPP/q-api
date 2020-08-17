@@ -56,7 +56,7 @@ class Event(models.Model):
     starting_datetime = models.DateTimeField()
     finishing_datetime = models.DateTimeField()
 
-    only_host_inventory = models.BooleanField(default=True)
+    only_host_inventory = models.BooleanField(default=False)
     host = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='hosted_events')
     place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=False)
 

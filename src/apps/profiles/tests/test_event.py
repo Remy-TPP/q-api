@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import Place
 
 EVENT_URL = reverse('event-list')
@@ -19,6 +20,11 @@ users = {
         'email': 'test2@test2.com',
         'username': 'soyTest2',
         'password': 'Test2pass123'
+    },
+    'user_3': {
+        'email': 'test3@test3.com',
+        'username': 'soyTest3',
+        'password': 'Test3pass123'
     }
 }
 
@@ -36,6 +42,14 @@ def sample_user_2():
         username=users['user_2']['username'],
         email=users['user_2']['email'],
         password=users['user_2']['password'],
+    )[0]
+
+
+def sample_user_3():
+    return get_user_model().objects.get_or_create(
+        username=users['user_3']['username'],
+        email=users['user_3']['email'],
+        password=users['user_3']['password'],
     )[0]
 
 
@@ -69,14 +83,15 @@ class EventTests(APITestCase):
         self.assertEqual(p_1.events.count(), 0)
         self.assertEqual(p_1.hosted_events.count(), 0)
 
-    def test_create_event_with_place(self):
-        """Test when creating an event having a place, must create event"""
+    def test_create_event_with_default_place(self):
+        """Test when creating an event not sending a place, must create event with default place"""
         p_1 = sample_user_1().profile
+        p_2 = sample_user_2().profile
 
         Place.objects.create().members.add(p_1)
 
         payload = {
-            'attendees': [sample_user_2().id],
+            'attendees': [p_2.id],
             'name': 'Test name',
             'starting_datetime': self.tomorrow,
             'finishing_datetime': self.day_after_tomorrow,
@@ -86,6 +101,69 @@ class EventTests(APITestCase):
             EVENT_URL,
             payload
         )
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(p_1.events.count(), 0)
         self.assertEqual(p_1.hosted_events.count(), 1)
+        self.assertEqual(p_2.events.count(), 1)
+        self.assertEqual(p_2.hosted_events.count(), 0)
+        self.assertEqual(res.data.get('place'), get_place_or_default(p_1).id)
+        self.assertEqual(res.data.get('host'), str(p_1))
+        self.assertFalse(res.data.get('only_host_inventory'))
+
+    def test_create_event_with_place_and_only_host_inventory(self):
+        """Test when creating an event not sending a place, must create event with default place"""
+        p_1 = sample_user_1().profile
+        p_2 = sample_user_2().profile
+
+        Place.objects.create().members.add(p_1)  # default place
+        place = Place.objects.create()  # another non default place
+        place.members.add(p_1)
+
+        payload = {
+            'attendees': [p_2.id],
+            'name': 'Test name',
+            'starting_datetime': self.tomorrow,
+            'finishing_datetime': self.day_after_tomorrow,
+            'place': place.id,
+            'only_host_inventory': True
+        }
+
+        res = self.client.post(
+            EVENT_URL,
+            payload
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(p_1.events.count(), 0)
+        self.assertEqual(p_1.hosted_events.count(), 1)
+        self.assertEqual(p_2.events.count(), 1)
+        self.assertEqual(p_2.hosted_events.count(), 0)
+        self.assertEqual(res.data.get('place'), place.id)
+        self.assertEqual(res.data.get('host'), str(p_1))
+        self.assertTrue(res.data.get('only_host_inventory'))
+
+    def test_create_event_with_not_friend(self):
+        """Test when creating an event with an attendee that is not your friend, must return error"""
+        p_1 = sample_user_1().profile
+        p_3 = sample_user_3().profile
+
+        Place.objects.create().members.add(p_1)
+
+        payload = {
+            'attendees': [p_3.id],
+            'name': 'Test name',
+            'starting_datetime': self.tomorrow,
+            'finishing_datetime': self.day_after_tomorrow,
+        }
+
+        res = self.client.post(
+            EVENT_URL,
+            payload
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(p_1.events.count(), 0)
+        self.assertEqual(p_1.hosted_events.count(), 0)
+        self.assertEqual(p_3.events.count(), 0)
+        self.assertEqual(p_3.hosted_events.count(), 0)
