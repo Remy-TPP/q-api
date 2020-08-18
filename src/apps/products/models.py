@@ -76,3 +76,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ProductWithAmount(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    amount = models.OneToOneField(Amount, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return f'{self.amount} {self.product}'
+
+    def add_amount(self, other_amount):
+        _ = self.amount + other_amount
+
+    def reduce_amount(self, amount):
+        must_be_deleted = self.amount - amount
+        if must_be_deleted:
+            self.delete()

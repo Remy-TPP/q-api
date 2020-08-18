@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-from apps.products.models import Amount, Product
+from apps.products.models import Product, ProductWithAmount
 
 
 class DishCategory(models.Model):
@@ -74,13 +74,7 @@ class Recipe(models.Model):
         return self.title if self.title else self.dish.name
 
 
-class Ingredient(models.Model):
-    # TODO: add `related_name='+'` to product's FK? Verify on_delete for product
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+class Ingredient(ProductWithAmount):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    amount = models.OneToOneField(Amount, on_delete=models.CASCADE, null=True)
     notes = models.CharField(max_length=300, blank=True)
     section = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return f'{self.amount} {self.product}'
