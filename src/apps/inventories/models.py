@@ -1,7 +1,7 @@
 from django.db import models
 
 from apps.profiles.models import Profile
-from apps.products.models import Product, Amount
+from apps.products.models import ProductWithAmount
 
 
 class Place(models.Model):
@@ -12,21 +12,8 @@ class Place(models.Model):
         return '%s' % (self.name)
 
 
-class InventoryItem(models.Model):
+class InventoryItem(ProductWithAmount):
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='inventory')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.OneToOneField(Amount, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '%s of %s' % (self.amount, self.product)
-
-    def reduce_amount(self, amount):
-        must_be_deleted = self.amount - amount
-        if must_be_deleted:
-            self.delete()
-
-    def add_amount(self, amount):
-        _ = self.amount + amount
 
 
 class PlaceMember(models.Model):
