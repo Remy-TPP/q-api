@@ -54,7 +54,6 @@ class ProfileViewSet(viewsets.GenericViewSet,
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
     permission_classes = [UpdateOwnProfile]
-    search_fields = ['biography']
 
     @swagger_auto_schema(
         method='post',
