@@ -4,19 +4,19 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.profiles.models import (Profile,
                                   ProfileType,
-                                  Group,
+                                  Event,
                                   FriendshipRequest,
                                   FriendshipStatus)
 
 from apps.profiles.serializers import (ProfileSerializer,
                                        ProfileTypeSerializer,
                                        UserSerializer,
-                                       GroupSerializer,
+                                       EventSerializer,
                                        FriendshipRequestSerializer,
                                        FriendshipStatusSerializer)
 
@@ -25,8 +25,7 @@ from apps.profiles.permissions import (UpdateOwnProfile,
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    # TODO: should use `get_user_model()`?
-    queryset = User.objects.all().order_by("id")
+    queryset = get_user_model().objects.all().order_by("id")
     serializer_class = UserSerializer
     lookup_field = 'pk'
 
@@ -55,6 +54,7 @@ class ProfileViewSet(viewsets.GenericViewSet,
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
     permission_classes = [UpdateOwnProfile]
+    search_fields = ['biography']
 
     @swagger_auto_schema(
         method='post',
@@ -172,36 +172,43 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
-    operation_summary="Lists all groups.",
+    operation_summary="Lists all events.",
     operation_description="Returns groups."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets group with id={id}..",
+    operation_summary="Gets event with id={id}..",
     operation_description="Returns group."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(
-    operation_summary="Creates group.",
+    operation_summary="Creates event.",
     operation_description="Returns group."
 ))
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary="Partial updates group with id={id}.",
+    operation_summary="Partial updates event with id={id}.",
     operation_description="Returns group."
 ))
 @method_decorator(name='update', decorator=swagger_auto_schema(
-    operation_summary="Updates group with id={id}.",
+    operation_summary="Updates event with id={id}.",
     operation_description="Returns group."
 ))
 @method_decorator(name='destroy', decorator=swagger_auto_schema(
-    operation_summary="Deletes group with id={id}.",
+    operation_summary="Deletes event with id={id}.",
     operation_description="Returns none."
 ))
-class GroupViewSet(viewsets.ModelViewSet):
+class EventViewSet(viewsets.ModelViewSet):
     """
     Manage the groups of profiles.
     """
-    queryset = Group.objects.all().order_by("id")
-    serializer_class = GroupSerializer
+    queryset = Event.objects.all().order_by("id")
+    serializer_class = EventSerializer
     lookup_field = 'pk'
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return Event.objects.filter(
+            Q(host=profile) |
+            Q(attendees=profile)
+        ).order_by("id").distinct()
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(

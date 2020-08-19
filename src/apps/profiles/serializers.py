@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from apps.profiles.models import (Profile,
                                   ProfileType,
-                                  Group,
+                                  Event,
                                   FriendshipRequest,
                                   FriendshipStatus)
 
@@ -24,15 +24,15 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         view_name='profiletype-detail',
         queryset=ProfileType.objects.all()
     )
-    groups = serializers.HyperlinkedRelatedField(
+    events = serializers.HyperlinkedRelatedField(
         many=True,
-        view_name='group-detail',
-        queryset=Group.objects.all()
+        view_name='event-detail',
+        read_only=True
     )
     friends = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='profile-detail',
-        queryset=Profile.objects.all()
+        read_only=True
     )
 
     user = UserSerializer(read_only=True)
@@ -49,23 +49,32 @@ class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.HyperlinkedRelatedField(view_name='profile-detail', read_only=True)
+class EventSerializer(serializers.ModelSerializer):
+    host = serializers.StringRelatedField()
+    attendees = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Profile.objects.all()
+    )
 
     def create(self, validated_data):
-        current_profile = Profile.objects.get(user=self.context['request'].user)
+        current_profile = self.context.get('request').user.profile
+        place = validated_data.get('place')
 
-        members = validated_data.pop('members') if 'members' in validated_data else []
-        members.append(current_profile)
+        if place and not current_profile.places.filter(id=place.id).exists():
+            raise serializers.ValidationError('Place is not valid!')
 
-        group = Group.objects.create(owner=current_profile)
+        friends_set = set(current_profile.friends.values_list('id', flat=True))
+        attendees_set = set(attendee.id for attendee in validated_data.get('attendees'))
 
-        group.members.set(members)
+        if not attendees_set.issubset(friends_set):
+            raise serializers.ValidationError('You can add only friends to an event!')
 
+        validated_data['host'] = current_profile
+        group = super(EventSerializer, self).create(validated_data)
         return group
 
     class Meta:
-        model = Group
+        model = Event
         fields = '__all__'
 
 
