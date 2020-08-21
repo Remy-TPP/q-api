@@ -12,6 +12,7 @@ from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import (Place,
                                      InventoryItem,
                                      PlaceMember,
+                                     Purchase,
                                      )
 from apps.inventories.serializers import (PlaceSerializer,
                                           InventoryItemSerializer,
@@ -203,6 +204,15 @@ def default_place(request):
     return Response({'message': 'place_id must be provided!'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# TODO: swagger schema
+class PurchaseDetailView(generics.RetrieveAPIView):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer
+    lookup_field = 'pk'
+    permission_classes = []
+
+
+# TODO: swagger schema
 class PurchaseCreateView(generics.CreateAPIView):
     serializer_class = PurchaseSerializer
     lookup_field = 'pk'
