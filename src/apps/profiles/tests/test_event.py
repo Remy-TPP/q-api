@@ -67,7 +67,7 @@ class EventTests(APITestCase):
     def test_create_event_without_place(self):
         """Test when creating an event without having a place, must return error and dont create event"""
         payload = {
-            'attendees': [sample_user_2().id],
+            'attendees_id': [sample_user_2().id],
             'name': 'Test name',
             'starting_datetime': self.tomorrow,
             'finishing_datetime': self.day_after_tomorrow,
@@ -91,7 +91,7 @@ class EventTests(APITestCase):
         Place.objects.create().members.add(p_1)
 
         payload = {
-            'attendees': [p_2.id],
+            'attendees_id': [p_2.id],
             'name': 'Test name',
             'starting_datetime': self.tomorrow,
             'finishing_datetime': self.day_after_tomorrow,
@@ -121,7 +121,7 @@ class EventTests(APITestCase):
         place.members.add(p_1)
 
         payload = {
-            'attendees': [p_2.id],
+            'attendees_id': [p_2.id],
             'name': 'Test name',
             'starting_datetime': self.tomorrow,
             'finishing_datetime': self.day_after_tomorrow,
@@ -151,7 +151,7 @@ class EventTests(APITestCase):
         Place.objects.create().members.add(p_1)
 
         payload = {
-            'attendees': [p_3.id],
+            'attendees_id': [p_3.id],
             'name': 'Test name',
             'starting_datetime': self.tomorrow,
             'finishing_datetime': self.day_after_tomorrow,
