@@ -43,13 +43,12 @@ class Amount(models.Model):
         return quantity_result <= 0
 
     def __add__(self, other):
-        """Add own quantity with other's.
-        """
+        """Add own quantity with other's."""
         quantity_result = add_quantities_with_units(
             self.quantity,
             self.unit.short_name,
-            other['quantity'],
-            other['unit']
+            other.quantity,
+            other.unit.short_name,
         )
         self.quantity = quantity_result
         self.save()

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.products.models import Product
+from apps.products.models import Amount, Product
 from apps.inventories.models import (Place,
                                      InventoryItem)
 from apps.products.serializers import (AmountSerializer)
@@ -46,7 +46,7 @@ class InventoryItemSerializer(serializers.ModelSerializer):
             existing_items = place.inventory.filter(product=product)
             if existing_items.exists():
                 item = existing_items.first()
-                item.add_amount(amount_serializer.data)
+                item.add_amount(Amount(**amount_serializer.validated_data))
             else:
                 validated_data['amount'] = amount_serializer.save()
                 item = InventoryItem.objects.create(**validated_data)
