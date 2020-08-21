@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, mixins
+from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from django.db.models import Q
@@ -11,9 +11,12 @@ from apps.inventories.utils import get_place_or_default
 
 from apps.inventories.models import (Place,
                                      InventoryItem,
-                                     PlaceMember)
+                                     PlaceMember,
+                                     )
 from apps.inventories.serializers import (PlaceSerializer,
-                                          InventoryItemSerializer)
+                                          InventoryItemSerializer,
+                                          PurchaseSerializer,
+                                          )
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -198,3 +201,16 @@ def default_place(request):
         ).update(is_the_default_one=True)
         return Response({'message': 'Your place has changed!'}, status=status.HTTP_200_OK)
     return Response({'message': 'place_id must be provided!'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PurchaseCreateView(generics.CreateAPIView):
+    serializer_class = PurchaseSerializer
+    lookup_field = 'pk'
+    permission_classes = []
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request', request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Success!'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

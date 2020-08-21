@@ -60,12 +60,9 @@ class InventoryItemSerializer(serializers.ModelSerializer):
         return item
 
 
-# TODO: DRY against InventoryItemSerializer
 class PurchaseItemSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
-    # product = serializers.StringRelatedField()
     product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
-    # product_id = serializers.PrimaryKeyRelatedField(source='product', read_only=True, queryset=Product.objects.all())
 
     class Meta:
         model = PurchaseItem
@@ -74,19 +71,17 @@ class PurchaseItemSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
         if not amount_serializer.is_valid():
-            raise TypeError(amount_serializer.errors)
+            raise serializers.ValidationError(amount_serializer.errors)
         validated_data['amount'] = amount_serializer.save()
 
         try:
             validated_data['product'] = Product.objects.get(name=validated_data.pop('product'))
-        except Product.DoesNotExist:  # also Product.MultipleObjectsReturned?
+        except Product.DoesNotExist:
             ...  # TODO: raise error? or don't catch it and have view do it?
 
-        # return PurchaseItem.objects.create(**validated_data)
+        # TODO: should assert it receives a `purchase` kwarg?
         return PurchaseItem(**validated_data)
-        # TODO: (discuss) Is it alright for a Serializer.create() not to actually save to db?
-
-    # TODO: validate receives product, amount, purchase
+        # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
 
 
 class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
@@ -98,11 +93,12 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         purchase_items_serializer = PurchaseItemSerializer(data=validated_data.pop('items'), many=True)
-        # TODO: the Amounts are created even if there's an error later
+        # TODO: (discuss) the Amounts are created even if there's an error later
         if not purchase_items_serializer.is_valid():
             raise TypeError(purchase_items_serializer.errors)
 
         purchase = Purchase.objects.create()
+
         items_no_dupes = {}
         for pi in purchase_items_serializer.save(purchase=purchase):
             if (existing_pi := items_no_dupes.get(pi.product.name, None)):
