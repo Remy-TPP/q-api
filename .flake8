@@ -1,3 +1,3 @@
 [flake8]
 max-line-length = 119
-exclude = .git,.venv,.env,migrations,apps.py
+exclude = .git,.venv,.env,migrations,apps.py,dish_parser.py

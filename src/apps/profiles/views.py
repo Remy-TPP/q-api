@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.profiles.models import (Profile,
@@ -208,6 +209,57 @@ class EventViewSet(viewsets.ModelViewSet):
             Q(host=profile) |
             Q(attendees=profile)
         ).order_by("id").distinct()
+
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Add an attendee to the event.",
+        manual_parameters=[
+            openapi.Parameter(
+                'attendee_id',
+                in_=openapi.IN_QUERY,
+                description='ID of an attendee',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def add_attendee(self, request, pk=None):
+        attendee_id = request.query_params.get('attendee_id')
+        if not attendee_id:
+            return Response({"error": "Must provide attendee_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        attendee = get_object_or_404(request.user.profile.friends.all(), id=attendee_id)
+        event = get_object_or_404(Event.objects.all(), id=pk)
+
+        event.attendees.add(attendee)
+
+        return Response({"msg": "Attendee has been added!"}, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Remove an attendee from the event.",
+        manual_parameters=[
+            openapi.Parameter(
+                'attendee_id',
+                in_=openapi.IN_QUERY,
+                description='ID of an attendee',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def remove_attendee(self, request, pk=None):
+        attendee_id = request.query_params.get('attendee_id')
+        if not attendee_id:
+            return Response({"error": "Must provide attendee_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        event = get_object_or_404(Event.objects.all(), id=pk)
+
+        event.attendees.filter(pk=attendee_id).delete()
+
+        return Response({"msg": "Attendee has been deleted!"}, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(

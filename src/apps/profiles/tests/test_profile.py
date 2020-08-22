@@ -91,7 +91,6 @@ class ProfileTests(APITestCase):
             detail_url(u_1.profile.id)
         )
         self.assertTrue(res.data)
-        self.assertEqual(u_1.id, res.data['user']['id'])
 
     def test_patch_profile_not_login(self):
         """Test when trying to patch a profile WITHOUT login, must return 403 Forbidden"""
@@ -178,4 +177,4 @@ class ProfileTests(APITestCase):
 
         self.assertTrue(res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertFalse(res.data['user']['is_active'])
+        self.assertFalse(res.data['is_active'])

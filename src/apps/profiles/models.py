@@ -21,7 +21,7 @@ class Profile(models.Model):
     friends = models.ManyToManyField("self", blank=True)
 
     def __str__(self):
-        return '%s' % (self.user.username)
+        return '%s %s (%s)' % (self.user.first_name, self.user.last_name, self.user.username)
 
 
 class FriendshipStatus(models.Model):

@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from django.contrib.auth.models import User
+from apps.profiles.fields import (EventField,
+                                  AttendeeField)
 from apps.profiles.models import (Profile,
                                   ProfileType,
                                   Event,
@@ -9,37 +11,52 @@ from apps.profiles.models import (Profile,
 
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
 
     class Meta:
-        # TODO: should use `get_user_model()`?
-        model = User
+        model = get_user_model()
         exclude = ['user_permissions', 'groups', 'is_staff', 'is_superuser', 'password']
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    profiletypes = serializers.HyperlinkedRelatedField(
+    profiletypes = serializers.SlugRelatedField(
+        slug_field="name",
         many=True,
-        view_name='profiletype-detail',
         queryset=ProfileType.objects.all()
     )
-    events = serializers.HyperlinkedRelatedField(
+    events = EventField(
         many=True,
         view_name='event-detail',
         read_only=True
     )
-    friends = serializers.HyperlinkedRelatedField(
+    friends = serializers.StringRelatedField(
         many=True,
-        view_name='profile-detail',
         read_only=True
     )
 
-    user = UserSerializer(read_only=True)
+    last_login = serializers.DateTimeField(read_only=True, source='user.last_login')
+    is_active = serializers.BooleanField(read_only=True, source='user.is_active')
+    username = serializers.StringRelatedField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.EmailField(read_only=True, source='user.email')
+    date_joined = serializers.DateTimeField(read_only=True, source='user.date_joined')
 
     class Meta:
         model = Profile
-        fields = '__all__'
+        exclude = ['user']
+
+    def update(self, instance, validated_data):
+        user = validated_data.pop('user', None)
+
+        if (user):
+            instance.user.first_name = user.get('first_name', instance.user.first_name)
+            instance.user.last_name = user.get('last_name', instance.user.last_name)
+
+            instance.user.save()
+
+        return super(ProfileSerializer, self).update(instance, validated_data)
 
 
 class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -51,9 +68,15 @@ class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     host = serializers.StringRelatedField()
-    attendees = serializers.PrimaryKeyRelatedField(
+    attendees_id = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Profile.objects.all()
+        queryset=Profile.objects.all(),
+        source="attendees",
+        write_only=True
+    )
+    attendees = AttendeeField(
+        many=True,
+        read_only=True
     )
 
     def create(self, validated_data):
