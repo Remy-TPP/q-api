@@ -21,6 +21,7 @@ def add_attendee_url(event_id, attendee_id):
         }
     )
 
+
 def remove_attendee_url(event_id, attendee_id):
     """Return remove attendee detail url"""
     return query_reverse(
@@ -250,4 +251,3 @@ class EventTests(APITestCase):
         self.assertEqual(p_1.hosted_events.count(), 1)
         self.assertEqual(p_2.events.count(), 0)
         self.assertEqual(p_2.hosted_events.count(), 0)
-

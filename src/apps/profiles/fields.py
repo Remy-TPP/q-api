@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+# TODO: pasar a common ya que son genericos?
+
 
 class EventField(serializers.HyperlinkedRelatedField):
     def to_representation(self, value):
