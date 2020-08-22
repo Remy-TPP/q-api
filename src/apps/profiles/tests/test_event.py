@@ -4,10 +4,32 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from common.utils import query_reverse
 from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import Place
 
 EVENT_URL = reverse('event-list')
+
+
+def add_attendee_url(event_id, attendee_id):
+    """Return add attendee detail url"""
+    return query_reverse(
+        'event-add-attendee',
+        kwargs={'pk': event_id},
+        query_kwargs={
+            'attendee_id': attendee_id,
+        }
+    )
+
+def remove_attendee_url(event_id, attendee_id):
+    """Return remove attendee detail url"""
+    return query_reverse(
+        'event-remove-attendee',
+        kwargs={'pk': event_id},
+        query_kwargs={
+            'attendee_id': attendee_id,
+        }
+    )
 
 
 users = {
@@ -167,3 +189,65 @@ class EventTests(APITestCase):
         self.assertEqual(p_1.hosted_events.count(), 0)
         self.assertEqual(p_3.events.count(), 0)
         self.assertEqual(p_3.hosted_events.count(), 0)
+
+    def test_create_event_and_add_attendee(self):
+        """Test when adding an attendee, return 200"""
+        p_1 = sample_user_1().profile
+        p_2 = sample_user_2().profile
+
+        Place.objects.create().members.add(p_1)
+
+        payload = {
+            'name': 'Test name',
+            'starting_datetime': self.tomorrow,
+            'finishing_datetime': self.day_after_tomorrow,
+        }
+
+        _ = self.client.post(
+            EVENT_URL,
+            payload
+        )
+
+        event_id = p_1.hosted_events.first().id
+
+        res = self.client.post(
+            add_attendee_url(event_id, p_2.id)
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(p_1.events.count(), 0)
+        self.assertEqual(p_1.hosted_events.count(), 1)
+        self.assertEqual(p_2.events.count(), 1)
+        self.assertEqual(p_2.hosted_events.count(), 0)
+
+    def test_create_event_and_remove_attendee(self):
+        """Test when removing an attendee, return 200"""
+        p_1 = sample_user_1().profile
+        p_2 = sample_user_2().profile
+
+        Place.objects.create().members.add(p_1)
+
+        payload = {
+            'attendees_id': [p_2.id],
+            'name': 'Test name',
+            'starting_datetime': self.tomorrow,
+            'finishing_datetime': self.day_after_tomorrow,
+        }
+
+        _ = self.client.post(
+            EVENT_URL,
+            payload
+        )
+
+        event_id = p_1.hosted_events.first().id
+
+        res = self.client.post(
+            remove_attendee_url(event_id, p_2.id)
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(p_1.events.count(), 0)
+        self.assertEqual(p_1.hosted_events.count(), 1)
+        self.assertEqual(p_2.events.count(), 0)
+        self.assertEqual(p_2.hosted_events.count(), 0)
+
