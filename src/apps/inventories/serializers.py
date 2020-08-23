@@ -100,16 +100,16 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
         purchase = Purchase.objects.create()
 
         items_no_dupes = {}
-        for pi in purchase_items_serializer.save(purchase=purchase):
-            if (existing_pi := items_no_dupes.get(pi.product.name, None)):
-                existing_pi.add_amount(pi.amount)
+        for purchase_item in purchase_items_serializer.save(purchase=purchase):
+            if (existing_pi := items_no_dupes.get(purchase_item.product.name, None)):
+                existing_pi.add_amount(purchase_item.amount)
             else:
-                items_no_dupes[pi.product.name] = pi
+                items_no_dupes[purchase_item.product.name] = purchase_item
             # Alternative syntax (more Pythonic?):
             # try:
-            #     items_no_dupes[pi.product.name].add_amount(pi.amount)
+            #     items_no_dupes[purchase_item.product.name].add_amount(purchase_item.amount)
             # except KeyError:
-            #     items_no_dupes[pi.product.name] = pi
+            #     items_no_dupes[purchase_item.product.name] = purchase_item
 
         PurchaseItem.objects.bulk_create(items_no_dupes.values())
 

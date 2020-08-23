@@ -1,5 +1,3 @@
-from PIL import Image
-import qrcode
 from django.http import HttpResponse
 from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, action
@@ -9,6 +7,7 @@ from django.db.transaction import atomic, savepoint, savepoint_commit, savepoint
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+import qrcode
 
 from apps.inventories.utils import get_place_or_default
 
