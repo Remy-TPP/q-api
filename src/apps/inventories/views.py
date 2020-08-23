@@ -1,3 +1,6 @@
+from PIL import Image
+import qrcode
+from django.http import HttpResponse
 from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
@@ -218,9 +221,22 @@ class PurchaseCreateView(generics.CreateAPIView):
     lookup_field = 'pk'
     permission_classes = []
 
+    # TODO: move to utils, no?
+    def _url_to_qr_image(self, url_str):
+        return qrcode.make(url_str)
+
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'request', request})
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Success!'}, status=status.HTTP_201_CREATED)
+            try:
+                qr_img = self._url_to_qr_image(serializer.data['url'])
+                image_response = HttpResponse(content_type="image/jpeg")
+                qr_img.save(image_response, "JPEG")
+                return image_response
+
+            except KeyError:
+                # TODO: error catch is too specific? lack of message too vague?
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
