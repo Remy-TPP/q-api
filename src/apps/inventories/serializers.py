@@ -26,12 +26,11 @@ class PlaceSerializer(serializers.HyperlinkedModelSerializer):
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
-    product = serializers.StringRelatedField()
-    product_id = serializers.PrimaryKeyRelatedField(source='product', write_only=True, queryset=Product.objects.all())
+    product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
 
     class Meta:
         model = InventoryItem
-        fields = ['id', 'product', 'amount', 'product_id']
+        fields = ['id', 'product', 'amount']
 
     def create(self, validated_data):
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))

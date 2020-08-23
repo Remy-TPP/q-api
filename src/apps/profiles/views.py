@@ -15,6 +15,7 @@ from apps.profiles.models import (Profile,
                                   FriendshipStatus)
 
 from apps.profiles.serializers import (ProfileSerializer,
+                                       ProfileMinimalSerializer,
                                        ProfileTypeSerializer,
                                        UserSerializer,
                                        EventSerializer,
@@ -51,10 +52,11 @@ class ProfileViewSet(viewsets.GenericViewSet,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin):
-    queryset = Profile.objects.all().order_by("id")
+    queryset = Profile.objects.all().order_by('id')
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
     permission_classes = [UpdateOwnProfile]
+    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
 
     @swagger_auto_schema(
         method='post',
@@ -73,6 +75,16 @@ class ProfileViewSet(viewsets.GenericViewSet,
             serializer = self.get_serializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("The user is already inactive!", status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Get a list of my friends.",
+    )
+    @action(detail=False, methods=['GET'], url_path='friends')
+    def my_friends(self, request):
+        filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
+        friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
+        return Response(friends.data, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -257,7 +269,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
         event = get_object_or_404(Event.objects.all(), id=pk)
 
-        event.attendees.filter(pk=attendee_id).delete()
+        event.attendees.remove(attendee_id)
 
         return Response({"msg": "Attendee has been deleted!"}, status=status.HTTP_200_OK)
 
