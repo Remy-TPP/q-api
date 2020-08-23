@@ -19,6 +19,17 @@ class UserSerializer(serializers.ModelSerializer):
         exclude = ['user_permissions', 'groups', 'is_staff', 'is_superuser', 'password']
 
 
+class ProfileMinimalSerializer(serializers.ModelSerializer):
+    username = serializers.StringRelatedField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.EmailField(read_only=True, source='user.email')
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+
+
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     profiletypes = serializers.SlugRelatedField(
         slug_field="name",
