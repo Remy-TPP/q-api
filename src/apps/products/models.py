@@ -49,7 +49,7 @@ class Amount(models.Model):
             self.quantity,
             self.unit.short_name,
             other['quantity'],
-            other['unit']
+            other['unit'].short_name
         )
         self.quantity = quantity_result
         self.save()

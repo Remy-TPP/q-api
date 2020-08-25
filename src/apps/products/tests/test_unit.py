@@ -1,6 +1,8 @@
 from django.test import TestCase
+from pint import errors
 
 from apps.products.models import Unit
+from apps.products.utils import add_quantities_with_units, sub_quantities_with_units
 
 
 class UnitTests(TestCase):
@@ -23,3 +25,26 @@ class UnitTests(TestCase):
         for test_unit in self.test_units:
             self.assertRegex(test_unit.pluralized_name,
                              rf'^{test_unit.name}\w*s$')
+
+
+class UnitUtilsTests(TestCase):
+    def test_add_quantities_cup_and_liter(self):
+        result = add_quantities_with_units(1, 'liter', 1, 'cup')
+        self.assertEqual(result, 1.25)
+
+    def test_add_quantities_liter_and_cup(self):
+        # TODO: ver el tema del round
+        result = add_quantities_with_units(2, 'cup', 3, 'l')
+        self.assertEqual(round(result), 14)
+
+    def test_add_quantities_unit_and_unit(self):
+        result = add_quantities_with_units(5, 'u', 3, 'unit')
+        self.assertEqual(result, 8)
+
+    def test_sub_quantities_tablespoon_with_teaspoon(self):
+        result = sub_quantities_with_units(1, 'tablespoon', 1, 'teaspoon')
+        self.assertEqual(result, 2/3)
+
+    def test_sub_quantities_tablespoon_with_unit_error(self):
+        with self.assertRaises(errors.DimensionalityError):
+            _ = sub_quantities_with_units(1, 'tablespoon', 1, 'unit')
