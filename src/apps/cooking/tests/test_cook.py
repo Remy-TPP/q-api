@@ -181,7 +181,7 @@ class CookingTest(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIsNone(recipe_cooked.score)
 
-        res = self.client.patch(
+        res = self.client.put(
             recipecooked_url(res.data.get('id')),
             data={
                 'score': 9
