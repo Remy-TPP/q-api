@@ -1,10 +1,12 @@
 from rest_framework import serializers
+import rest_framework.exceptions as drf_exceptions
 
 from apps.products.models import Amount, Product
 from apps.inventories.models import (Place,
                                      InventoryItem,
                                      Purchase,
-                                     PurchaseItem)
+                                     PurchaseItem,
+                                     )
 from apps.products.serializers import AmountSerializer
 
 
@@ -66,20 +68,17 @@ class PurchaseItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PurchaseItem
-        fields = ['id', 'product', 'amount', 'product_id']
+        fields = ['id', 'product', 'amount']
 
     def create(self, validated_data):
+        assert 'purchase' in validated_data.keys()
+
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
         if not amount_serializer.is_valid():
             raise serializers.ValidationError(amount_serializer.errors)
         validated_data['amount'] = amount_serializer.save()
+        validated_data['product'] = Product.objects.get(name=validated_data.pop('product'))
 
-        try:
-            validated_data['product'] = Product.objects.get(name=validated_data.pop('product'))
-        except Product.DoesNotExist:
-            ...  # TODO: raise error? or don't catch it and have view do it?
-
-        # TODO: should assert it receives a `purchase` kwarg?
         return PurchaseItem(**validated_data)
         # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
 
@@ -93,7 +92,6 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         purchase_items_serializer = PurchaseItemSerializer(data=validated_data.pop('items'), many=True)
-        # TODO: (discuss) the Amounts are created even if there's an error later
         if not purchase_items_serializer.is_valid():
             raise TypeError(purchase_items_serializer.errors)
 
@@ -105,12 +103,12 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
                 existing_pi.add_amount(purchase_item.amount)
             else:
                 items_no_dupes[purchase_item.product.name] = purchase_item
-            # Alternative syntax (more Pythonic?):
-            # try:
-            #     items_no_dupes[purchase_item.product.name].add_amount(purchase_item.amount)
-            # except KeyError:
-            #     items_no_dupes[purchase_item.product.name] = purchase_item
 
         PurchaseItem.objects.bulk_create(items_no_dupes.values())
 
         return purchase
+
+    def validate_items(self, items):
+        if not items:
+            raise serializers.ValidationError({'items': "Can't be empty"})
+        return items

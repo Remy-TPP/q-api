@@ -1,6 +1,7 @@
 from django.shortcuts import _get_queryset
 from django.utils.http import urlencode
 from django.urls import reverse
+import qrcode
 
 
 def query_reverse(viewname, kwargs=None, query_kwargs=None):
@@ -30,3 +31,7 @@ def get_object_or_none(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except queryset.model.DoesNotExist:
         return None
+
+
+def qr_image_from_string(s):
+    return qrcode.make(s)

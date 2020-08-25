@@ -1,3 +1,4 @@
+from PIL import Image
 from django.http import HttpResponse
 from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, action
@@ -7,10 +8,8 @@ from django.db.transaction import atomic, savepoint, savepoint_commit, savepoint
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-import qrcode
 
 from apps.inventories.utils import get_place_or_default
-
 from apps.inventories.models import (Place,
                                      InventoryItem,
                                      PlaceMember,
@@ -20,6 +19,7 @@ from apps.inventories.serializers import (PlaceSerializer,
                                           InventoryItemSerializer,
                                           PurchaseSerializer,
                                           )
+from common.utils import qr_image_from_string
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -68,7 +68,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
     ]
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets the item with id={id}..",
+    operation_summary="Gets the item with id={id}.",
     operation_description="Returns item."
 ))
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
@@ -206,7 +206,10 @@ def default_place(request):
     return Response({'message': 'place_id must be provided!'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# TODO: swagger schema
+@method_decorator(name='retrieve', decorator=swagger_auto_schema(
+    operation_summary="Gets the purchase with uuid={id}.",
+    operation_description="Returns purchase.",
+))
 class PurchaseDetailView(generics.RetrieveAPIView):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
@@ -214,28 +217,29 @@ class PurchaseDetailView(generics.RetrieveAPIView):
     permission_classes = []
 
 
-# TODO: swagger schema
+# TODO: not working
+@method_decorator(name='create', decorator=swagger_auto_schema(
+    operation_summary="Creates a purchase with the given items.",
+    operation_description="Returns image (content_type 'image/jpeg') of QR code with purchase URL embedded.",
+    responses={status.HTTP_201_CREATED: Image},
+))
 class PurchaseCreateView(generics.CreateAPIView):
     serializer_class = PurchaseSerializer
     lookup_field = 'pk'
+    # TODO: Limit creation of purchases to users? Maybe a certain role? This functionality is intended for sellers
     permission_classes = []
-
-    # TODO: move to utils, no?
-    def _url_to_qr_image(self, url_str):
-        return qrcode.make(url_str)
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            try:
-                qr_img = self._url_to_qr_image(serializer.data['url'])
-                image_response = HttpResponse(content_type="image/jpeg")
-                qr_img.save(image_response, "JPEG")
-                return image_response
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-            except KeyError:
-                # TODO: error catch is too specific? lack of message too vague?
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        try:
+            qr_img = qr_image_from_string(serializer.data['url'])
+        except KeyError:
+            # TODO: error catch is too specific? lack of message too vague?
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        image_response = HttpResponse(status=status.HTTP_201_CREATED, content_type="image/jpeg")
+        qr_img.save(image_response, "JPEG")
+        return image_response
