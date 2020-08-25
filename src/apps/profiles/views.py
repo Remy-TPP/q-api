@@ -81,12 +81,24 @@ class ProfileViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         method='get',
         operation_summary="Get a list of my friends.",
+        responses={200: ProfileMinimalSerializer(many=True)}
     )
     @action(detail=False, methods=['GET'], url_path='friends')
     def my_friends(self, request):
         filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
         friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
         return Response(friends.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Get a list of my cooked recipes.",
+        responses={200: RecipeCookedSerializer(many=True)}
+    )
+    @action(detail=False, methods=['GET'], url_path='recipes')
+    def my_recipes(self, request):
+        queryset = RecipeCooked.objects.filter(profile=request.user.profile).order_by('-cooked_at')
+        recipes = RecipeCookedSerializer(queryset, many=True)
+        return Response(recipes.data, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(

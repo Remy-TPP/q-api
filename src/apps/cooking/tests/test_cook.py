@@ -8,6 +8,7 @@ from apps.inventories.models import Place
 from apps.profiles.models import RecipeCooked
 from apps.recipes.models import Recipe
 
+COOKEDRECIPES = reverse('profile-my-recipes')
 
 def recipecooked_url(recipecooked_id):
     """Return recipecooked detail url"""
@@ -193,3 +194,25 @@ class CookingTest(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data.get('score'), 9)
         self.assertEqual(recipe_cooked.score, 9)
+
+    def test_cook_can_get_my_recipes(self):
+        """Test when having cooked a recipe, must return the recipes when asked."""
+        u_1 = sample_user_1()
+        recipe = Recipe.objects.get(id=1)
+        place = Place.objects.get(id=1)
+
+        self.client.force_authenticate(user=u_1)
+
+        _ = self.client.post(
+            cook_recipe(recipe.id, place.id),
+            data={
+                'score': 8
+            }
+        )
+
+        res = self.client.get(
+            COOKEDRECIPES,
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
