@@ -73,10 +73,14 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 class RecipeCookedSerializer(serializers.ModelSerializer):
     score = serializers.IntegerField(min_value=1, max_value=10, required=False)
+    profile = serializers.StringRelatedField()
+    recipe = serializers.StringRelatedField()
+    cooked_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = RecipeCooked
-        fields = ['score']
+        fields = '__all__'
+        read_only_fields = ['id']
 
 
 class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):

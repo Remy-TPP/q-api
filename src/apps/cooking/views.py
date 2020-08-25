@@ -57,5 +57,5 @@ def cook_recipe(request):
         recipe_cooked_serializer.is_valid(raise_exception=True)
         recipe_cooked_serializer.save(profile=request.user.profile, recipe=recipe)
 
-        return Response({'message': 'Happy cook!'}, status=status.HTTP_200_OK)
+        return Response(recipe_cooked_serializer.data, status=status.HTTP_200_OK)
     return Response({'message': 'recipe_id must be provided!'}, status=status.HTTP_400_BAD_REQUEST)

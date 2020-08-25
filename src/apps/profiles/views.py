@@ -12,7 +12,8 @@ from apps.profiles.models import (Profile,
                                   ProfileType,
                                   Event,
                                   FriendshipRequest,
-                                  FriendshipStatus)
+                                  FriendshipStatus,
+                                  RecipeCooked)
 
 from apps.profiles.serializers import (ProfileSerializer,
                                        ProfileMinimalSerializer,
@@ -20,7 +21,8 @@ from apps.profiles.serializers import (ProfileSerializer,
                                        UserSerializer,
                                        EventSerializer,
                                        FriendshipRequestSerializer,
-                                       FriendshipStatusSerializer)
+                                       FriendshipStatusSerializer,
+                                       RecipeCookedSerializer)
 
 from apps.profiles.permissions import (UpdateOwnProfile,
                                        IsOwnProfile)
@@ -308,3 +310,20 @@ class FriendshipStatusViewSet(viewsets.ModelViewSet):
     serializer_class = FriendshipStatusSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
+
+
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial updates recipe cooked with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Updates friendshipstatus with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+class RecipeCookedViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin):
+    """
+    Manage the recipes cooked by profiles.
+    """
+    queryset = RecipeCooked.objects.all().order_by('id')
+    serializer_class = RecipeCookedSerializer
+    lookup_field = 'pk'
