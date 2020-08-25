@@ -12,7 +12,8 @@ from apps.profiles.models import (Profile,
                                   ProfileType,
                                   Event,
                                   FriendshipRequest,
-                                  FriendshipStatus)
+                                  FriendshipStatus,
+                                  RecipeCooked)
 
 from apps.profiles.serializers import (ProfileSerializer,
                                        ProfileMinimalSerializer,
@@ -20,7 +21,8 @@ from apps.profiles.serializers import (ProfileSerializer,
                                        UserSerializer,
                                        EventSerializer,
                                        FriendshipRequestSerializer,
-                                       FriendshipStatusSerializer)
+                                       FriendshipStatusSerializer,
+                                       RecipeCookedSerializer)
 
 from apps.profiles.permissions import (UpdateOwnProfile,
                                        IsOwnProfile)
@@ -79,12 +81,24 @@ class ProfileViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         method='get',
         operation_summary="Get a list of my friends.",
+        responses={200: ProfileMinimalSerializer(many=True)}
     )
     @action(detail=False, methods=['GET'], url_path='friends')
     def my_friends(self, request):
         filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
         friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
         return Response(friends.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Get a list of my cooked recipes.",
+        responses={200: RecipeCookedSerializer(many=True)}
+    )
+    @action(detail=False, methods=['GET'], url_path='recipes')
+    def my_recipes(self, request):
+        queryset = RecipeCooked.objects.filter(profile=request.user.profile).order_by('-cooked_at')
+        recipes = RecipeCookedSerializer(queryset, many=True)
+        return Response(recipes.data, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -308,3 +322,20 @@ class FriendshipStatusViewSet(viewsets.ModelViewSet):
     serializer_class = FriendshipStatusSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
+
+
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial updates recipe cooked with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Updates friendshipstatus with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+class RecipeCookedViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin):
+    """
+    Manage the recipes cooked by profiles.
+    """
+    queryset = RecipeCooked.objects.all().order_by('id')
+    serializer_class = RecipeCookedSerializer
+    lookup_field = 'pk'

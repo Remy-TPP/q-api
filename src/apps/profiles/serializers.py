@@ -7,7 +7,8 @@ from apps.profiles.models import (Profile,
                                   ProfileType,
                                   Event,
                                   FriendshipRequest,
-                                  FriendshipStatus)
+                                  FriendshipStatus,
+                                  RecipeCooked)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,7 +57,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Profile
-        exclude = ['user']
+        exclude = ['user', 'recipes_cooked']
 
     def update(self, instance, validated_data):
         user = validated_data.pop('user', None)
@@ -68,6 +69,18 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             instance.user.save()
 
         return super(ProfileSerializer, self).update(instance, validated_data)
+
+
+class RecipeCookedSerializer(serializers.ModelSerializer):
+    score = serializers.IntegerField(min_value=1, max_value=10, required=False)
+    profile = serializers.StringRelatedField()
+    recipe = serializers.StringRelatedField()
+    cooked_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = RecipeCooked
+        fields = '__all__'
+        read_only_fields = ['id']
 
 
 class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
