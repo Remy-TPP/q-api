@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 
 from common.utils import query_reverse
 from apps.inventories.models import Place
+from apps.profiles.models import RecipeCooked
 from apps.recipes.models import Recipe
 
 
@@ -116,3 +117,43 @@ class CookingTest(APITestCase):
         self.assertEqual(items.get(id=1).amount.unit.name, 'liter')
         self.assertEqual(items.get(id=2).amount.quantity, 0.5)
         self.assertEqual(items.get(id=2).amount.unit.name, 'kilogram')
+
+    def test_cook_with_valid_score(self):
+        """Test when cook a recipe passing a valid score, must return 200."""
+        u_1 = sample_user_1()
+        recipe = Recipe.objects.get(id=1)
+        place = Place.objects.get(id=1)
+
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.post(
+            cook_recipe(recipe.id, place.id),
+            data={
+                'score': 10,
+            }
+        )
+
+        recipe_cooked = RecipeCooked.objects.get(profile=u_1.profile, recipe=recipe)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(recipe_cooked.score, 10)
+        self.assertIsNotNone(recipe_cooked.cooked_at)
+
+    def test_cook_with_invalid_score(self):
+        """Test when cook a recipe passing an invalid score, must return 400 Bad Request."""
+        u_1 = sample_user_1()
+        recipe = Recipe.objects.get(id=1)
+        place = Place.objects.get(id=1)
+
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.post(
+            cook_recipe(recipe.id, place.id),
+            data={
+                'score': 11,
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        with self.assertRaises(RecipeCooked.DoesNotExist):
+            RecipeCooked.objects.get(profile=u_1.profile, recipe=recipe)

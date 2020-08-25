@@ -6,6 +6,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.recipes.models import Recipe
+from apps.profiles.serializers import RecipeCookedSerializer
 
 from apps.inventories.utils import get_place_or_default
 
@@ -51,5 +52,10 @@ def cook_recipe(request):
             item = place.inventory.filter(product=ingredient.product).first()
             if item:
                 item.reduce_amount(ingredient.amount)
+
+        recipe_cooked_serializer = RecipeCookedSerializer(data=request.data)
+        recipe_cooked_serializer.is_valid(raise_exception=True)
+        recipe_cooked_serializer.save(profile=request.user.profile, recipe=recipe)
+
         return Response({'message': 'Happy cook!'}, status=status.HTTP_200_OK)
     return Response({'message': 'recipe_id must be provided!'}, status=status.HTTP_400_BAD_REQUEST)
