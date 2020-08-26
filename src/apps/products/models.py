@@ -1,6 +1,8 @@
 from django.db import models
 
-from apps.products.utils import sub_quantities_with_units, add_quantities_with_units
+from apps.products.utils import (sub_quantities_with_units,
+                                 add_quantities_with_units,
+                                 convert_to_correct_unit)
 
 
 class Unit(models.Model):
@@ -35,12 +37,11 @@ class Amount(models.Model):
 
         Returns True if this amount is no longer usable.
         """
-        # TODO: aca puedo hacer la logica de pasar de unit a g o volume a g
+        obj, other = convert_to_correct_unit(self, other)
+
         quantity_result = sub_quantities_with_units(
-            self.quantity,
-            self.unit.short_name,
-            other.quantity,
-            other.unit.short_name
+            obj,
+            other
         )
         self.quantity = quantity_result
         self.save()
@@ -49,12 +50,11 @@ class Amount(models.Model):
     def __add__(self, other):
         """Add own quantity with other's.
         """
-        # TODO: aca puedo hacer la logica de pasar de unit a g o volume a g
+        obj, other = convert_to_correct_unit(self, other)
+        
         quantity_result = add_quantities_with_units(
-            self.quantity,
-            self.unit.short_name,
-            other.quantity,
-            other.unit.short_name
+            obj,
+            other
         )
         self.quantity = quantity_result
         self.save()
@@ -78,6 +78,8 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=300, unique=True)
+    density = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # kg / m ** 3
+    avg_weight = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # g
 
     def __str__(self):
         return self.name
