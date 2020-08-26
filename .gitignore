@@ -113,6 +113,8 @@ local_settings.py
 #media
 media/
 *.jpg
+*.jpeg
+*.png
 
 # VS Code
 .vscode
