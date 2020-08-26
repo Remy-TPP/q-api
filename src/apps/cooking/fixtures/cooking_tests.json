@@ -1,68 +1,11 @@
 [
     {
-        "model": "products.amount",
-        "pk": 1,
-        "fields": {
-            "unit": 4,
-            "quantity": 1
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 2,
-        "fields": {
-            "unit": 3,
-            "quantity": 1
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 3,
-        "fields": {
-            "unit": 5,
-            "quantity": 500
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 4,
-        "fields": {
-            "unit": 5,
-            "quantity": 500
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 5,
-        "fields": {
-            "unit": 2,
-            "quantity": 500
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 6,
-        "fields": {
-            "unit": 4,
-            "quantity": 0.5
-        }
-    },
-    {
-        "model": "products.amount",
-        "pk": 7,
-        "fields": {
-            "unit": 3,
-            "quantity": 0.5
-        }
-    },
-
-
-    {
         "model": "recipes.ingredient",
         "pk": 1,
         "fields": {
             "recipe": 1,
-            "amount": 4,
+            "unit": 5,
+            "quantity": 500,
             "product": 1
         }
     },
@@ -71,7 +14,8 @@
         "pk": 2,
         "fields": {
             "recipe": 1,
-            "amount": 5,
+            "unit": 2,
+            "quantity": 500,
             "product": 3
         }
     },
@@ -80,7 +24,8 @@
         "pk": 3,
         "fields": {
             "recipe": 2,
-            "amount": 6,
+            "unit": 4,
+            "quantity": 0.5,
             "product": 2
         }
     },
@@ -89,7 +34,8 @@
         "pk": 4,
         "fields": {
             "recipe": 2,
-            "amount": 7,
+            "unit": 3,
+            "quantity": 0.5,
             "product": 3
         }
     },
@@ -132,7 +78,8 @@
         "fields": {
             "place": 1,
             "product": 1,
-            "amount": 1
+            "unit": 4,
+            "quantity": 1
         }
     },
     {
@@ -141,7 +88,8 @@
         "fields": {
             "place": 1,
             "product": 3,
-            "amount": 2
+            "unit": 3,
+            "quantity": 1
         }
     },
     {
@@ -150,7 +98,8 @@
         "fields": {
             "place": 1,
             "product": 2,
-            "amount": 3
+            "unit": 5,
+            "quantity": 500
         }
     }
 ]

@@ -24,6 +24,9 @@ class Amount(models.Model):
     quantity = models.DecimalField(max_digits=12, decimal_places=5)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, default=unit_default)
 
+    class Meta:
+        abstract = True
+
     def __str__(self):
         return f'{self.displayable_quantity}{self.displayable_unit}'
 
@@ -48,8 +51,8 @@ class Amount(models.Model):
         quantity_result = add_quantities_with_units(
             self.quantity,
             self.unit.short_name,
-            other['quantity'],
-            other['unit'].short_name
+            other.quantity,
+            other.unit.short_name
         )
         self.quantity = quantity_result
         self.save()
@@ -78,20 +81,19 @@ class Product(models.Model):
         return self.name
 
 
-class ProductWithAmount(models.Model):
+class ProductWithAmount(Amount):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    amount = models.OneToOneField(Amount, on_delete=models.CASCADE, null=True)
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return f'{self.amount} {self.product}'
+        return f'{self.quantity} {self.product}'
 
     def add_amount(self, other_amount):
-        _ = self.amount + other_amount
+        _ = self + other_amount
 
     def reduce_amount(self, amount):
-        must_be_deleted = self.amount - amount
+        must_be_deleted = self - amount
         if must_be_deleted:
             self.delete()

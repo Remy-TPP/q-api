@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.products.models import Unit, Amount, Product
+from apps.products.models import Unit, Product
 
 
 class UnitSerializer(serializers.HyperlinkedModelSerializer):
@@ -10,15 +10,17 @@ class UnitSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class AmountSerializer(serializers.ModelSerializer):
+class AmountSerializer(serializers.Serializer):
     unit = serializers.SlugRelatedField(
         slug_field='name',
         queryset=Unit.objects.all()
     )
 
+    quantity = serializers.DecimalField(max_digits=12, decimal_places=5)
+
     class Meta:
-        model = Amount
         fields = ['quantity', 'unit']
+        abstract = True
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):

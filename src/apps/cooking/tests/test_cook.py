@@ -10,6 +10,7 @@ from apps.recipes.models import Recipe
 
 COOKEDRECIPES = reverse('profile-my-recipes')
 
+
 def recipecooked_url(recipecooked_id):
     """Return recipecooked detail url"""
     return reverse('recipecooked-detail', args=[recipecooked_id])
@@ -93,12 +94,12 @@ class CookingTest(APITestCase):
         items = place.inventory.all()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(items.get(id=1).amount.quantity, 0.5)
-        self.assertEqual(items.get(id=1).amount.unit.name, 'liter')
-        self.assertEqual(items.get(id=2).amount.quantity, 0.5)
-        self.assertEqual(items.get(id=2).amount.unit.name, 'kilogram')
-        self.assertEqual(items.get(id=3).amount.quantity, 500)
-        self.assertEqual(items.get(id=3).amount.unit.name, 'milliliter')
+        self.assertEqual(items.get(id=1).quantity, 0.5)
+        self.assertEqual(items.get(id=1).unit.name, 'liter')
+        self.assertEqual(items.get(id=2).quantity, 0.5)
+        self.assertEqual(items.get(id=2).unit.name, 'kilogram')
+        self.assertEqual(items.get(id=3).quantity, 500)
+        self.assertEqual(items.get(id=3).unit.name, 'milliliter')
 
     def test_cook_with_small_inventory(self):
         """Test when cook a recipe with equal inventoryitems' amount
@@ -120,10 +121,10 @@ class CookingTest(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(items), 2)
-        self.assertEqual(items.get(id=1).amount.quantity, 1)
-        self.assertEqual(items.get(id=1).amount.unit.name, 'liter')
-        self.assertEqual(items.get(id=2).amount.quantity, 0.5)
-        self.assertEqual(items.get(id=2).amount.unit.name, 'kilogram')
+        self.assertEqual(items.get(id=1).quantity, 1)
+        self.assertEqual(items.get(id=1).unit.name, 'liter')
+        self.assertEqual(items.get(id=2).quantity, 0.5)
+        self.assertEqual(items.get(id=2).unit.name, 'kilogram')
 
     def test_cook_with_valid_score(self):
         """Test when cook a recipe passing a valid score, must return 200."""
