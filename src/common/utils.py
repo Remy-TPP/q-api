@@ -1,6 +1,13 @@
+from django.conf import settings
 from django.shortcuts import _get_queryset
 from django.utils.http import urlencode
 from django.urls import reverse
+from pint import UnitRegistry
+
+
+ureg = UnitRegistry()
+ureg.load_definitions(settings.BASE_DIR + '/common/unit_definitions/units.txt')
+Q_ = ureg.Quantity
 
 
 def query_reverse(viewname, kwargs=None, query_kwargs=None):

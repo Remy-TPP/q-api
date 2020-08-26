@@ -35,6 +35,7 @@ class Amount(models.Model):
 
         Returns True if this amount is no longer usable.
         """
+        # TODO: aca puedo hacer la logica de pasar de unit a g o volume a g
         quantity_result = sub_quantities_with_units(
             self.quantity,
             self.unit.short_name,
@@ -48,6 +49,7 @@ class Amount(models.Model):
     def __add__(self, other):
         """Add own quantity with other's.
         """
+        # TODO: aca puedo hacer la logica de pasar de unit a g o volume a g
         quantity_result = add_quantities_with_units(
             self.quantity,
             self.unit.short_name,
