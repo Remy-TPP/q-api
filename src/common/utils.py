@@ -42,7 +42,7 @@ def qr_image_from_string(s):
 def get_data_in_qr_image(img):
     qr_detector = cv.QRCodeDetector()
     data, bbox, _ = qr_detector.detectAndDecode(img)
-    if len(bbox) > 0:
+    if bbox is not None and len(bbox) > 0:
         return data
     return None
 

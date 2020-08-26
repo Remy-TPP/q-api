@@ -1,5 +1,4 @@
 from rest_framework import serializers
-import rest_framework.exceptions as drf_exceptions
 
 from apps.products.models import Amount, Product
 from apps.inventories.models import (Place,
@@ -77,7 +76,6 @@ class PurchaseItemSerializer(serializers.ModelSerializer):
         if not amount_serializer.is_valid():
             raise serializers.ValidationError(amount_serializer.errors)
         validated_data['amount'] = amount_serializer.save()
-        validated_data['product'] = Product.objects.get(name=validated_data.pop('product'))
 
         return PurchaseItem(**validated_data)
         # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
