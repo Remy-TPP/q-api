@@ -79,7 +79,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=300, unique=True)
     density = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # kg / m ** 3
-    avg_weight = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # g
+    avg_unit_weight = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # kg
 
     def __str__(self):
         return self.name

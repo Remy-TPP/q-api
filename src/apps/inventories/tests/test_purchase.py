@@ -36,7 +36,7 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
+                    {'product': 'Leche Descremada', 'quantity': 1, 'unit': 'liter'},
                 ]
             }
         )
@@ -54,7 +54,7 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche cremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
+                    {'product': 'Leche cremada', 'quantity': 1, 'unit': 'liter'},
                 ]
             }
         )
@@ -63,9 +63,9 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
-                    {'product': 'Café', 'amount': {'quantity': 250.0, 'unit': 'mL'}},
-                    {'product': 'Producto inexistente', 'amount': {'quantity': 3, 'unit': 'cup'}},
+                    {'product': 'Leche Descremada', 'quantity': 1, 'unit': 'liter'},
+                    {'product': 'Café', 'quantity': 250.0, 'unit': 'mL'},
+                    {'product': 'Producto inexistente', 'quantity': 3, 'unit': 'cup'},
                 ]
             }
         )
@@ -79,9 +79,9 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
-                    {'product': 'Café', 'amount': {'quantity': 250.0, 'unit': 'milliliter'}},
-                    {'product': 'Harina 000', 'amount': {'quantity': 3, 'unit': 'cup'}},
+                    {'product': 'Leche Descremada', 'quantity': 1, 'unit': 'liter'},
+                    {'product': 'Café', 'quantity': 250.0, 'unit': 'milliliter'},
+                    {'product': 'Harina 000', 'quantity': 3, 'unit': 'cup'},
                 ]
             }
         )
@@ -90,14 +90,14 @@ class PurchaseTests(APITestCase):
         self.assertEqual(Purchase.objects.last().items.count(), 3)
         items = Purchase.objects.last().items.all()
         self.assertEqual(items[0].product.name, 'Leche Descremada')
-        self.assertEqual(items[0].amount.quantity, 1)
-        self.assertEqual(items[0].amount.unit.short_name, 'L')
+        self.assertEqual(items[0].quantity, 1)
+        self.assertEqual(items[0].unit.short_name, 'L')
         self.assertEqual(items[1].product.name, 'Café')
-        self.assertEqual(items[1].amount.quantity, 250.0)
-        self.assertEqual(items[1].amount.unit.short_name, 'mL')
+        self.assertEqual(items[1].quantity, 250.0)
+        self.assertEqual(items[1].unit.short_name, 'mL')
         self.assertEqual(items[2].product.name, 'Harina 000')
-        self.assertEqual(items[2].amount.quantity, 3)
-        self.assertEqual(items[2].amount.unit.name, 'cup')
+        self.assertEqual(items[2].quantity, 3)
+        self.assertEqual(items[2].unit.name, 'cup')
 
     def test_creating_purchase_with_repeated_product_aggregates_it(self):
         resp_1 = self.client.post(
@@ -105,9 +105,9 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
-                    {'product': 'Café', 'amount': {'quantity': 250.0, 'unit': 'milliliter'}},
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 2, 'unit': 'liter'}},
+                    {'product': 'Leche Descremada', 'quantity': 1, 'unit': 'liter'},
+                    {'product': 'Café', 'quantity': 250.0, 'unit': 'milliliter'},
+                    {'product': 'Leche Descremada', 'quantity': 2, 'unit': 'liter'},
                 ]
             }
         )
@@ -116,11 +116,11 @@ class PurchaseTests(APITestCase):
             format='json',
             data={
                 'items': [
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
-                    {'product': 'Café', 'amount': {'quantity': 250.0, 'unit': 'milliliter'}},
-                    {'product': 'Harina 000', 'amount': {'quantity': 2, 'unit': 'liter'}},
-                    {'product': 'Café', 'amount': {'quantity': 10.0, 'unit': 'liter'}},
-                    {'product': 'Leche Descremada', 'amount': {'quantity': 0.5, 'unit': 'liter'}},
+                    {'product': 'Leche Descremada', 'quantity': 1, 'unit': 'liter'},
+                    {'product': 'Café', 'quantity': 250.0, 'unit': 'milliliter'},
+                    {'product': 'Harina 000', 'quantity': 2, 'unit': 'liter'},
+                    {'product': 'Café', 'quantity': 10.0, 'unit': 'liter'},
+                    {'product': 'Leche Descremada', 'quantity': 0.5, 'unit': 'liter'},
                 ]
             }
         )
@@ -128,25 +128,30 @@ class PurchaseTests(APITestCase):
 
         self.assertEqual(resp_1.status_code, status.HTTP_201_CREATED)
         self.assertEqual(resp_2.status_code, status.HTTP_201_CREATED)
+
         self.assertEqual(purchase_1.items.count(), 2)
         items = purchase_1.items.all()
-        self.assertEqual(items[0].product.name, 'Leche Descremada')
-        self.assertEqual(items[0].amount.quantity, 3)
-        self.assertEqual(items[0].amount.unit.short_name, 'L')
-        self.assertEqual(items[1].product.name, 'Café')
-        self.assertEqual(items[1].amount.quantity, 250.00)
-        self.assertEqual(items[1].amount.unit.short_name, 'mL')
+        leche_1 = items.get(product__name='Leche Descremada')
+        self.assertEqual(leche_1.quantity, 3)
+        self.assertEqual(leche_1.unit.short_name, 'L')
+
+        cafe_1 = items.get(product__name='Café')
+        self.assertEqual(cafe_1.quantity, 250.00)
+        self.assertEqual(cafe_1.unit.short_name, 'mL')
+
         self.assertEqual(purchase_2.items.count(), 3)
         items = purchase_2.items.all()
-        self.assertEqual(items[0].product.name, 'Leche Descremada')
-        self.assertEqual(items[0].amount.quantity, 1.5)
-        self.assertEqual(items[0].amount.unit.short_name, 'L')
-        self.assertEqual(items[1].product.name, 'Café')
-        self.assertEqual(items[1].amount.quantity, 10250)
-        self.assertEqual(items[1].amount.unit.short_name, 'mL')
-        self.assertEqual(items[2].product.name, 'Harina 000')
-        self.assertEqual(items[2].amount.quantity, 2)
-        self.assertEqual(items[2].amount.unit.short_name, 'L')
+        leche_2 = items.get(product__name='Leche Descremada')
+        self.assertEqual(leche_2.quantity, 1.5)
+        self.assertEqual(leche_2.unit.short_name, 'L')
+
+        cafe_2 = items.get(product__name='Café')
+        self.assertEqual(cafe_2.quantity, 10250)
+        self.assertEqual(cafe_2.unit.short_name, 'mL')
+
+        harina_2 = items.get(product__name='Harina 000')
+        self.assertEqual(harina_2.quantity, 2)
+        self.assertEqual(harina_2.unit.short_name, 'L')
 
     # TODO: not done yet
     # def test_purchase_creation_product_are_case_insensitive(self):
@@ -155,9 +160,9 @@ class PurchaseTests(APITestCase):
     #         format='json',
     #         data={
     #             'items': [
-    #                 {'product': 'CAFÉ', 'amount': {'quantity': 250.0, 'unit': 'milliliter'}},
-    #                 {'product': 'harina 000', 'amount': {'quantity': 3, 'unit': 'cup'}},
-    #                 {'product': 'LECHE descremada', 'amount': {'quantity': 1, 'unit': 'liter'}},
+    #                 {'product': 'CAFÉ', 'quantity': 250.0, 'unit': 'milliliter'},
+    #                 {'product': 'harina 000', 'quantity': 3, 'unit': 'cup'},
+    #                 {'product': 'LECHE descremada', 'quantity': 1, 'unit': 'liter'},
     #             ]
     #         }
     #     )
@@ -166,11 +171,11 @@ class PurchaseTests(APITestCase):
     #     self.assertEqual(Purchase.objects.last().items.count(), 3)
     #     items = Purchase.objects.last().items.all()
     #     self.assertEqual(items[0].product.name, 'Café')
-    #     self.assertEqual(items[0].amount.quantity, 250.0)
-    #     self.assertEqual(items[0].amount.unit.short_name, 'mL')
+    #     self.assertEqual(items[0].quantity, 250.0)
+    #     self.assertEqual(items[0].unit.short_name, 'mL')
     #     self.assertEqual(items[1].product.name, 'Harina 000')
-    #     self.assertEqual(items[1].amount.quantity, 3)
-    #     self.assertEqual(items[1].amount.unit.name, 'cup')
+    #     self.assertEqual(items[1].quantity, 3)
+    #     self.assertEqual(items[1].unit.name, 'cup')
     #     self.assertEqual(items[2].product.name, 'Leche Descremada')
-    #     self.assertEqual(items[2].amount.quantity, 1)
-    #     self.assertEqual(items[2].amount.unit.short_name, 'L')
+    #     self.assertEqual(items[2].quantity, 1)
+    #     self.assertEqual(items[2].unit.short_name, 'L')

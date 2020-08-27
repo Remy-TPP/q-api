@@ -52,21 +52,15 @@ class InventoryItemSerializer(AmountSerializer):
         return item
 
 
-class PurchaseItemSerializer(serializers.ModelSerializer):
-    amount = AmountSerializer()
+class PurchaseItemSerializer(AmountSerializer):
     product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
 
     class Meta:
         model = PurchaseItem
-        fields = ['id', 'product', 'amount']
+        fields = ['id', 'product']
 
     def create(self, validated_data):
         assert 'purchase' in validated_data.keys()
-
-        amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
-        if not amount_serializer.is_valid():
-            raise serializers.ValidationError(amount_serializer.errors)
-        validated_data['amount'] = amount_serializer.save()
 
         return PurchaseItem(**validated_data)
         # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
@@ -89,11 +83,10 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
         items_no_dupes = {}
         for purchase_item in purchase_items_serializer.save(purchase=purchase):
             if (existing_pi := items_no_dupes.get(purchase_item.product.name, None)):
-                existing_pi.add_amount(purchase_item.amount)
+                existing_pi.add_amount(Amount(purchase_item.quantity, purchase_item.unit.id))
             else:
+                purchase_item.save()
                 items_no_dupes[purchase_item.product.name] = purchase_item
-
-        PurchaseItem.objects.bulk_create(items_no_dupes.values())
 
         return purchase
 

@@ -21,13 +21,13 @@ def convert_to_correct_unit(obj, other):
 
         elif (str(other_amount_dim) == '[unit]'
               and obj_amount_dim == '[mass]'
-              and obj.product.avg_weight is not None):
-            other_amount = other_amount * Q_(obj.product.avg_weight, 'g')
+              and obj.product.avg_unit_weight is not None):
+            other_amount = other_amount * Q_(obj.product.avg_unit_weight, 'kg')
 
         elif (str(other_amount_dim) == '[mass]'
               and obj_amount_dim == '[unit]'
-              and obj.product.avg_weight is not None):
-            other_amount = other_amount / Q_(obj.product.avg_weight, 'g')
+              and obj.product.avg_unit_weight is not None):
+            other_amount = other_amount / Q_(obj.product.avg_unit_weight, 'kg')
 
     return obj_amount, other_amount
 
