@@ -37,28 +37,18 @@ class RecipeMinimalSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'title']
 
 
-class IngredientSerializer(serializers.ModelSerializer):
+class IngredientSerializer(AmountSerializer):
     product = ProductSerializer()
     recipe = RecipeMinimalSerializer()
-    amount = AmountSerializer()
     # substitutions = RecursiveField(allow_null=True, many=True)
 
     class Meta:
         model = Ingredient
         exclude = ['id']
 
-    def create(self, validated_data):
-        amount_serializer = self.fields['amount']
-        amount = amount_serializer.create(validated_data.pop('amount'))
-        validated_data['amount'] = amount
 
-        ingredient = Ingredient.objects.create(**validated_data)
-        return ingredient
-
-
-class RecipeIngredientSerializer(serializers.ModelSerializer):
+class RecipeIngredientSerializer(AmountSerializer):
     product = ProductMinimalSerializer()
-    amount = AmountSerializer()
 
     class Meta:
         model = Ingredient

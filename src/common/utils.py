@@ -1,7 +1,15 @@
+import os
+from django.conf import settings
 from django.shortcuts import _get_queryset
 from django.utils.http import urlencode
 from django.urls import reverse
+from pint import UnitRegistry
 import qrcode
+
+
+ureg = UnitRegistry()
+ureg.load_definitions(os.path.join(settings.BASE_DIR, 'common/unit_definitions/units.txt'))
+Q_ = ureg.Quantity
 
 
 def query_reverse(viewname, kwargs=None, query_kwargs=None):

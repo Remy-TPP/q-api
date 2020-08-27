@@ -35,21 +35,20 @@ class InventoryItemTests(APITestCase):
             ITEM_URL,
             data={
                 'product': 'Leche',
-                'amount': {
-                    'quantity': 1,
-                    'unit': 'liter'
-                }
+                'quantity': 1,
+                'unit': 'liter'
             },
             format='json'
         )
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
         items = u_1.profile.places.first().inventory
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)
-        self.assertEqual(item.amount.quantity, 1)
-        self.assertEqual(item.amount.unit.short_name, 'L')
+        self.assertEqual(item.quantity, 1)
+        self.assertEqual(item.unit.short_name, 'L')
 
     def test_adding_a_item_that_exists_should_add_amount(self):
         u_1 = sample_user_1()
@@ -59,10 +58,8 @@ class InventoryItemTests(APITestCase):
             ITEM_URL,
             data={
                 'product': 'Leche',
-                'amount': {
-                    'quantity': 1,
-                    'unit': 'liter'
-                }
+                'quantity': 1,
+                'unit': 'liter'
             },
             format='json'
         )
@@ -71,10 +68,8 @@ class InventoryItemTests(APITestCase):
             ITEM_URL,
             data={
                 'product': 'Leche',
-                'amount': {
-                    'quantity': 1000,
-                    'unit': 'milliliter'
-                }
+                'quantity': 1000,
+                'unit': 'milliliter'
             },
             format='json'
         )
@@ -86,8 +81,8 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(items.count(), 1)
         item = items.first()
         self.assertEqual(item.product.id, 1)
-        self.assertEqual(item.amount.quantity, 2)
-        self.assertEqual(item.amount.unit.short_name, 'L')
+        self.assertEqual(item.quantity, 2)
+        self.assertEqual(item.unit.short_name, 'L')
 
     def test_adding_multiple_items_should_create_them(self):
         u_1 = sample_user_1()
@@ -99,24 +94,18 @@ class InventoryItemTests(APITestCase):
                 "items": [
                     {
                         'product': 'Leche',
-                        'amount': {
-                            'quantity': 1,
-                            'unit': 'liter'
-                        }
+                        'quantity': 1,
+                        'unit': 'liter'
                     },
                     {
                         'product': 'Leche',
-                        'amount': {
-                            'quantity': 2,
-                            'unit': 'liter'
-                        }
+                        'quantity': 2,
+                        'unit': 'liter'
                     },
                     {
                         'product': 'Leche Descremada',
-                        'amount': {
-                            'quantity': 1,
-                            'unit': 'gram'
-                        }
+                        'quantity': 1,
+                        'unit': 'gram'
                     }
                 ]
             },
@@ -127,12 +116,12 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(items.count(), 2)
         item = items.first()
         self.assertEqual(item.product.id, 1)
-        self.assertEqual(item.amount.quantity, 3)
-        self.assertEqual(item.amount.unit.short_name, 'L')
+        self.assertEqual(item.quantity, 3)
+        self.assertEqual(item.unit.short_name, 'L')
         item = items.last()
         self.assertEqual(item.product.id, 2)
-        self.assertEqual(item.amount.quantity, 1)
-        self.assertEqual(item.amount.unit.short_name, 'g')
+        self.assertEqual(item.quantity, 1)
+        self.assertEqual(item.unit.short_name, 'g')
 
     def test_adding_multiple_items_with_one_wrong_should_not_create_them(self):
         u_1 = sample_user_1()
@@ -144,24 +133,18 @@ class InventoryItemTests(APITestCase):
                 "items": [
                     {
                         'product': 'Leche',
-                        'amount': {
-                            'quantity': 1,
-                            'unit': 'liter'
-                        }
+                        'quantity': 1,
+                        'unit': 'liter'
                     },
                     {
                         'product': 'Leche',
-                        'amount': {
-                            'quantity': 2,
-                            'unit': 'liter'
-                        }
+                        'quantity': 2,
+                        'unit': 'liter'
                     },
                     {
                         'product': 'Leche descremada',
-                        'amount': {
-                            'quantity': 1,
-                            'unit': 'not real unit'
-                        }
+                        'quantity': 1,
+                        'unit': 'not real unit'
                     }
                 ]
             },

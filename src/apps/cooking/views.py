@@ -6,6 +6,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.recipes.models import Recipe
+from apps.products.models import Amount
 from apps.profiles.serializers import RecipeCookedSerializer
 
 from apps.inventories.utils import get_place_or_default
@@ -47,11 +48,12 @@ def cook_recipe(request):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+
         for ingredient in recipe.ingredient_set.all():
             # TODO: en la linea de abajo, que pasa si cocina con algo que no tiene?? sustitutos??
             item = place.inventory.filter(product=ingredient.product).first()
             if item:
-                item.reduce_amount(ingredient.amount)
+                item.reduce_amount(Amount(ingredient.quantity, ingredient.unit.id))
 
         recipe_cooked_serializer = RecipeCookedSerializer(data=request.data)
         recipe_cooked_serializer.is_valid(raise_exception=True)
