@@ -177,13 +177,14 @@ def parse_and_create_recipe(raw_recipe, dish, assets):
     # Create each ingredient
     for parsed_ingr in parsed_ingrs:
         product = Product.objects.get_or_create(name=parsed_ingr.product)[0]
-        amount = Amount.objects.create(
+        Ingredient.objects.create(
+            recipe=recipe,
+            product=product,
             quantity=parsed_ingr.quantity,
-            unit=parsed_ingr.unit
-        ) if parsed_ingr.quantity else None
-        notes = parsed_ingr.remarks if parsed_ingr.remarks else ''
-        section = parsed_ingr.section if parsed_ingr.section else ''
-        Ingredient.objects.create(recipe=recipe, product=product, amount=amount, notes=notes, section=section)
+            unit=(parsed_ingr.unit if parsed_ingr.unit else default_unit),
+            notes=(parsed_ingr.remarks if parsed_ingr.remarks else ''),
+            section=(parsed_ingr.section if parsed_ingr.section else '')
+        )
 
     return True
 
