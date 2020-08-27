@@ -92,7 +92,7 @@ class ProductWithAmount(Amount):
         abstract = True
 
     def __str__(self):
-        return f'{self.quantity} {self.product}'
+        return f'{self.displayable_quantity}{self.displayable_unit} {self.product}'
 
     def add_amount(self, other_amount):
         _ = self + other_amount

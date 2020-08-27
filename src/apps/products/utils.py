@@ -2,34 +2,36 @@ from common.utils import Q_
 
 
 def convert_to_correct_unit(obj, other):
-    obj_amount = Q_(obj.quantity, obj.unit.short_name)
-    other_amount = Q_(other.quantity, other.unit.short_name)
+    """Receive ProductWithAmount and Amount/ProductWithAmount"""
+
+    obj_amount = Q_(obj.quantity, obj.unit.short_name or obj.unit.name)
+    other_amount = Q_(other.quantity, other.unit.short_name or other.unit.name)
 
     other_amount_dim = other_amount.dimensionality
     obj_amount_dim = obj_amount.dimensionality
 
     if (obj_amount_dim != other_amount_dim):
         if (str(other_amount_dim) == '[mass]'
-                and obj_amount_dim == '[length] ** 3'
+                and str(obj_amount_dim) == '[length] ** 3'
                 and obj.product.density is not None):
             other_amount = other_amount / Q_(obj.product.density, 'kg / (m ** 3)')
 
         elif (str(other_amount_dim) == '[length] ** 3'
-              and obj_amount_dim == '[mass]'
+              and str(obj_amount_dim) == '[mass]'
               and obj.product.density is not None):
             other_amount = other_amount * Q_(obj.product.density, 'kg / (m ** 3)')
 
         elif (str(other_amount_dim) == '[unit]'
-              and obj_amount_dim == '[mass]'
+              and str(obj_amount_dim) == '[mass]'
               and obj.product.avg_unit_weight is not None):
-            other_amount = other_amount * Q_(obj.product.avg_unit_weight, 'kg')
+            other_amount = Q_((other_amount * Q_(obj.product.avg_unit_weight, 'kg')).magnitude, 'kg')
 
         elif (str(other_amount_dim) == '[mass]'
-              and obj_amount_dim == '[unit]'
+              and str(obj_amount_dim) == '[unit]'
               and obj.product.avg_unit_weight is not None):
-            other_amount = other_amount / Q_(obj.product.avg_unit_weight, 'kg')
+            other_amount = Q_((other_amount / Q_(obj.product.avg_unit_weight, 'kg')).magnitude, 'unit')
 
-    return obj_amount, other_amount
+    return obj_amount, other_amount.to(obj_amount.units)
 
 
 def sub_quantities_with_units(obj, other):

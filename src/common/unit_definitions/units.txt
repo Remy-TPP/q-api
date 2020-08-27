@@ -1,4 +1,5 @@
 cup = 250 * milliliter
 tablespoon = 15 * milliliter
 teaspoon = 5 * milliliter
-unit = [unit] = u
+unit = [unit]
+[unit] = [mass] / [mass]

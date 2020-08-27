@@ -39,7 +39,7 @@ class UnitUtilsTests(TestCase):
         self.assertEqual(round(result), 14)
 
     def test_add_quantities_unit_and_unit(self):
-        result = add_quantities_with_units(Q_(5, 'u'), Q_(3, 'unit'))
+        result = add_quantities_with_units(Q_(5, 'unit'), Q_(3, 'unit'))
         self.assertEqual(result, 8)
 
     def test_sub_quantities_tablespoon_with_teaspoon(self):
