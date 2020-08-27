@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from apps.profiles.models import Profile
@@ -20,3 +22,12 @@ class PlaceMember(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     member = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_the_default_one = models.BooleanField(default=False)
+
+
+class Purchase(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class PurchaseItem(ProductWithAmount):
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='items')

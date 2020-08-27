@@ -74,6 +74,7 @@ class InventoryItemTests(APITestCase):
             format='json'
         )
 
+        # TODO: should it be another HTTP code if a resource was updated instead of created such as here? (mc)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(res.data)
         items = u_1.profile.places.first().inventory
