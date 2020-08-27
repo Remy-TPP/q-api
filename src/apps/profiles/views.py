@@ -4,29 +4,32 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.profiles.models import (Profile,
                                   ProfileType,
-                                  Group,
+                                  Event,
                                   FriendshipRequest,
-                                  FriendshipStatus)
+                                  FriendshipStatus,
+                                  RecipeCooked)
 
 from apps.profiles.serializers import (ProfileSerializer,
+                                       ProfileMinimalSerializer,
                                        ProfileTypeSerializer,
                                        UserSerializer,
-                                       GroupSerializer,
+                                       EventSerializer,
                                        FriendshipRequestSerializer,
-                                       FriendshipStatusSerializer)
+                                       FriendshipStatusSerializer,
+                                       RecipeCookedSerializer)
 
 from apps.profiles.permissions import (UpdateOwnProfile,
                                        IsOwnProfile)
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    # TODO: should use `get_user_model()`?
-    queryset = User.objects.all().order_by("id")
+    queryset = get_user_model().objects.all().order_by("id")
     serializer_class = UserSerializer
     lookup_field = 'pk'
 
@@ -51,10 +54,11 @@ class ProfileViewSet(viewsets.GenericViewSet,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin):
-    queryset = Profile.objects.all().order_by("id")
+    queryset = Profile.objects.all().order_by('id')
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
     permission_classes = [UpdateOwnProfile]
+    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
 
     @swagger_auto_schema(
         method='post',
@@ -73,6 +77,28 @@ class ProfileViewSet(viewsets.GenericViewSet,
             serializer = self.get_serializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response("The user is already inactive!", status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Get a list of my friends.",
+        responses={200: ProfileMinimalSerializer(many=True)}
+    )
+    @action(detail=False, methods=['GET'], url_path='friends')
+    def my_friends(self, request):
+        filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
+        friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
+        return Response(friends.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Get a list of my cooked recipes.",
+        responses={200: RecipeCookedSerializer(many=True)}
+    )
+    @action(detail=False, methods=['GET'], url_path='recipes')
+    def my_recipes(self, request):
+        queryset = RecipeCooked.objects.filter(profile=request.user.profile).order_by('-cooked_at')
+        recipes = RecipeCookedSerializer(queryset, many=True)
+        return Response(recipes.data, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -172,36 +198,94 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
-    operation_summary="Lists all groups.",
+    operation_summary="Lists all events.",
     operation_description="Returns groups."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets group with id={id}..",
+    operation_summary="Gets event with id={id}..",
     operation_description="Returns group."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(
-    operation_summary="Creates group.",
+    operation_summary="Creates event.",
     operation_description="Returns group."
 ))
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary="Partial updates group with id={id}.",
+    operation_summary="Partial updates event with id={id}.",
     operation_description="Returns group."
 ))
 @method_decorator(name='update', decorator=swagger_auto_schema(
-    operation_summary="Updates group with id={id}.",
+    operation_summary="Updates event with id={id}.",
     operation_description="Returns group."
 ))
 @method_decorator(name='destroy', decorator=swagger_auto_schema(
-    operation_summary="Deletes group with id={id}.",
+    operation_summary="Deletes event with id={id}.",
     operation_description="Returns none."
 ))
-class GroupViewSet(viewsets.ModelViewSet):
+class EventViewSet(viewsets.ModelViewSet):
     """
     Manage the groups of profiles.
     """
-    queryset = Group.objects.all().order_by("id")
-    serializer_class = GroupSerializer
+    queryset = Event.objects.all().order_by("id")
+    serializer_class = EventSerializer
     lookup_field = 'pk'
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return Event.objects.filter(
+            Q(host=profile) |
+            Q(attendees=profile)
+        ).order_by("id").distinct()
+
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Add an attendee to the event.",
+        manual_parameters=[
+            openapi.Parameter(
+                'attendee_id',
+                in_=openapi.IN_QUERY,
+                description='ID of an attendee',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def add_attendee(self, request, pk=None):
+        attendee_id = request.query_params.get('attendee_id')
+        if not attendee_id:
+            return Response({"error": "Must provide attendee_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        attendee = get_object_or_404(request.user.profile.friends.all(), id=attendee_id)
+        event = get_object_or_404(Event.objects.all(), id=pk)
+
+        event.attendees.add(attendee)
+
+        return Response({"msg": "Attendee has been added!"}, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Remove an attendee from the event.",
+        manual_parameters=[
+            openapi.Parameter(
+                'attendee_id',
+                in_=openapi.IN_QUERY,
+                description='ID of an attendee',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def remove_attendee(self, request, pk=None):
+        attendee_id = request.query_params.get('attendee_id')
+        if not attendee_id:
+            return Response({"error": "Must provide attendee_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        event = get_object_or_404(Event.objects.all(), id=pk)
+
+        event.attendees.remove(attendee_id)
+
+        return Response({"msg": "Attendee has been deleted!"}, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -238,3 +322,20 @@ class FriendshipStatusViewSet(viewsets.ModelViewSet):
     serializer_class = FriendshipStatusSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
+
+
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial updates recipe cooked with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Updates friendshipstatus with id={id}.",
+    operation_description="Returns RecipeCooked."
+))
+class RecipeCookedViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin):
+    """
+    Manage the recipes cooked by profiles.
+    """
+    queryset = RecipeCooked.objects.all().order_by('id')
+    serializer_class = RecipeCookedSerializer
+    lookup_field = 'pk'

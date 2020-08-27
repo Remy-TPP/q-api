@@ -10,7 +10,6 @@ from apps.products.serializers import AmountSerializer
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
-    inventory = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Place
@@ -30,17 +29,16 @@ class PlaceSerializer(serializers.HyperlinkedModelSerializer):
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     amount = AmountSerializer()
-    product = serializers.StringRelatedField()
-    product_id = serializers.PrimaryKeyRelatedField(source='product', write_only=True, queryset=Product.objects.all())
+    product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
 
     class Meta:
         model = InventoryItem
-        fields = ['id', 'product', 'amount', 'product_id']
+        fields = ['id', 'product', 'amount']
 
     def create(self, validated_data):
         amount_serializer = AmountSerializer(data=validated_data.pop('amount'))
         if not amount_serializer.is_valid():
-            raise TypeError(amount_serializer.errors)
+            raise serializers.ValidationError(amount_serializer.errors)
 
         product = validated_data.get('product')
         place = validated_data.get('place')

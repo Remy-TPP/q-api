@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 
 REGISTER_USER = reverse('rest_register')
 PROFILES = reverse('profile-list')
+FRIENDS = reverse('profile-my-friends')
 
 
 def detail_url(profile_id):
@@ -75,6 +76,11 @@ class RegisterTests(APITestCase):
 
 
 class ProfileTests(APITestCase):
+    def setUp(self):
+        u_1 = sample_user_1()
+        u_2 = sample_user_2()
+        u_1.profile.friends.add(u_2.profile)
+
     def test_get_profiles(self):
         """Test when trying to access profiles endpoint not login, must return Profiles"""
         sample_user_1()
@@ -91,7 +97,6 @@ class ProfileTests(APITestCase):
             detail_url(u_1.profile.id)
         )
         self.assertTrue(res.data)
-        self.assertEqual(u_1.id, res.data['user']['id'])
 
     def test_patch_profile_not_login(self):
         """Test when trying to patch a profile WITHOUT login, must return 403 Forbidden"""
@@ -178,4 +183,18 @@ class ProfileTests(APITestCase):
 
         self.assertTrue(res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertFalse(res.data['user']['is_active'])
+        self.assertFalse(res.data['is_active'])
+
+    def test_get_my_friends_return_friends(self):
+        """Test when getting my friends, should return only friends"""
+        u_1 = sample_user_1()
+
+        self.client.force_authenticate(user=u_1)
+
+        res = self.client.get(
+            FRIENDS
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['id'], sample_user_2().id)

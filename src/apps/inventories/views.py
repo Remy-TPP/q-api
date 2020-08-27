@@ -57,15 +57,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
-    operation_description="Returns items.",
-    manual_parameters=[
-        openapi.Parameter(
-            'place_id',
-            in_=openapi.IN_QUERY,
-            description='ID of a place',
-            type=openapi.TYPE_INTEGER
-        ),
-    ]
+    operation_description="Returns items."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
     operation_summary="Gets the item with id={id}.",
@@ -91,25 +83,18 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
                            mixins.DestroyModelMixin):
     serializer_class = InventoryItemSerializer
     lookup_field = 'pk'
+    filterset_fields = ['place']
 
     def get_queryset(self):
-        place = get_place_or_default(self.request.user.profile, self.kwargs.get('place_pk'))
+        place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
         return InventoryItem.objects.filter(place=place).order_by('id')
 
     @swagger_auto_schema(
         operation_summary="Create an item for that place.",
         operation_description="Returns the item.",
-        manual_parameters=[
-            openapi.Parameter(
-                'place_id',
-                in_=openapi.IN_QUERY,
-                description='ID of a place',
-                type=openapi.TYPE_INTEGER,
-            ),
-        ],
     )
     def create(self, request, *args, **kwargs):
-        place = get_place_or_default(request.user.profile, kwargs.get('place_pk'))
+        place = get_place_or_default(request.user.profile, request.query_params.get('place'))
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -132,15 +117,6 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         method='post',
         operation_summary='Create a list of items for that place.',
         operation_description='Choose a place you are member as a default place',
-        manual_parameters=[
-            openapi.Parameter(
-                'place_id',
-                in_=openapi.IN_QUERY,
-                description='ID of a place',
-                type=openapi.TYPE_INTEGER,
-                required=True
-            ),
-        ]
     )
     @action(detail=False, methods=['POST'])
     @atomic
@@ -151,7 +127,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
 
         for item in request.data.get('items'):
             # TODO: mejorar para que no tenga que pedir el place siempre
-            place = get_place_or_default(request.user.profile, request.query_params.get('place_pk'))
+            place = get_place_or_default(request.user.profile, request.query_params.get('place'))
 
             serializer = self.get_serializer(data=item)
             if serializer.is_valid():

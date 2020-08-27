@@ -1,45 +1,86 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from django.contrib.auth.models import User
+from apps.profiles.fields import (EventField,
+                                  AttendeeField)
 from apps.profiles.models import (Profile,
                                   ProfileType,
-                                  Group,
+                                  Event,
                                   FriendshipRequest,
-                                  FriendshipStatus)
+                                  FriendshipStatus,
+                                  RecipeCooked)
 
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = serializers.HyperlinkedRelatedField(view_name="profile-detail", read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
 
     class Meta:
-        # TODO: should use `get_user_model()`?
-        model = User
+        model = get_user_model()
         exclude = ['user_permissions', 'groups', 'is_staff', 'is_superuser', 'password']
 
 
-class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    profiletypes = serializers.HyperlinkedRelatedField(
-        many=True,
-        view_name='profiletype-detail',
-        queryset=ProfileType.objects.all()
-    )
-    groups = serializers.HyperlinkedRelatedField(
-        many=True,
-        view_name='group-detail',
-        queryset=Group.objects.all()
-    )
-    friends = serializers.HyperlinkedRelatedField(
-        many=True,
-        view_name='profile-detail',
-        queryset=Profile.objects.all()
-    )
-
-    user = UserSerializer(read_only=True)
+class ProfileMinimalSerializer(serializers.ModelSerializer):
+    username = serializers.StringRelatedField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.EmailField(read_only=True, source='user.email')
 
     class Meta:
         model = Profile
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+
+
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    profiletypes = serializers.SlugRelatedField(
+        slug_field="name",
+        many=True,
+        queryset=ProfileType.objects.all()
+    )
+    events = EventField(
+        many=True,
+        view_name='event-detail',
+        read_only=True
+    )
+    friends = serializers.StringRelatedField(
+        many=True,
+        read_only=True
+    )
+
+    last_login = serializers.DateTimeField(read_only=True, source='user.last_login')
+    is_active = serializers.BooleanField(read_only=True, source='user.is_active')
+    username = serializers.StringRelatedField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.EmailField(read_only=True, source='user.email')
+    date_joined = serializers.DateTimeField(read_only=True, source='user.date_joined')
+
+    class Meta:
+        model = Profile
+        exclude = ['user', 'recipes_cooked']
+
+    def update(self, instance, validated_data):
+        user = validated_data.pop('user', None)
+
+        if (user):
+            instance.user.first_name = user.get('first_name', instance.user.first_name)
+            instance.user.last_name = user.get('last_name', instance.user.last_name)
+
+            instance.user.save()
+
+        return super(ProfileSerializer, self).update(instance, validated_data)
+
+
+class RecipeCookedSerializer(serializers.ModelSerializer):
+    score = serializers.IntegerField(min_value=1, max_value=10, required=False)
+    profile = serializers.StringRelatedField()
+    recipe = serializers.StringRelatedField()
+    cooked_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = RecipeCooked
         fields = '__all__'
+        read_only_fields = ['id']
 
 
 class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,23 +90,38 @@ class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.HyperlinkedRelatedField(view_name='profile-detail', read_only=True)
+class EventSerializer(serializers.ModelSerializer):
+    host = serializers.StringRelatedField()
+    attendees_id = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Profile.objects.all(),
+        source="attendees",
+        write_only=True
+    )
+    attendees = AttendeeField(
+        many=True,
+        read_only=True
+    )
 
     def create(self, validated_data):
-        current_profile = Profile.objects.get(user=self.context['request'].user)
+        current_profile = self.context.get('request').user.profile
+        place = validated_data.get('place')
 
-        members = validated_data.pop('members') if 'members' in validated_data else []
-        members.append(current_profile)
+        if place and not current_profile.places.filter(id=place.id).exists():
+            raise serializers.ValidationError('Place is not valid!')
 
-        group = Group.objects.create(owner=current_profile)
+        friends_set = set(current_profile.friends.values_list('id', flat=True))
+        attendees_set = set(attendee.id for attendee in validated_data.get('attendees'))
 
-        group.members.set(members)
+        if not attendees_set.issubset(friends_set):
+            raise serializers.ValidationError('You can add only friends to an event!')
 
+        validated_data['host'] = current_profile
+        group = super(EventSerializer, self).create(validated_data)
         return group
 
     class Meta:
-        model = Group
+        model = Event
         fields = '__all__'
 
 

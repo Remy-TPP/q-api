@@ -34,7 +34,7 @@ class InventoryItemTests(APITestCase):
         res = self.client.post(
             ITEM_URL,
             data={
-                'product_id': 1,
+                'product': 'Leche',
                 'amount': {
                     'quantity': 1,
                     'unit': 'liter'
@@ -58,7 +58,7 @@ class InventoryItemTests(APITestCase):
         _ = self.client.post(
             ITEM_URL,
             data={
-                'product_id': 1,
+                'product': 'Leche',
                 'amount': {
                     'quantity': 1,
                     'unit': 'liter'
@@ -70,7 +70,7 @@ class InventoryItemTests(APITestCase):
         res = self.client.post(
             ITEM_URL,
             data={
-                'product_id': 1,
+                'product': 'Leche',
                 'amount': {
                     'quantity': 1000,
                     'unit': 'milliliter'
@@ -98,21 +98,21 @@ class InventoryItemTests(APITestCase):
             data={
                 "items": [
                     {
-                        'product_id': 1,
+                        'product': 'Leche',
                         'amount': {
                             'quantity': 1,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product_id': 1,
+                        'product': 'Leche',
                         'amount': {
                             'quantity': 2,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product_id': 2,
+                        'product': 'Leche Descremada',
                         'amount': {
                             'quantity': 1,
                             'unit': 'gram'
@@ -143,21 +143,21 @@ class InventoryItemTests(APITestCase):
             data={
                 "items": [
                     {
-                        'product_id': 1,
+                        'product': 'Leche',
                         'amount': {
                             'quantity': 1,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product_id': 1,
+                        'product': 'Leche',
                         'amount': {
                             'quantity': 2,
                             'unit': 'liter'
                         }
                     },
                     {
-                        'product_id': 2,
+                        'product': 'Leche descremada',
                         'amount': {
                             'quantity': 1,
                             'unit': 'not real unit'
