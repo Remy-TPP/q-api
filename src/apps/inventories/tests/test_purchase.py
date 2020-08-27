@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from common.utils import get_data_in_qr_image, image_from_bytestring
+from .utils import get_data_in_qr_image, image_from_bytestring
 from apps.inventories.models import Purchase
 
 
