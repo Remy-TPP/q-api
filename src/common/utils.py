@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import _get_queryset
 from django.utils.http import urlencode
 from django.urls import reverse
+from pint import UnitRegistry
 import qrcode
 
 

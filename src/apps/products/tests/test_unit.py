@@ -31,12 +31,11 @@ class UnitTests(TestCase):
 class UnitUtilsTests(TestCase):
     def test_add_quantities_cup_and_liter(self):
         result = add_quantities_with_units(Q_(1, 'liter'), Q_(1, 'cup'))
-        self.assertEqual(result, 1.25)
+        self.assertEqual(round(result, 2), 1.24)
 
     def test_add_quantities_liter_and_cup(self):
-        # TODO: ver el tema del round
         result = add_quantities_with_units(Q_(2, 'cup'), Q_(3, 'l'))
-        self.assertEqual(round(result), 14)
+        self.assertEqual(round(result), 15)
 
     def test_add_quantities_unit_and_unit(self):
         result = add_quantities_with_units(Q_(5, 'unit'), Q_(3, 'unit'))
@@ -44,7 +43,7 @@ class UnitUtilsTests(TestCase):
 
     def test_sub_quantities_tablespoon_with_teaspoon(self):
         result = sub_quantities_with_units(Q_(1, 'tablespoon'), Q_(1, 'teaspoon'))
-        self.assertEqual(result, 2/3)
+        self.assertEqual(round(result, 2), 0.67)
 
     def test_sub_quantities_tablespoon_with_unit_error(self):
         with self.assertRaises(errors.DimensionalityError):

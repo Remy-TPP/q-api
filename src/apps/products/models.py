@@ -23,7 +23,7 @@ def unit_default():
 
 
 class Amount(models.Model):
-    quantity = models.DecimalField(max_digits=12, decimal_places=5)
+    quantity = models.DecimalField(max_digits=12, decimal_places=5, null=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, default=unit_default)
 
     class Meta:
