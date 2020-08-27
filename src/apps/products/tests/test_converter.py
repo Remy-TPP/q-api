@@ -88,5 +88,3 @@ class ConverterTests(TestCase):
 
         self.assertEqual(round(other.magnitude), 252)
         self.assertEqual(round((obj - other).magnitude), 748)
-
-    

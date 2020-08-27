@@ -51,7 +51,7 @@ class Amount(models.Model):
         """Add own quantity with other's.
         """
         obj, other = convert_to_correct_unit(self, other)
-        
+
         quantity_result = add_quantities_with_units(
             obj,
             other
