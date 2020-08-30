@@ -27,11 +27,6 @@ class AmountTests(TestCase):
         self.assertIn(self.plain_unit.short_name, am2.__str__())
         self.assertIn(self.liter_unit.short_name, am3.__str__())
 
-    def test_default_unit_is_plain(self):
-        am4 = Amount(quantity=Decimal('42'))
-
-        self.assertEqual(am4.unit, self.plain_unit)
-
     def test_unshortened_units_have_pluralized_name_when_appropriate(self):
         am5 = Amount(unit=self.cup_unit, quantity=Decimal('108'))
         am6 = Amount(unit=self.cup_unit, quantity=Decimal('1.000'))

@@ -3,11 +3,11 @@ from rest_framework import serializers
 from apps.products.models import Unit, Product
 
 
-class UnitSerializer(serializers.HyperlinkedModelSerializer):
+class UnitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Unit
-        fields = '__all__'
+        exclude = ['id', 'dimensionality']
 
 
 class AmountSerializer(serializers.Serializer):
@@ -23,15 +23,21 @@ class AmountSerializer(serializers.Serializer):
         abstract = True
 
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
+    available_units = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id', 'name', 'available_units']
+
+    def get_available_units(self, obj):
+        dimensionalities = obj.available_dimensionalities.split(',')
+        units = UnitSerializer(Unit.objects.filter(dimensionality__in=dimensionalities), many=True)
+        return units.data
 
 
-class ProductMinimalSerializer(serializers.HyperlinkedModelSerializer):
+class ProductMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['url', 'name']
+        fields = ['id', 'name']

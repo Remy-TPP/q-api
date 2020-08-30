@@ -4,7 +4,8 @@
         "pk": 1,
         "fields": {
             "name": "unit",
-            "short_name": ""
+            "short_name": "",
+            "dimensionality": "[unit]"
         }
     },
     {
@@ -12,7 +13,8 @@
         "pk": 2,
         "fields": {
             "name": "gram",
-            "short_name": "g"
+            "short_name": "g",
+            "dimensionality": "[mass]"
         }
     },
     {
@@ -20,7 +22,8 @@
         "pk": 3,
         "fields": {
             "name": "kilogram",
-            "short_name": "kg"
+            "short_name": "kg",
+            "dimensionality": "[mass]"
         }
     },
     {
@@ -28,7 +31,8 @@
         "pk": 4,
         "fields": {
             "name": "liter",
-            "short_name": "L"
+            "short_name": "L",
+            "dimensionality": "[volume]"
         }
     },
     {
@@ -36,14 +40,16 @@
         "pk": 5,
         "fields": {
             "name": "milliliter",
-            "short_name": "mL"
+            "short_name": "mL",
+            "dimensionality": "[volume]"
         }
     },
     {
         "model": "products.unit",
         "pk": 6,
         "fields": {
-            "name": "cup"
+            "name": "cup",
+            "dimensionality": "[volume]"
         }
     },
     {
@@ -51,7 +57,8 @@
         "pk": 7,
         "fields": {
             "name": "teaspoon",
-            "short_name": "tsp"
+            "short_name": "tsp",
+            "dimensionality": "[volume]"
         }
     },
     {
@@ -59,7 +66,8 @@
         "pk": 8,
         "fields": {
             "name": "tablespoon",
-            "short_name": "Tbsp"
+            "short_name": "Tbsp",
+            "dimensionality": "[volume]"
         }
     },
     {
@@ -67,7 +75,8 @@
         "pk": 9,
         "fields": {
             "name": "pound",
-            "short_name": "lb"
+            "short_name": "lb",
+            "dimensionality": "[mass]"
         }
     },
     {
@@ -75,7 +84,8 @@
         "pk": 10,
         "fields": {
             "name": "ounce",
-            "short_name": "oz"
+            "short_name": "oz",
+            "dimensionality": "[mass]"
         }
     }
 ]
