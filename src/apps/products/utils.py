@@ -1,5 +1,7 @@
 from common.utils import Q_
 
+from apps.products.dimensionality import Dimensionality
+
 
 def convert_to_correct_unit(obj, other):
     """Receive ProductWithAmount and Amount/ProductWithAmount"""
@@ -11,25 +13,35 @@ def convert_to_correct_unit(obj, other):
     obj_amount_dim = obj_amount.dimensionality
 
     if (obj_amount_dim != other_amount_dim):
-        if (str(other_amount_dim) == '[mass]'
-                and str(obj_amount_dim) == '[length] ** 3'
+        if (str(other_amount_dim) == Dimensionality.MASS
+                and str(obj_amount_dim) == Dimensionality.VOLUME.label
                 and obj.product.density is not None):
             other_amount = other_amount / Q_(obj.product.density, 'kg / (m ** 3)')
 
-        elif (str(other_amount_dim) == '[length] ** 3'
-              and str(obj_amount_dim) == '[mass]'
+        elif (str(other_amount_dim) == Dimensionality.VOLUME.label
+              and str(obj_amount_dim) == Dimensionality.MASS
               and obj.product.density is not None):
             other_amount = other_amount * Q_(obj.product.density, 'kg / (m ** 3)')
 
-        elif (str(other_amount_dim) == '[unit]'
-              and str(obj_amount_dim) == '[mass]'
+        elif (str(other_amount_dim) == Dimensionality.UNIT
+              and str(obj_amount_dim) == Dimensionality.MASS
               and obj.product.avg_unit_weight is not None):
             other_amount = Q_((other_amount * Q_(obj.product.avg_unit_weight, 'kg')).magnitude, 'kg')
 
-        elif (str(other_amount_dim) == '[mass]'
-              and str(obj_amount_dim) == '[unit]'
+        elif (str(other_amount_dim) == Dimensionality.MASS
+              and str(obj_amount_dim) == Dimensionality.UNIT
               and obj.product.avg_unit_weight is not None):
             other_amount = Q_((other_amount / Q_(obj.product.avg_unit_weight, 'kg')).magnitude, 'unit')
+
+        elif (str(other_amount_dim) == Dimensionality.UNIT
+              and str(obj_amount_dim) == Dimensionality.VOLUME.label
+              and obj.product.avg_unit_volume is not None):
+            other_amount = Q_((other_amount * Q_(obj.product.avg_unit_volume, 'L')).magnitude, 'L')
+
+        elif (str(other_amount_dim) == Dimensionality.VOLUME.label
+              and str(obj_amount_dim) == Dimensionality.UNIT
+              and obj.product.avg_unit_volume is not None):
+            other_amount = Q_((other_amount / Q_(obj.product.avg_unit_volume, 'L')).magnitude, 'unit')
 
     return obj_amount, other_amount.to(obj_amount.units)
 

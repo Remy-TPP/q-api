@@ -16,6 +16,11 @@ class ConverterTests(TestCase):
             density=1032
         )
 
+        self.leche_descremada = Product.objects.create(
+            name='Leche Descremada',
+            avg_unit_volume=1
+        )
+
         self.manzana = Product.objects.create(
             name='Manzana',
             avg_unit_weight=0.252
@@ -88,3 +93,37 @@ class ConverterTests(TestCase):
 
         self.assertEqual(round(other.magnitude), 252)
         self.assertEqual(round((obj - other).magnitude), 748)
+
+    def test_convert_volume_to_unit(self):
+        """ When converting 2L to unit with avg_unit_volume=1L, should return 2"""
+
+        item = InventoryItem.objects.create(
+            place=self.place,
+            product=self.leche_descremada,
+            quantity=2,
+            unit=Unit.objects.get(name='unit')
+        )
+
+        amount = Amount(unit=Unit.objects.get(short_name='L'), quantity=2)
+
+        obj, other = convert_to_correct_unit(item, amount)
+
+        self.assertEqual(round(other.magnitude), 2)
+        self.assertEqual(round((obj - other).magnitude), 0)
+
+    def test_convert_unit_to_volume(self):
+        """ When converting 1unit to mL with avg_unit_volume=1L, should return 1000mL"""
+
+        item = InventoryItem.objects.create(
+            place=self.place,
+            product=self.leche_descremada,
+            quantity=1000,
+            unit=Unit.objects.get(short_name='mL')
+        )
+
+        amount = Amount(unit=Unit.objects.get(name='unit'), quantity=1)
+
+        obj, other = convert_to_correct_unit(item, amount)
+
+        self.assertEqual(round(other.magnitude), 1000)
+        self.assertEqual(round((obj - other).magnitude), 0)

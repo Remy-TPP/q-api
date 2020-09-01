@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='amount',
             name='unit',
-            field=models.ForeignKey(default=apps.products.models.unit_default, on_delete=django.db.models.deletion.CASCADE, to='products.Unit'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='products.Unit'),
         ),
     ]
