@@ -3,5 +3,5 @@ from django.db import models
 
 class Dimensionality(models.TextChoices):
     UNIT = '[unit]'
-    VOLUME = '[volume]'
+    VOLUME = '[volume]', '[length] ** 3'
     MASS = '[mass]'
