@@ -1,4 +1,5 @@
 # TODO: test CRUD'ing using serializers
+from django.db.models import Q
 from rest_framework import serializers
 # from rest_framework_recursive.fields import RecursiveField
 
@@ -6,35 +7,43 @@ from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recip
 from apps.products.serializers import AmountSerializer, ProductSerializer, ProductMinimalSerializer
 
 
-class DishCategorySerializer(serializers.HyperlinkedModelSerializer):
+class DishCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DishCategory
         fields = '__all__'
 
 
-class DishLabelSerializer(serializers.HyperlinkedModelSerializer):
+class DishLabelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DishLabel
         fields = '__all__'
 
 
-class DishSerializer(serializers.HyperlinkedModelSerializer):
-    categories = DishCategorySerializer(many=True)
-    labels = DishLabelSerializer(many=True)
-    recipes = serializers.HyperlinkedRelatedField(view_name='recipe-detail', many=True, read_only=True)
-
-    class Meta:
-        model = Dish
-        fields = '__all__'
-
-
-class RecipeMinimalSerializer(serializers.HyperlinkedModelSerializer):
+class RecipeMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['url', 'title']
+        fields = ['id', 'title']
+
+
+class DishSerializer(serializers.ModelSerializer):
+    categories = DishCategorySerializer(many=True)
+    recipes = RecipeMinimalSerializer(many=True, read_only=True)
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Dish
+        exclude = ['labels']
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        recipe_with_image = obj.recipes.exclude(
+            Q(image__isnull=True) |
+            Q(image__exact='')
+        ).first()
+        return request.build_absolute_uri(recipe_with_image.image.url) if recipe_with_image is not None else None
 
 
 class IngredientSerializer(AmountSerializer):
@@ -55,7 +64,7 @@ class RecipeIngredientSerializer(AmountSerializer):
         exclude = ['id', 'recipe']
 
 
-class RecipeSerializer(serializers.HyperlinkedModelSerializer):
+class RecipeSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(max_length=None, use_url=False, allow_null=True)
     instructions = serializers.SlugRelatedField(slug_field='steps', read_only=True)
     ingredients = serializers.SerializerMethodField(method_name='get_ingredients')

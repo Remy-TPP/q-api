@@ -114,6 +114,7 @@ class DishViewSet(viewsets.ModelViewSet):
     serializer_class = DishSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    filterset_fields = ['labels']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
