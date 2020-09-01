@@ -3,21 +3,24 @@
         "model": "recipes.dishlabel",
         "pk": 1,
         "fields": {
-            "name": "desayuno"
+            "name": "desayuno",
+            "image": "/images/dish-labels/desayuno.png"
         }
     },
     {
         "model": "recipes.dishlabel",
         "pk": 2,
         "fields": {
-            "name": "almuerzo"
+            "name": "almuerzo",
+            "image": "/images/dish-labels/almuerzo.png"
         }
     },
     {
         "model": "recipes.dishlabel",
         "pk": 3,
         "fields": {
-            "name": "cena"
+            "name": "cena",
+            "image": "/images/dish-labels/cena.png"
         }
     }
 ]

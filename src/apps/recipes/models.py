@@ -17,6 +17,7 @@ class DishCategory(models.Model):
 
 class DishLabel(models.Model):
     name = models.CharField(max_length=60)
+    image = models.ImageField(null=True)
 
     class Meta:
         verbose_name_plural = "dish labels"
@@ -64,7 +65,7 @@ class Recipe(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.SET_NULL, null=True, related_name='recipes')
     title = models.CharField(max_length=300, blank=True)
     description = models.TextField()
-    image = models.ImageField(upload_to='images/recipes/%Y-%m-%d', null=True)
+    image = models.ImageField(upload_to='images/recipes', null=True)
     ingredients = models.ManyToManyField(Product, through='Ingredient')
     instructions = models.OneToOneField(RecipeInstructions,
                                         default=RecipeInstructions.default,
