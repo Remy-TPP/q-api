@@ -23,3 +23,7 @@ scripts:
   - pipenv run pylint
   - pipenv run test
   - pipenv run cov-report
+
+branches:
+  only:
+    - master
