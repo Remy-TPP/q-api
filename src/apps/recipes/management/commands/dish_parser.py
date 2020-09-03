@@ -22,11 +22,11 @@ possible_units = [
     'gram: g gram grams gramo gramos gr grs g. gr. grs.',
     'kilogram: kg kilogram kilograms kilo kilos kilogramo kilogramos kg.',
     'liter: L l liter liters litro litros l.',
-    'milliliter: mL ml milliliter milliliters mililitro mililitros ml.',
+    'milliliter: mL ml milliliter milliliters mililitro mililitros ml. cc cc.',
     'cup: cup cups taza tazas',
     ('teaspoon: tsp teaspoon teaspoons cucharita cucharitas cucharadita cucharaditas '
      'cdta cdita cditas cdta. cdtas. cdita. cditas.'),
-    'tablespoon: Tbsp tbsp tablespoon tablespoons cuchara cucharas cucharada cucharadas cda cdas cda. cdas.',
+    'tablespoon: Tbsp tbsp tablespoon tablespoons cuchara cucharas cucharada cucharadas cda cdas cds. cda. cdas.',
     'pound: lb pound pounds libra libras lb.',
     'ounce: oz ounce ounces onza onzas oz.',
 ]
@@ -78,12 +78,12 @@ def parse_ingredient(ingr_line, section_name):
                 unrecognized_unit_names[unit_match.group(1).lower()] += 1
 
     # look for comment at string end, after comma or between parentheses, and grab first match
-    if (remarks_match := re.search(r'\s*(?:,\s*(.*)|\((.*)\))$', ingr_line)):
-        remarks = next((x for x in remarks_match.groups() if x), None)
+    if (remarks_match := re.search(r'\s*(?:,\s*(.*)|\((.*)\))\s*$', ingr_line)):
+        remarks = next((x.strip(' .') for x in remarks_match.groups() if x), None)
         ingr_line = ingr_line[:remarks_match.start()]
 
     # whatever's left should be the product name
-    product = ingr_line.lower()
+    product = ingr_line.lower().strip(' ⠀.')  # includes U+2800 ("braille pattern blank")
 
     section_name = section_name.strip(': ') if section_name else None
 
@@ -100,7 +100,7 @@ def seems_like_ingredient(line):
 def seems_like_section_name(line):
     """Check whether `line` starts with 'Para' or ends with ':', ignoring case and whitespace."""
     return bool(
-        re.search(r'(^\s*para\b|:\s*$)', line, re.IGNORECASE)
+        re.search(r'(^[^a-zA-Záéíóúü0-9]*para\b|:\s*$)', line, re.IGNORECASE)
     )
 
 
@@ -155,7 +155,7 @@ def parse_ingredient_list(raw_ingrs_list):
 
 
 def parse_and_create_recipe(raw_recipe, dish, assets):
-    print(f"\n\n[{dish.name}] *{raw_recipe['name'].strip()}*")
+    print(f"\n\n\n[{dish.name}] *{raw_recipe['name'].strip()}*")
 
     # First verify we get a nice parsing, otherwise skip the recipe
     if not (parsed_ingrs := parse_ingredient_list(raw_recipe['ingredients'])):
@@ -206,7 +206,7 @@ class DishParser:
             },
         )
 
-        # row['recipes'] holds a Python list of dicts in a string
+        # row['recipes'] is a string which holds a Python list of dicts in a string
         recipes = ast.literal_eval(row['recipes'])
         if (not any([parse_and_create_recipe(recipe_dict, dish, row['assets'])
                      for recipe_dict in recipes])
@@ -215,7 +215,9 @@ class DishParser:
             dish.delete()
             return False
 
-        for tag in row['tags']:
+        # row['tags'] is a string which holds a Python list of string tags
+        for tag in ast.literal_eval(row['tags']):
+            print(f'Tag: {tag.strip().lower()}')
             dish.labels.add(
                 DishLabel.objects.get_or_create(name=tag.strip().lower())[0]
             )

@@ -5,9 +5,7 @@ from enum import Enum
 
 from django.core.management.base import BaseCommand
 
-# from apps.products.models import Unit, Amount, Product
-# from apps.recipes.models import Dish, DishLabel, Recipe, RecipeInstructions, Ingredient
-from apps.recipes.models import Dish, Recipe
+from apps.recipes.models import Dish, Recipe, DishLabel
 from .dish_parser import DishParser
 
 
@@ -40,9 +38,10 @@ class Command(BaseCommand):
 
 
 def clear_data():
-    """Delete all Dishes and Recipes."""
+    """Delete all Dishes, Recipes and DishLabels."""
     Dish.objects.all().delete()
     Recipe.objects.all().delete()
+    DishLabel.objects.all().delete()
 
 
 def run_seed(self, mode, seed_file, n):
@@ -58,11 +57,11 @@ def run_seed(self, mode, seed_file, n):
     with open(seed_file) as csvf:
         reader = csv.DictReader(csvf, delimiter=',')
         # Only grab the first N rows
-        for _ in range(n):
-            row = next(reader, None)
-            if not row:
+        for j in range(n):
+            if not (row := next(reader, None)):
                 break
             dish_parser.parse_and_create_dish(row)
+            print(f'[{dish_parser.rows_added_count}/{j+1}]')
 
     print('\nWords not recognized as conventional units and treated as product names\n-----')
     for unn in sorted(dish_parser.unrecognized_unit_names().items(), key=lambda x: x[0]):
