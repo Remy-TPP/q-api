@@ -1,12 +1,13 @@
 from django.urls import path, include
 
-from apps.api.views import SchemaView
+from apps.api.views import SchemaView, reset_db
 
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration', include('rest_auth.registration.urls')),
+    path('reset/', reset_db, name='reset-db'),
     path('', include('django.contrib.auth.urls')),
 ]
 
