@@ -1,4 +1,5 @@
 from django.core import management
+from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -22,8 +23,8 @@ SchemaView = get_schema_view(
 #     responses={status.HTTP_201_CREATED: Image},
 # ))
 # TODO: comment
-# TODO: allow only for authenticated Admins
 @api_view(['POST'])
+@staff_member_required
 def reset_db(request):
     """Populates database with certain test data, including Units, Recipes & Dishes, DishLabels."""
     management.call_command('loaddata', 'unit')
