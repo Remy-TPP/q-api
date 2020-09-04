@@ -38,7 +38,9 @@ class Command(BaseCommand):
 
 
 def clear_data():
-    """Delete all Dishes, Recipes and DishLabels."""
+    """Delete all Dishes, Recipes and DishLabels.
+
+    Note it does not delete Products."""
     Dish.objects.all().delete()
     Recipe.objects.all().delete()
     DishLabel.objects.all().delete()
