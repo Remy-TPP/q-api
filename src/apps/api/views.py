@@ -3,8 +3,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from drf_yasg.utils import swagger_auto_schema
 
 SchemaView = get_schema_view(
     openapi.Info(
@@ -17,17 +18,33 @@ SchemaView = get_schema_view(
 )
 
 
-# @method_decorator(name='create', decorator=swagger_auto_schema(
-#     operation_summary="Creates a purchase with the given items.",
-#     operation_description="Returns image (content_type 'image/jpeg') of QR code with purchase URL embedded.",
-#     responses={status.HTTP_201_CREATED: Image},
-# ))
-# TODO: comment
+@swagger_auto_schema(
+    method='post',
+    operation_summary='Reset the database',
+    operation_description=(
+        '(Re)populates database with test data, including Units, Recipes & Dishes, DishLabels.\n\n'
+        'Warning: this overwrites all db objects with the PK specified by the fixtures, '
+        'so any modifications to those will be lost.'
+    ),
+    manual_parameters=[
+        openapi.Parameter(
+            'dishes_fixture',
+            in_=openapi.IN_QUERY,
+            description='Name of fixture to load for recipes and such.',
+            type=openapi.TYPE_STRING,
+            required=False
+        ),
+    ],
+    security=None,
+)
 @api_view(['POST'])
 @staff_member_required
 def reset_db(request):
-    """Populates database with certain test data, including Units, Recipes & Dishes, DishLabels."""
+    dishes_fixture_name = request.query_params.get('dishes_fixture', 'dishes_dataset_02')
+    # TODO: log? "Loading fixtures unit and {dishes_fixture_name}"
     management.call_command('loaddata', 'unit')
-    # TODO: request.query_params.get('dishes_fixture')
-    management.call_command('loaddata', 'dishes_dataset_02')
+    try:
+        management.call_command('loaddata', dishes_fixture_name)
+    except management.CommandError as err:
+        return Response({'error': 'Fixture not found', 'errorMessage': str(err)}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'message': 'Fixtures loaded successfully'}, status=status.HTTP_201_CREATED)
