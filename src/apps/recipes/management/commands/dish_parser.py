@@ -100,7 +100,7 @@ def seems_like_ingredient(line):
 def seems_like_section_name(line):
     """Check whether `line` starts with 'Para' or ends with ':', ignoring case and whitespace."""
     return bool(
-        re.search(r'(^[^a-zA-Záéíóúü0-9]*para\b|:\s*$)', line, re.IGNORECASE)
+        re.search(r'(^[^a-záéíóúü0-9]*para\b|:\s*$)', line, re.IGNORECASE)
     )
 
 

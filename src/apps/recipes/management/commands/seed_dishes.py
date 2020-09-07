@@ -5,7 +5,7 @@ from enum import Enum
 
 from django.core.management.base import BaseCommand
 
-from apps.recipes.models import Dish, Recipe, DishLabel
+from apps.recipes.models import Dish, Recipe, RecipeInstructions, DishLabel
 from .dish_parser import DishParser
 
 
@@ -38,11 +38,13 @@ class Command(BaseCommand):
 
 
 def clear_data():
-    """Delete all Dishes, Recipes and DishLabels.
+    """Delete all Dishes, Recipes, RecipeInstructions and DishLabels.
 
     Note it does not delete Products."""
     Dish.objects.all().delete()
     Recipe.objects.all().delete()
+    # If Recipe's delete was well implemented this next line shouldn't be necessary
+    RecipeInstructions.objects.all().delete()
     DishLabel.objects.all().delete()
 
 
