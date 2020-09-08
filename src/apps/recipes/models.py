@@ -17,7 +17,7 @@ class DishCategory(models.Model):
 
 class DishLabel(models.Model):
     name = models.CharField(max_length=60)
-    image = models.ImageField(null=True)
+    image = models.ImageField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "dish labels"
@@ -32,8 +32,8 @@ class Dish(models.Model):
     name = models.CharField(max_length=300)
     description = models.TextField()
     # TODO: `related_name='+'` for either of categories or labels?
-    categories = models.ManyToManyField(DishCategory)
-    labels = models.ManyToManyField(DishLabel)
+    categories = models.ManyToManyField(DishCategory, blank=True)
+    labels = models.ManyToManyField(DishLabel, blank=True)
 
     class Meta:
         verbose_name_plural = "dishes"
@@ -44,6 +44,9 @@ class Dish(models.Model):
 
 class RecipeInstructions(models.Model):
     steps = ArrayField(models.TextField(), default=list)
+
+    class Meta:
+        verbose_name_plural = "recipe instructions"
 
     def __str__(self):
         """Example output: '[8 steps]'"""
@@ -65,8 +68,9 @@ class Recipe(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.SET_NULL, null=True, related_name='recipes')
     title = models.CharField(max_length=300, blank=True)
     description = models.TextField()
-    image = models.ImageField(upload_to='images/recipes', null=True)
+    image = models.ImageField(upload_to='images/recipes', null=True, blank=True)
     ingredients = models.ManyToManyField(Product, through='Ingredient')
+    # TODO: if Recipe is deleted, so should its instructions
     instructions = models.OneToOneField(RecipeInstructions,
                                         default=RecipeInstructions.default,
                                         on_delete=models.CASCADE)
