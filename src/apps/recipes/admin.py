@@ -39,7 +39,8 @@ class DishAdmin(admin.ModelAdmin):
 class RecipeInstructionsAdmin(admin.ModelAdmin, DynamicArrayMixin):
     list_display = ('recipe',)
     ordering = ('recipe__title',)
-    fields = ('steps',)
+    readonly_fields = ('recipe',)
+    fields = ('recipe', 'steps',)
     formfield_overrides = {
         DynamicArrayField: {'widget': DynamicArrayTextareaWidget},
     }
