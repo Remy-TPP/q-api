@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core import management
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework import permissions, status
@@ -40,7 +41,7 @@ SchemaView = get_schema_view(
 @api_view(['POST'])
 @staff_member_required
 def reset_db(request):
-    dishes_fixture_name = request.query_params.get('dishes_fixture', 'dishes_dataset_02')
+    dishes_fixture_name = request.query_params.get('dishes_fixture', 'dishes_dataset')
     # TODO: log? "Loading fixtures unit and {dishes_fixture_name}"
     management.call_command('loaddata', 'unit')
     try:

@@ -51,7 +51,7 @@ class RecipeInstructions(models.Model):
         verbose_name_plural = "recipe instructions"
 
     def __str__(self):
-        return self.recipe.__str__()
+        return str(self.recipe)
 
     @classmethod
     def default(cls):
@@ -84,7 +84,7 @@ class Recipe(models.Model):
         """Example output: '- <ingr1>\n<ingr2>\n\n<sect1>:\n<ingr3>'."""
         ingrs_by_section = OrderedDict()
         for ingr in self.ingredient_set.all().order_by('pk'):
-            ingrs_by_section.setdefault(ingr.section, []).append(ingr.__str__())
+            ingrs_by_section.setdefault(ingr.section, []).append(str(ingr))
         return '\n\n'.join(
             ['\n\t- '.join([f'{section}:' if section else '', *ingrs]).strip('\n')
              for section, ingrs in ingrs_by_section.items()]
