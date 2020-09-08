@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('seeding data...')
-        nrows = run_seed(self, options['mode'], options['file'], options['n'])
+        nrows = run_seed(options['mode'], options['file'], options['n'])
         print(f'done. {nrows} rows added.')
 
 
@@ -46,7 +46,7 @@ def clear_data():
     DishLabel.objects.all().delete()
 
 
-def run_seed(self, mode, seed_file, n):
+def run_seed(mode, seed_file, n):
     """Seed database with CSV file based on mode."""
     if mode != Mode.APPEND.value:
         clear_data()

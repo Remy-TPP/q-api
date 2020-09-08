@@ -6,7 +6,7 @@ from decimal import Decimal
 from fractions import Fraction
 from collections import defaultdict, namedtuple
 
-from apps.products.models import Unit, Amount, Product
+from apps.products.models import Unit, Product
 from apps.recipes.models import Dish, DishLabel, Recipe, RecipeInstructions, Ingredient
 
 
