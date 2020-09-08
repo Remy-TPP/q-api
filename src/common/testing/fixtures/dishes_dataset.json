@@ -1,5 +1,69 @@
 [
 {
+    "model": "recipes.dishcategory",
+    "pk": 1,
+    "fields": {
+        "name": "vegano",
+        "description": "No consume productos animales"
+    }
+},
+{
+    "model": "recipes.dishcategory",
+    "pk": 2,
+    "fields": {
+        "name": "vegetariano",
+        "description": "No consume carne animal pero s\u00ed productos derivados, como leche y huevos; generalmente usado para decir ovolactovegetariano"
+    }
+},
+{
+    "model": "recipes.dishcategory",
+    "pk": 3,
+    "fields": {
+        "name": "apto cel\u00edaco",
+        "description": "Intolerancia al gluten, conjunto de prote\u00ednas presentes en productos TACC (trigo, avena, cebada, centeno) y derivados"
+    }
+},
+{
+    "model": "recipes.dishlabel",
+    "pk": 1,
+    "fields": {
+        "name": "desayuno",
+        "image": ""
+    }
+},
+{
+    "model": "recipes.dishlabel",
+    "pk": 2,
+    "fields": {
+        "name": "almuerzo",
+        "image": ""
+    }
+},
+{
+    "model": "recipes.dishlabel",
+    "pk": 3,
+    "fields": {
+        "name": "cena",
+        "image": ""
+    }
+},
+{
+    "model": "recipes.dishlabel",
+    "pk": 4,
+    "fields": {
+        "name": "brunch",
+        "image": ""
+    }
+},
+{
+    "model": "recipes.dishlabel",
+    "pk": 5,
+    "fields": {
+        "name": "dinner",
+        "image": ""
+    }
+},
+{
     "model": "recipes.dishlabel",
     "pk": 23,
     "fields": {
@@ -19,7 +83,7 @@
     "model": "recipes.dishlabel",
     "pk": 25,
     "fields": {
-        "name": "f\u00e1ciles",
+        "name": "f\u00e1cil",
         "image": ""
     }
 },
@@ -27,7 +91,7 @@
     "model": "recipes.dishlabel",
     "pk": 26,
     "fields": {
-        "name": "r\u00e1pidas",
+        "name": "r\u00e1pido",
         "image": ""
     }
 },
@@ -509,11 +573,13 @@
     "pk": 454,
     "fields": {
         "created_at": "2020-09-03T19:53:33.930Z",
-        "updated_at": "2020-09-03T19:53:33.930Z",
-        "name": "4 wraps saludables",
+        "updated_at": "2020-09-08T04:01:17.861Z",
+        "name": "Wraps saludables",
         "description": "...",
         "categories": [],
-        "labels": []
+        "labels": [
+            26
+        ]
     }
 },
 {
@@ -2806,7 +2872,7 @@
     "model": "recipes.recipeinstructions",
     "pk": 307,
     "fields": {
-        "steps": "[\"\", \"Colocar en un bowl el az\\u00facar, el az\\u00facar moreno, los huevos y batir con batidora el\\u00e9ctrica.\", \"A\\u00f1adir la harina y el cacao en polvo y volver a batir hasta que est\\u00e9n combinados.\", \"Colocar la mezcla en un molde rectangular enmantecado y enharinado o con papel antiadherente. Reservar.\", \"En una bandeja para horno, colocar los trozos de chocolate blanco. Hornear por 10' o hasta que est\\u00e9n derretidos.\", \"Con una esp\\u00e1tula empezar a formar el caramelizado, moviendo el chocolate blanco por toda la bandeja.\", \"Colocarlo en un frasco y a\\u00f1adir sal marina.\", \"Verter la mezcla sobre la mezcla de brownie y con ayuda de un palillo formar el marmolado.\", \"Hornear en horno fuerte (200-220\\u00b0) por 20 minutos.\", \"Servir y disfrutar!\"]"
+        "steps": "[\"Colocar en un bowl el az\\u00facar, el az\\u00facar moreno, los huevos y batir con batidora el\\u00e9ctrica.\", \"A\\u00f1adir la harina y el cacao en polvo y volver a batir hasta que est\\u00e9n combinados.\", \"Colocar la mezcla en un molde rectangular enmantecado y enharinado o con papel antiadherente. Reservar.\", \"En una bandeja para horno, colocar los trozos de chocolate blanco. Hornear por 10' o hasta que est\\u00e9n derretidos.\", \"Con una esp\\u00e1tula empezar a formar el caramelizado, moviendo el chocolate blanco por toda la bandeja.\", \"Colocarlo en un frasco y a\\u00f1adir sal marina.\", \"Verter la mezcla sobre la mezcla de brownie y con ayuda de un palillo formar el marmolado.\", \"Hornear en horno fuerte (200-220\\u00b0) por 20 minutos.\", \"Servir y disfrutar!\"]"
     }
 },
 {
@@ -2876,7 +2942,7 @@
     "model": "recipes.recipeinstructions",
     "pk": 317,
     "fields": {
-        "steps": "[\"\", \"Pelar las manzanas y cortarlas en cubos.\", \"Colocarlas en un bowl, y a\\u00f1adirles jugo de lim\\u00f3n, esencia de vainilla, az\\u00facar y la canela. Revolver para combinar.\", \"En otro bowl, combinar el polvo de hornear con bicarbonato de sodio y sal. A\\u00f1adir los huevos y la leche. Mezclar.\", \"A\\u00f1adir las manzanas a esta mezcla y agregar el dulce de leche.\", \"Mezclar todo.\", \"Con ayuda de un cuchar\\u00f3n fre\\u00edr los bu\\u00f1uelos en aceite hirviendo y retirarlos cuando est\\u00e9n dorados y crocantes.\", \"Dejar que se enfr\\u00eden sobre una rejilla y espolvorearlos con az\\u00facar + canela.\", \"Disfrutar!\"]"
+        "steps": "[\"Pelar las manzanas y cortarlas en cubos.\", \"Colocarlas en un bowl, y a\\u00f1adirles jugo de lim\\u00f3n, esencia de vainilla, az\\u00facar y la canela. Revolver para combinar.\", \"En otro bowl, combinar el polvo de hornear con bicarbonato de sodio y sal. A\\u00f1adir los huevos y la leche. Mezclar.\", \"A\\u00f1adir las manzanas a esta mezcla y agregar el dulce de leche.\", \"Mezclar todo.\", \"Con ayuda de un cuchar\\u00f3n fre\\u00edr los bu\\u00f1uelos en aceite hirviendo y retirarlos cuando est\\u00e9n dorados y crocantes.\", \"Dejar que se enfr\\u00eden sobre una rejilla y espolvorearlos con az\\u00facar + canela.\", \"Disfrutar!\"]"
     }
 },
 {
@@ -3048,6 +3114,13 @@
     }
 },
 {
+    "model": "recipes.recipeinstructions",
+    "pk": 342,
+    "fields": {
+        "steps": "[]"
+    }
+},
+{
     "model": "recipes.recipe",
     "pk": 276,
     "fields": {
@@ -3078,7 +3151,7 @@
     "pk": 278,
     "fields": {
         "created_at": "2020-09-03T19:25:09.051Z",
-        "updated_at": "2020-09-03T19:25:09.052Z",
+        "updated_at": "2020-09-08T18:47:48.769Z",
         "dish": 392,
         "title": "Creme Br\u00fbl\u00e9e de pi\u00f1a",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/35cb917d-1724_cremebruleepineapple_land1.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/38c41a15-creme-brule-de-pina_l_es.mp4'}",
@@ -3091,7 +3164,7 @@
     "pk": 279,
     "fields": {
         "created_at": "2020-09-03T19:25:13.464Z",
-        "updated_at": "2020-09-03T19:25:13.464Z",
+        "updated_at": "2020-09-08T18:31:35.930Z",
         "dish": 393,
         "title": "Caramelo salado",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/e71c0953-homemade_salt_water_taffy_l.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/5b38ab7d-caramelo-salado_l_es.mp4'}",
@@ -3130,7 +3203,7 @@
     "pk": 282,
     "fields": {
         "created_at": "2020-09-03T19:26:31.662Z",
-        "updated_at": "2020-09-03T19:26:31.662Z",
+        "updated_at": "2020-09-08T18:36:35.740Z",
         "dish": 398,
         "title": "Cerditos Dulces",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/b57a46e8-01-pig-buns-lc-en-uk-00-01-11-14-still005.png', 'video': 'https://s3.amazonaws.com/truffle-originals/cf027c92-cerditos-dulces_l_es.mp4'}",
@@ -3221,7 +3294,7 @@
     "pk": 289,
     "fields": {
         "created_at": "2020-09-03T19:28:32.697Z",
-        "updated_at": "2020-09-03T19:28:32.697Z",
+        "updated_at": "2020-09-08T18:46:00.560Z",
         "dish": 408,
         "title": "churros de oreo",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/09a5a0c2-956_oreochurros_land1.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/7fecd831-churros-de-oreo_l_es.mp4'}",
@@ -3260,7 +3333,7 @@
     "pk": 292,
     "fields": {
         "created_at": "2020-09-03T19:28:55.819Z",
-        "updated_at": "2020-09-03T19:28:55.819Z",
+        "updated_at": "2020-09-08T18:40:36.614Z",
         "dish": 412,
         "title": "Cheesecake Gal\u00e1ctica",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/65d02eb5-f510c7a2-galaxy-cheesecake_lc.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/e5b2f884-cheesecake-galactica-l.mp4'}",
@@ -3273,7 +3346,7 @@
     "pk": 293,
     "fields": {
         "created_at": "2020-09-03T19:28:58.839Z",
-        "updated_at": "2020-09-03T19:28:58.839Z",
+        "updated_at": "2020-09-08T18:30:45.545Z",
         "dish": 413,
         "title": "Brownies con Chocolate Blanco Caramelizado",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/ad9e1717-6c9e881d-caremalised_white_chocolate_2_ways_l_still.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/0d5db877-brownies-de-choco-blanco-caramelizado-l.mp4'}",
@@ -3325,7 +3398,7 @@
     "pk": 297,
     "fields": {
         "created_at": "2020-09-03T19:29:38.040Z",
-        "updated_at": "2020-09-03T19:29:38.040Z",
+        "updated_at": "2020-09-08T18:47:00.476Z",
         "dish": 417,
         "title": "Copas de Crema de Lim\u00f3n y Frutillas",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/646e2a8c-copas_1920x1080.jpg', 'video': None}",
@@ -3364,7 +3437,7 @@
     "pk": 300,
     "fields": {
         "created_at": "2020-09-03T19:30:16.489Z",
-        "updated_at": "2020-09-03T19:30:16.489Z",
+        "updated_at": "2020-09-08T00:47:32.875Z",
         "dish": 422,
         "title": "Yemas de huevo en conserva",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/849ad43a-l.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/547e54d3-yema-de-huevo-en-conserva_l_es.mp4'}",
@@ -3390,7 +3463,7 @@
     "pk": 302,
     "fields": {
         "created_at": "2020-09-03T19:30:26.400Z",
-        "updated_at": "2020-09-03T19:30:26.400Z",
+        "updated_at": "2020-09-08T18:31:01.692Z",
         "dish": 424,
         "title": "Brownies sin Az\u00facar",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/8865c1ca-d1c560a1-sugar_free_brownies_l_still.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/a8b97fe7-brownies-sin-azucar-l.mp4'}",
@@ -3403,7 +3476,7 @@
     "pk": 303,
     "fields": {
         "created_at": "2020-09-03T19:33:39.207Z",
-        "updated_at": "2020-09-03T19:33:39.207Z",
+        "updated_at": "2020-09-08T18:31:15.095Z",
         "dish": 431,
         "title": "Bu\u00f1uelos de Manzana Fritos",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/39b98345-7e9e5eef-872-saltedcaramelapplefritters-land2.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/be74349f-bunuelos-l.mp4'}",
@@ -3416,7 +3489,7 @@
     "pk": 304,
     "fields": {
         "created_at": "2020-09-03T19:33:48.976Z",
-        "updated_at": "2020-09-03T19:33:48.976Z",
+        "updated_at": "2020-09-08T18:34:22.191Z",
         "dish": 432,
         "title": "Carbonara en Calabaza",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/22cb5c47-971-spaghettiswuashcarbonara-land.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/ae0efa07-carbonada-en-calabaza-l-es.mp4'}",
@@ -3468,7 +3541,7 @@
     "pk": 308,
     "fields": {
         "created_at": "2020-09-03T19:38:45.804Z",
-        "updated_at": "2020-09-03T19:38:45.804Z",
+        "updated_at": "2020-09-08T18:45:42.423Z",
         "dish": 445,
         "title": "Chow Mein con Hilos de Calabaza",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/0d824389-919_spaghettisquashchowmein_land2.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/ddecbac0-chow-mein-con-hilos-de-calabaza_l_es.mp4'}",
@@ -3520,7 +3593,7 @@
     "pk": 312,
     "fields": {
         "created_at": "2020-09-03T19:53:33.826Z",
-        "updated_at": "2020-09-03T19:53:33.826Z",
+        "updated_at": "2020-09-08T18:35:50.259Z",
         "dish": 453,
         "title": "Cazuela de Chili",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/577d0b25-47ba7ec9-1315_buttermilkbiscuitchilicups_land2.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/9b47d08d-cazuelas-de-chili-l.mp4'}",
@@ -3533,7 +3606,7 @@
     "pk": 313,
     "fields": {
         "created_at": "2020-09-03T19:54:02.596Z",
-        "updated_at": "2020-09-03T19:54:02.596Z",
+        "updated_at": "2020-09-08T00:47:12.096Z",
         "dish": 454,
         "title": "Pollo con miel y s\u00e9samo",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/bc77f2b5-wraps-1920x1080.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/d513a6c3-4-wraps_l_es.mp4'}",
@@ -3546,11 +3619,11 @@
     "pk": 314,
     "fields": {
         "created_at": "2020-09-03T19:54:04.861Z",
-        "updated_at": "2020-09-03T19:54:04.861Z",
+        "updated_at": "2020-09-08T00:47:38.215Z",
         "dish": 454,
         "title": "Zucchini Grillado y Hummus",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/bc77f2b5-wraps-1920x1080.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/d513a6c3-4-wraps_l_es.mp4'}",
-        "image": "",
+        "image": "images/recipes/bc77f2b5-wraps-1920x1080.jpg",
         "instructions": 328
     }
 },
@@ -3611,7 +3684,7 @@
     "pk": 319,
     "fields": {
         "created_at": "2020-09-03T20:05:28.533Z",
-        "updated_at": "2020-09-03T20:05:28.533Z",
+        "updated_at": "2020-09-08T18:41:50.625Z",
         "dish": 470,
         "title": "Cheesecake Vegana",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/cb3f7fd7-bab729c4-vegan_raspberry_cheesecake_l_still.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/a60d73c5-cheesecake-vegana-de-frambuesa-l.mp4'}",
@@ -3663,9 +3736,9 @@
     "pk": 323,
     "fields": {
         "created_at": "2020-09-03T20:07:31.964Z",
-        "updated_at": "2020-09-03T20:07:31.964Z",
+        "updated_at": "2020-09-08T18:30:33.017Z",
         "dish": 478,
-        "title": "Brownie cheesecake",
+        "title": "Brownie Cheesecake",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/e09ecd47-brownie-cheesecake_1920x1080.jpg', 'video': 'https://s3.amazonaws.com/truffle-originals/17ba5198-brownie-cheesecake_l_es.mp4'}",
         "image": "",
         "instructions": 337
@@ -3715,7 +3788,7 @@
     "pk": 327,
     "fields": {
         "created_at": "2020-09-03T20:08:33.590Z",
-        "updated_at": "2020-09-03T20:08:33.590Z",
+        "updated_at": "2020-09-08T18:48:11.360Z",
         "dish": 486,
         "title": "Cronuts de Nutella",
         "description": "Video: {'thumbnail': 'http://truffle-assets.imgix.net/6ac64b81-dkkdgt98uadb_6pcoebzlzqgyy2usyqsayk_nutella-cronuts_landscapethumbnail_en-uk.png', 'video': 'https://s3.amazonaws.com/truffle-originals/9891c9c9-cronuts-l.mp4'}",
@@ -4101,7 +4174,7 @@
     "fields": {
         "quantity": "3.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 278,
         "notes": "",
         "section": ""
@@ -4113,7 +4186,7 @@
     "fields": {
         "quantity": "4.00000",
         "unit": 1,
-        "product": 71,
+        "product": 114,
         "recipe": 278,
         "notes": "",
         "section": ""
@@ -4173,10 +4246,10 @@
     "fields": {
         "quantity": null,
         "unit": 1,
-        "product": 75,
+        "product": 180,
         "recipe": 278,
-        "notes": "para decorar",
-        "section": ""
+        "notes": "",
+        "section": "Para decorar"
     }
 },
 {
@@ -4281,9 +4354,9 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 8,
-        "product": 13,
+        "product": 264,
         "recipe": 279,
-        "notes": "m\u00e1s m\u00e1s para untar con mantequilla las manos y el papel",
+        "notes": "m\u00e1s extra para untar las manos y el papel",
         "section": ""
     }
 },
@@ -4293,9 +4366,9 @@
     "fields": {
         "quantity": "1.00000",
         "unit": 8,
-        "product": 49,
+        "product": 414,
         "recipe": 279,
-        "notes": "",
+        "notes": "negro",
         "section": ""
     }
 },
@@ -4521,9 +4594,9 @@
     "fields": {
         "quantity": "250.00000",
         "unit": 5,
-        "product": 141,
+        "product": 80,
         "recipe": 282,
-        "notes": "",
+        "notes": "tibia",
         "section": "Para la masa"
     }
 },
@@ -4569,7 +4642,7 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 282,
         "notes": "",
         "section": "Para la masa"
@@ -4605,9 +4678,9 @@
     "fields": {
         "quantity": null,
         "unit": 1,
-        "product": 255,
+        "product": 199,
         "recipe": 282,
-        "notes": "",
+        "notes": "c/n",
         "section": "Para la masa"
     }
 },
@@ -4617,9 +4690,9 @@
     "fields": {
         "quantity": null,
         "unit": 1,
-        "product": 256,
+        "product": 49,
         "recipe": 282,
-        "notes": "",
+        "notes": "c/n",
         "section": "Para la masa"
     }
 },
@@ -5901,7 +5974,7 @@
     "fields": {
         "quantity": "150.00000",
         "unit": 2,
-        "product": 13,
+        "product": 264,
         "recipe": 292,
         "notes": "",
         "section": "Para la base"
@@ -5974,30 +6047,6 @@
         "quantity": "3.00000",
         "unit": 8,
         "product": 198,
-        "recipe": 292,
-        "notes": "",
-        "section": "Para el relleno"
-    }
-},
-{
-    "model": "recipes.ingredient",
-    "pk": 3752,
-    "fields": {
-        "quantity": null,
-        "unit": 1,
-        "product": 199,
-        "recipe": 292,
-        "notes": "violeta y azul para alimentos",
-        "section": "Para el relleno"
-    }
-},
-{
-    "model": "recipes.ingredient",
-    "pk": 3753,
-    "fields": {
-        "quantity": null,
-        "unit": 1,
-        "product": 200,
         "recipe": 292,
         "notes": "",
         "section": "Para el relleno"
@@ -6081,7 +6130,7 @@
     "fields": {
         "quantity": null,
         "unit": 1,
-        "product": 203,
+        "product": 420,
         "recipe": 293,
         "notes": "",
         "section": ""
@@ -6357,7 +6406,7 @@
     "fields": {
         "quantity": "5.00000",
         "unit": 1,
-        "product": 71,
+        "product": 114,
         "recipe": 297,
         "notes": "",
         "section": ""
@@ -6969,7 +7018,7 @@
     "fields": {
         "quantity": "6.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 302,
         "notes": "",
         "section": ""
@@ -7017,7 +7066,7 @@
     "fields": {
         "quantity": "200.00000",
         "unit": 2,
-        "product": 13,
+        "product": 264,
         "recipe": 302,
         "notes": "",
         "section": "Para el frosting"
@@ -7053,9 +7102,9 @@
     "fields": {
         "quantity": "90.00000",
         "unit": 2,
-        "product": 275,
+        "product": 248,
         "recipe": 302,
-        "notes": "",
+        "notes": "derretido",
         "section": "Para el frosting"
     }
 },
@@ -7185,7 +7234,7 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 303,
         "notes": "",
         "section": ""
@@ -7221,7 +7270,7 @@
     "fields": {
         "quantity": null,
         "unit": 1,
-        "product": 340,
+        "product": 127,
         "recipe": 303,
         "notes": "",
         "section": "Extras"
@@ -7233,9 +7282,9 @@
     "fields": {
         "quantity": "1.00000",
         "unit": 1,
-        "product": 341,
+        "product": 369,
         "recipe": 304,
-        "notes": "",
+        "notes": "cortada por la mitad a lo largo",
         "section": ""
     }
 },
@@ -7259,7 +7308,7 @@
         "unit": 6,
         "product": 342,
         "recipe": 304,
-        "notes": "",
+        "notes": "en cubos",
         "section": ""
     }
 },
@@ -7269,9 +7318,9 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 1,
-        "product": 343,
+        "product": 105,
         "recipe": 304,
-        "notes": "",
+        "notes": "2 yemas y 1 entero, batido",
         "section": ""
     }
 },
@@ -7872,7 +7921,7 @@
         "product": 369,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara el chow mein"
+        "section": "\ud83d\udc49\ud83c\udffc Para el chow mein"
     }
 },
 {
@@ -7884,7 +7933,7 @@
         "product": 100,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara el chow mein"
+        "section": "\ud83d\udc49\ud83c\udffc Para el chow mein"
     }
 },
 {
@@ -7896,7 +7945,7 @@
         "product": 345,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara el chow mein"
+        "section": "\ud83d\udc49\ud83c\udffc Para el chow mein"
     }
 },
 {
@@ -7908,7 +7957,7 @@
         "product": 370,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para las verduras"
     }
 },
 {
@@ -7919,8 +7968,8 @@
         "unit": 1,
         "product": 371,
         "recipe": 308,
-        "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara las verduras"
+        "notes": "picados",
+        "section": "\ud83d\udc49\ud83c\udffc Para las verduras"
     }
 },
 {
@@ -7929,10 +7978,10 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 1,
-        "product": 372,
+        "product": 43,
         "recipe": 308,
-        "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara las verduras"
+        "notes": "ralladas",
+        "section": "\ud83d\udc49\ud83c\udffc Para las verduras"
     }
 },
 {
@@ -7944,7 +7993,7 @@
         "product": 373,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para las verduras"
     }
 },
 {
@@ -7956,7 +8005,7 @@
         "product": 374,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para las verduras"
     }
 },
 {
@@ -7968,7 +8017,7 @@
         "product": 189,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para marinar las verduras"
     }
 },
 {
@@ -7980,7 +8029,7 @@
         "product": 375,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para marinar las verduras"
     }
 },
 {
@@ -7992,7 +8041,7 @@
         "product": 38,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para marinar las verduras"
     }
 },
 {
@@ -8004,7 +8053,7 @@
         "product": 5,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para marinar las verduras"
     }
 },
 {
@@ -8016,19 +8065,7 @@
         "product": 187,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
-    }
-},
-{
-    "model": "recipes.ingredient",
-    "pk": 3922,
-    "fields": {
-        "quantity": null,
-        "unit": 1,
-        "product": 376,
-        "recipe": 308,
-        "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para marinar las verduras"
     }
 },
 {
@@ -8040,7 +8077,7 @@
         "product": 31,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8052,7 +8089,7 @@
         "product": 377,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8064,7 +8101,7 @@
         "product": 187,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8076,7 +8113,7 @@
         "product": 38,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8088,7 +8125,7 @@
         "product": 333,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8100,7 +8137,7 @@
         "product": 260,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8112,7 +8149,7 @@
         "product": 378,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8124,19 +8161,7 @@
         "product": 64,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
-    }
-},
-{
-    "model": "recipes.ingredient",
-    "pk": 3931,
-    "fields": {
-        "quantity": null,
-        "unit": 1,
-        "product": 379,
-        "recipe": 308,
-        "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para la salsa de tomate"
     }
 },
 {
@@ -8148,7 +8173,7 @@
         "product": 105,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para empanar el pollo"
     }
 },
 {
@@ -8160,7 +8185,7 @@
         "product": 100,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para empanar el pollo"
     }
 },
 {
@@ -8172,7 +8197,7 @@
         "product": 124,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para empanar el pollo"
     }
 },
 {
@@ -8184,7 +8209,7 @@
         "product": 64,
         "recipe": 308,
         "notes": "",
-        "section": "\ud83d\udc49\ud83c\udffcPara marinar las verduras"
+        "section": "\ud83d\udc49\ud83c\udffc Para empanar el pollo"
     }
 },
 {
@@ -8555,7 +8580,7 @@
         "unit": 1,
         "product": 402,
         "recipe": 312,
-        "notes": "",
+        "notes": "en cubitos",
         "section": ""
     }
 },
@@ -8567,7 +8592,7 @@
         "unit": 1,
         "product": 403,
         "recipe": 312,
-        "notes": "",
+        "notes": "en cubitos",
         "section": ""
     }
 },
@@ -8975,7 +9000,7 @@
         "unit": 6,
         "product": 422,
         "recipe": 314,
-        "notes": "",
+        "notes": "tierna",
         "section": "Para la envoltura"
     }
 },
@@ -9429,9 +9454,9 @@
     "fields": {
         "quantity": "10.00000",
         "unit": 1,
-        "product": 464,
+        "product": 274,
         "recipe": 319,
-        "notes": "",
+        "notes": "sin carozo",
         "section": ""
     }
 },
@@ -9491,7 +9516,7 @@
         "unit": 2,
         "product": 465,
         "recipe": 319,
-        "notes": "",
+        "notes": "remojadas durante la noche",
         "section": ""
     }
 },
@@ -9547,9 +9572,9 @@
     "model": "recipes.ingredient",
     "pk": 4049,
     "fields": {
-        "quantity": null,
+        "quantity": "1.00000",
         "unit": 1,
-        "product": 467,
+        "product": 318,
         "recipe": 319,
         "notes": "",
         "section": ""
@@ -10101,7 +10126,7 @@
     "fields": {
         "quantity": "4.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 323,
         "notes": "",
         "section": "Para el brownie"
@@ -10209,7 +10234,7 @@
     "fields": {
         "quantity": "2.00000",
         "unit": 1,
-        "product": 27,
+        "product": 105,
         "recipe": 323,
         "notes": "",
         "section": "Para el cheesecake"
@@ -10816,6 +10841,54 @@
     }
 },
 {
+    "model": "recipes.ingredient",
+    "pk": 4155,
+    "fields": {
+        "quantity": null,
+        "unit": 1,
+        "product": 52,
+        "recipe": 303,
+        "notes": "",
+        "section": "Extras"
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 4156,
+    "fields": {
+        "quantity": null,
+        "unit": 1,
+        "product": 519,
+        "recipe": 292,
+        "notes": "rosa, violeta y azul",
+        "section": "Para el relleno"
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 4157,
+    "fields": {
+        "quantity": null,
+        "unit": 1,
+        "product": 200,
+        "recipe": 292,
+        "notes": "",
+        "section": "Para el relleno"
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 4158,
+    "fields": {
+        "quantity": null,
+        "unit": 1,
+        "product": 293,
+        "recipe": 278,
+        "notes": "",
+        "section": "Para decorar"
+    }
+},
+{
     "model": "products.unit",
     "pk": 1,
     "fields": {
@@ -10907,19 +10980,6 @@
 },
 {
     "model": "products.product",
-    "pk": 1,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.045Z",
-        "updated_at": "2020-08-06T19:17:06.045Z",
-        "name": "galletitas de chocolate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 2,
     "fields": {
         "created_at": "2020-08-06T19:17:06.056Z",
@@ -10998,63 +11058,11 @@
 },
 {
     "model": "products.product",
-    "pk": 8,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.123Z",
-        "updated_at": "2020-08-06T19:17:06.123Z",
-        "name": "mantequilla de man\u00ed",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 9,
     "fields": {
         "created_at": "2020-08-06T19:17:06.135Z",
         "updated_at": "2020-08-06T19:17:06.135Z",
         "name": "esencia de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 10,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.150Z",
-        "updated_at": "2020-08-06T19:17:06.150Z",
-        "name": "caramelos masticables",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 11,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.170Z",
-        "updated_at": "2020-08-06T19:17:06.170Z",
-        "name": "barra de mantequilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 12,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.181Z",
-        "updated_at": "2020-08-06T19:17:06.181Z",
-        "name": "malvaviscos grandes",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11076,89 +11084,11 @@
 },
 {
     "model": "products.product",
-    "pk": 14,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.234Z",
-        "updated_at": "2020-08-06T19:17:06.234Z",
-        "name": "chocolate sin az\u00facar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 15,
-    "fields": {
-        "created_at": "2020-08-06T19:17:06.253Z",
-        "updated_at": "2020-08-06T19:17:06.253Z",
-        "name": "barras de golosinas picadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 16,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.790Z",
-        "updated_at": "2020-08-06T19:17:16.790Z",
-        "name": "cebolla amarilla picada fina",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 17,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.796Z",
-        "updated_at": "2020-08-06T19:17:16.796Z",
-        "name": "pimiento rojo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 18,
     "fields": {
         "created_at": "2020-08-06T19:17:16.804Z",
         "updated_at": "2020-08-06T19:17:16.804Z",
         "name": "dientes de ajo picados",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 19,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.815Z",
-        "updated_at": "2020-08-06T19:17:16.815Z",
-        "name": "tomates enlatados",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 20,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.830Z",
-        "updated_at": "2020-08-06T19:17:16.830Z",
-        "name": "carne molida magra",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11271,102 +11201,11 @@
 },
 {
     "model": "products.product",
-    "pk": 29,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.944Z",
-        "updated_at": "2020-08-06T19:17:16.944Z",
-        "name": "queso feta desmenuzado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 30,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.957Z",
-        "updated_at": "2020-08-06T19:17:16.957Z",
-        "name": "o la salsa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 31,
     "fields": {
         "created_at": "2020-08-06T19:17:16.966Z",
         "updated_at": "2020-08-06T19:17:16.966Z",
         "name": "salsa de tomate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 32,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.977Z",
-        "updated_at": "2020-08-06T19:17:16.977Z",
-        "name": "az\u00facar morena",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 33,
-    "fields": {
-        "created_at": "2020-08-06T19:17:16.988Z",
-        "updated_at": "2020-08-06T19:17:16.988Z",
-        "name": "harissa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 34,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.841Z",
-        "updated_at": "2020-08-06T19:17:40.841Z",
-        "name": "mirin",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 35,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.852Z",
-        "updated_at": "2020-08-06T19:17:40.852Z",
-        "name": "sake",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 36,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.859Z",
-        "updated_at": "2020-08-06T19:17:40.859Z",
-        "name": "miso awase",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11401,50 +11240,11 @@
 },
 {
     "model": "products.product",
-    "pk": 39,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.881Z",
-        "updated_at": "2020-08-06T19:17:40.882Z",
-        "name": "fideos ramen frescos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 40,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.887Z",
-        "updated_at": "2020-08-06T19:17:40.887Z",
-        "name": "huevos de codorniz",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 41,
     "fields": {
         "created_at": "2020-08-06T19:17:40.893Z",
         "updated_at": "2020-08-06T19:17:40.893Z",
         "name": "aceite vegetal",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 42,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.899Z",
-        "updated_at": "2020-08-06T19:17:40.899Z",
-        "name": "filete de solomillo",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11466,89 +11266,11 @@
 },
 {
     "model": "products.product",
-    "pk": 44,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.911Z",
-        "updated_at": "2020-08-06T19:17:40.911Z",
-        "name": "champi\u00f1ones bunashimeji",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 45,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.917Z",
-        "updated_at": "2020-08-06T19:17:40.917Z",
-        "name": "mayonesa japonesa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 46,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.924Z",
-        "updated_at": "2020-08-06T19:17:40.924Z",
-        "name": "pepino persa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 47,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.932Z",
-        "updated_at": "2020-08-06T19:17:40.932Z",
-        "name": "m\u00e1s 1 cucharadita de jengibre encurtido",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 48,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.940Z",
-        "updated_at": "2020-08-06T19:17:40.940Z",
-        "name": "condimento togarashi",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 49,
     "fields": {
         "created_at": "2020-08-06T19:17:40.945Z",
         "updated_at": "2020-08-06T19:17:40.945Z",
         "name": "semillas de s\u00e9samo negro",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 50,
-    "fields": {
-        "created_at": "2020-08-06T19:17:40.951Z",
-        "updated_at": "2020-08-06T19:17:40.951Z",
-        "name": "envolturas de papel de soya y / o nori",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11817,19 +11539,6 @@
 },
 {
     "model": "products.product",
-    "pk": 71,
-    "fields": {
-        "created_at": "2020-08-06T19:17:58.510Z",
-        "updated_at": "2020-08-06T19:17:58.510Z",
-        "name": "yemas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 72,
     "fields": {
         "created_at": "2020-08-06T19:17:58.528Z",
@@ -11861,19 +11570,6 @@
         "created_at": "2020-08-06T19:17:58.553Z",
         "updated_at": "2020-08-06T19:17:58.553Z",
         "name": "leche de coco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 75,
-    "fields": {
-        "created_at": "2020-08-06T19:17:58.565Z",
-        "updated_at": "2020-08-06T19:17:58.565Z",
-        "name": "crema batida y fresas",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -11939,97 +11635,6 @@
         "created_at": "2020-08-06T19:18:07.279Z",
         "updated_at": "2020-08-06T19:18:07.279Z",
         "name": "leche",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 81,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.285Z",
-        "updated_at": "2020-08-06T19:18:07.285Z",
-        "name": "cereal redondo de hojaldre de cacao",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 82,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.291Z",
-        "updated_at": "2020-08-06T19:18:07.291Z",
-        "name": "fondant blanco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 83,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.298Z",
-        "updated_at": "2020-08-06T19:18:07.298Z",
-        "name": "gotas de gel rojo para alimentos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 84,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.307Z",
-        "updated_at": "2020-08-06T19:18:07.307Z",
-        "name": "gotas de gel azul para alimentos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 85,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.315Z",
-        "updated_at": "2020-08-06T19:18:07.315Z",
-        "name": "lata de spray de niebla de plata wilton",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 86,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.324Z",
-        "updated_at": "2020-08-06T19:18:07.324Z",
-        "name": "crema",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 87,
-    "fields": {
-        "created_at": "2020-08-06T19:18:07.331Z",
-        "updated_at": "2020-08-06T19:18:07.331Z",
-        "name": "tienda compr\u00f3 glaseado de vainilla o crema de mantequilla de chocolate o ganache",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -12378,8 +11983,8 @@
     "model": "products.product",
     "pk": 114,
     "fields": {
-        "created_at": "2020-08-06T19:18:45.000Z",
-        "updated_at": "2020-08-06T19:18:45.000Z",
+        "created_at": "2020-08-06T19:18:45Z",
+        "updated_at": "2020-08-06T19:18:45Z",
         "name": "yemas de huevo",
         "available_dimensionalities": "[unit]",
         "density": null,
@@ -12571,84 +12176,6 @@
 },
 {
     "model": "products.product",
-    "pk": 129,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.141Z",
-        "updated_at": "2020-08-06T19:18:58.141Z",
-        "name": "espresso en polvo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 130,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.161Z",
-        "updated_at": "2020-08-06T19:18:58.161Z",
-        "name": "crema de t\u00e1rtaro",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 131,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.173Z",
-        "updated_at": "2020-08-06T19:18:58.173Z",
-        "name": "crema fr\u00eda",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 132,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.200Z",
-        "updated_at": "2020-08-06T19:18:58.200Z",
-        "name": "espresso instant\u00e1neo en polvo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 133,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.227Z",
-        "updated_at": "2020-08-06T19:18:58.227Z",
-        "name": "nueces picadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 134,
-    "fields": {
-        "created_at": "2020-08-06T19:18:58.251Z",
-        "updated_at": "2020-08-06T19:18:58.251Z",
-        "name": "crema de chocolate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 135,
     "fields": {
         "created_at": "2020-08-06T19:19:07.738Z",
@@ -12766,427 +12293,11 @@
 },
 {
     "model": "products.product",
-    "pk": 144,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.618Z",
-        "updated_at": "2020-08-06T19:19:11.618Z",
-        "name": "hojas de lechuga iceberg",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 145,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.628Z",
-        "updated_at": "2020-08-06T19:19:11.628Z",
-        "name": "tiras de tocino cocido",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 146,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.635Z",
-        "updated_at": "2020-08-06T19:19:11.635Z",
-        "name": "tomates uva",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 147,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.643Z",
-        "updated_at": "2020-08-06T19:19:11.643Z",
-        "name": "palillos de bamb\u00fa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 148,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.650Z",
-        "updated_at": "2020-08-06T19:19:11.650Z",
-        "name": "aderezo ranchero",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 149,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.655Z",
-        "updated_at": "2020-08-06T19:19:11.655Z",
-        "name": "(20 onzas) envase de tortellini de queso refrigerado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 150,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.660Z",
-        "updated_at": "2020-08-06T19:19:11.660Z",
-        "name": "pesto comprado en la tienda",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 151,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.666Z",
-        "updated_at": "2020-08-06T19:19:11.666Z",
-        "name": "jugo de lim\u00f3n fresco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 152,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.671Z",
-        "updated_at": "2020-08-06T19:19:11.671Z",
-        "name": "parmesano rallado reggiano",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 153,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.676Z",
-        "updated_at": "2020-08-06T19:19:11.676Z",
-        "name": "frasco (4 onzas) de tomates secados al sol",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 154,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.682Z",
-        "updated_at": "2020-08-06T19:19:11.682Z",
-        "name": "brochetas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 155,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.688Z",
-        "updated_at": "2020-08-06T19:19:11.688Z",
-        "name": "pi\u00f1ones tostados para decorar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 156,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.693Z",
-        "updated_at": "2020-08-06T19:19:11.693Z",
-        "name": "pimientos pepperoncini",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 157,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.700Z",
-        "updated_at": "2020-08-06T19:19:11.700Z",
-        "name": "aceitunas kalamata",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 158,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.715Z",
-        "updated_at": "2020-08-06T19:19:11.715Z",
-        "name": "rebanadas finas de salami de g\u00e9nova",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 159,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.727Z",
-        "updated_at": "2020-08-06T19:19:11.727Z",
-        "name": "bolas de mozzarella baby marinadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 160,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.739Z",
-        "updated_at": "2020-08-06T19:19:11.739Z",
-        "name": "piezas de albahaca",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 161,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.750Z",
-        "updated_at": "2020-08-06T19:19:11.750Z",
-        "name": "piezas de coraz\u00f3n de alcachofa marinadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 162,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.762Z",
-        "updated_at": "2020-08-06T19:19:11.762Z",
-        "name": "piezas de pimiento rojo asado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 163,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.774Z",
-        "updated_at": "2020-08-06T19:19:11.774Z",
-        "name": "mel\u00f3n mel\u00f3n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 164,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.785Z",
-        "updated_at": "2020-08-06T19:19:11.785Z",
-        "name": "paquete de prosciutto en rodajas finas (aproximadamente 6 rebanadas)",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 165,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.797Z",
-        "updated_at": "2020-08-06T19:19:11.797Z",
-        "name": "contenedor de bolitas frescas de mozzarella baby",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 166,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.816Z",
-        "updated_at": "2020-08-06T19:19:11.816Z",
-        "name": "sand\u00eda sin semillas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 167,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.827Z",
-        "updated_at": "2020-08-06T19:19:11.827Z",
-        "name": "pinta de moras o ar\u00e1ndanos frescos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 168,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.838Z",
-        "updated_at": "2020-08-06T19:19:11.839Z",
-        "name": "bloque (8 onzas) de queso feta",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 169,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.850Z",
-        "updated_at": "2020-08-06T19:19:11.850Z",
-        "name": "chalotes en escabeche",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 170,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.859Z",
-        "updated_at": "2020-08-06T19:19:11.859Z",
-        "name": "aceite de oliva virgen extra y sal en escamas para decorar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 171,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.867Z",
-        "updated_at": "2020-08-06T19:19:11.867Z",
-        "name": "chalotes grandes",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 172,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.879Z",
-        "updated_at": "2020-08-06T19:19:11.879Z",
-        "name": "vinagre de vino tinto",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 173,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.898Z",
-        "updated_at": "2020-08-06T19:19:11.898Z",
-        "name": "ramitas de tomillo fresco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 174,
     "fields": {
         "created_at": "2020-08-06T19:19:11.909Z",
         "updated_at": "2020-08-06T19:19:11.909Z",
         "name": "hoja de laurel",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 175,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.920Z",
-        "updated_at": "2020-08-06T19:19:11.920Z",
-        "name": "una pizca de sal kosher",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 176,
-    "fields": {
-        "created_at": "2020-08-06T19:19:11.929Z",
-        "updated_at": "2020-08-06T19:19:11.929Z",
-        "name": "una pizca de hojuelas de chile rojo",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -13312,19 +12423,6 @@
 },
 {
     "model": "products.product",
-    "pk": 186,
-    "fields": {
-        "created_at": "2020-08-06T19:19:39.394Z",
-        "updated_at": "2020-08-06T19:19:39.394Z",
-        "name": "pi\u00f1as / anan\u00e1",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 187,
     "fields": {
         "created_at": "2020-08-06T19:19:39.404Z",
@@ -13356,45 +12454,6 @@
         "created_at": "2020-08-06T19:19:39.422Z",
         "updated_at": "2020-08-06T19:19:39.422Z",
         "name": "dientes de ajo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 190,
-    "fields": {
-        "created_at": "2020-08-06T19:19:39.435Z",
-        "updated_at": "2020-08-06T19:19:39.435Z",
-        "name": "cilantro",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 191,
-    "fields": {
-        "created_at": "2020-08-06T19:19:39.441Z",
-        "updated_at": "2020-08-06T19:19:39.441Z",
-        "name": "salm\u00f3n rosado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 192,
-    "fields": {
-        "created_at": "2020-08-06T19:19:39.446Z",
-        "updated_at": "2020-08-06T19:19:39.446Z",
-        "name": "hilo de algod\u00f3n",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -13525,19 +12584,6 @@
         "created_at": "2020-08-06T19:20:04.953Z",
         "updated_at": "2020-08-06T19:20:04.953Z",
         "name": "chocolate blanco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 203,
-    "fields": {
-        "created_at": "2020-08-06T19:20:04.962Z",
-        "updated_at": "2020-08-06T19:20:04.962Z",
-        "name": "sal marina c/n",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -13689,45 +12735,6 @@
 },
 {
     "model": "products.product",
-    "pk": 215,
-    "fields": {
-        "created_at": "2020-08-06T19:20:20.689Z",
-        "updated_at": "2020-08-06T19:20:20.689Z",
-        "name": "avellanas tostadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 216,
-    "fields": {
-        "created_at": "2020-08-06T19:20:20.708Z",
-        "updated_at": "2020-08-06T19:20:20.708Z",
-        "name": "jarabe de arce",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 217,
-    "fields": {
-        "created_at": "2020-08-06T19:20:20.716Z",
-        "updated_at": "2020-08-06T19:20:20.716Z",
-        "name": "polvo de fresa liofilizado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 218,
     "fields": {
         "created_at": "2020-08-06T19:20:25.718Z",
@@ -13780,19 +12787,6 @@
 },
 {
     "model": "products.product",
-    "pk": 222,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.669Z",
-        "updated_at": "2020-08-06T19:24:32.669Z",
-        "name": "limonada",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 223,
     "fields": {
         "created_at": "2020-08-06T19:24:32.696Z",
@@ -13806,258 +12800,11 @@
 },
 {
     "model": "products.product",
-    "pk": 224,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.738Z",
-        "updated_at": "2020-08-06T19:24:32.738Z",
-        "name": "helado de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 225,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.747Z",
-        "updated_at": "2020-08-06T19:24:32.747Z",
-        "name": "albahaca",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 226,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.756Z",
-        "updated_at": "2020-08-06T19:24:32.756Z",
-        "name": "lata de leche de coco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 227,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.782Z",
-        "updated_at": "2020-08-06T19:24:32.782Z",
-        "name": "jarabe simple",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 228,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.816Z",
-        "updated_at": "2020-08-06T19:24:32.816Z",
-        "name": "pulgada de jengibre en rodajas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 229,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.828Z",
-        "updated_at": "2020-08-06T19:24:32.828Z",
-        "name": "mangos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 230,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.840Z",
-        "updated_at": "2020-08-06T19:24:32.840Z",
-        "name": "cubitos de hielo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 231,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.866Z",
-        "updated_at": "2020-08-06T19:24:32.866Z",
-        "name": "rodaja de lim\u00f3n o mango",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 232,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.875Z",
-        "updated_at": "2020-08-06T19:24:32.875Z",
-        "name": "hojuelas de coco tostadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 233,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.884Z",
-        "updated_at": "2020-08-06T19:24:32.884Z",
-        "name": "botella de rosado seco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 234,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.907Z",
-        "updated_at": "2020-08-06T19:24:32.907Z",
-        "name": "agua de soda",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 235,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.918Z",
-        "updated_at": "2020-08-06T19:24:32.918Z",
-        "name": "jugo de toronja",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 236,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.929Z",
-        "updated_at": "2020-08-06T19:24:32.930Z",
-        "name": "frambuesas congeladas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 237,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.941Z",
-        "updated_at": "2020-08-06T19:24:32.941Z",
-        "name": "ar\u00e1ndanos congelados",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 238,
     "fields": {
         "created_at": "2020-08-06T19:24:32.953Z",
         "updated_at": "2020-08-06T19:24:32.953Z",
         "name": "menta",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 239,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.963Z",
-        "updated_at": "2020-08-06T19:24:32.963Z",
-        "name": "piel pelada",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 240,
-    "fields": {
-        "created_at": "2020-08-06T19:24:32.972Z",
-        "updated_at": "2020-08-06T19:24:32.972Z",
-        "name": "fruta del drag\u00f3n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 241,
-    "fields": {
-        "created_at": "2020-08-06T19:24:33.015Z",
-        "updated_at": "2020-08-06T19:24:33.016Z",
-        "name": "jugo de lima",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 242,
-    "fields": {
-        "created_at": "2020-08-06T19:24:33.041Z",
-        "updated_at": "2020-08-06T19:24:33.041Z",
-        "name": "rodajas de lim\u00f3n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 243,
-    "fields": {
-        "created_at": "2020-08-06T19:24:33.055Z",
-        "updated_at": "2020-08-06T19:24:33.055Z",
-        "name": "bolas de fruta del drag\u00f3n",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -14131,50 +12878,11 @@
 },
 {
     "model": "products.product",
-    "pk": 249,
-    "fields": {
-        "created_at": "2020-08-06T19:29:55.643Z",
-        "updated_at": "2020-08-06T19:29:55.643Z",
-        "name": "barra de mantequilla a temperatura ambiente",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 250,
-    "fields": {
-        "created_at": "2020-08-06T19:29:55.659Z",
-        "updated_at": "2020-08-06T19:29:55.659Z",
-        "name": "huevos enteros",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 251,
     "fields": {
         "created_at": "2020-08-06T19:29:55.697Z",
         "updated_at": "2020-08-06T19:29:55.697Z",
         "name": "crema espesa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 252,
-    "fields": {
-        "created_at": "2020-08-06T19:29:55.725Z",
-        "updated_at": "2020-08-06T19:29:55.725Z",
-        "name": "chocolate negro templado",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -14201,32 +12909,6 @@
         "created_at": "2020-08-06T19:33:09.762Z",
         "updated_at": "2020-08-06T19:33:09.762Z",
         "name": "levadura",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 255,
-    "fields": {
-        "created_at": "2020-08-06T19:33:09.791Z",
-        "updated_at": "2020-08-06T19:33:09.791Z",
-        "name": "colorante rosa c/n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 256,
-    "fields": {
-        "created_at": "2020-08-06T19:33:09.798Z",
-        "updated_at": "2020-08-06T19:33:09.798Z",
-        "name": "semillas de s\u00e9samo negro c/n",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -14459,9 +13141,9 @@
     "pk": 274,
     "fields": {
         "created_at": "2020-08-06T19:41:29.029Z",
-        "updated_at": "2020-08-06T19:41:29.029Z",
-        "name": "d\u00e1tiles",
-        "available_dimensionalities": "[unit]",
+        "updated_at": "2020-09-08T18:15:04.963Z",
+        "name": "d\u00e1til",
+        "available_dimensionalities": "[unit],[mass]",
         "density": null,
         "avg_unit_weight": null,
         "avg_unit_volume": null
@@ -14508,128 +13190,11 @@
 },
 {
     "model": "products.product",
-    "pk": 278,
-    "fields": {
-        "created_at": "2020-08-06T19:42:35.994Z",
-        "updated_at": "2020-08-06T19:42:35.994Z",
-        "name": "gelatina sin sabor",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 279,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.002Z",
-        "updated_at": "2020-08-06T19:42:36.002Z",
-        "name": "queso crema a temperatura ambiente",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 280,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.012Z",
-        "updated_at": "2020-08-06T19:42:36.012Z",
-        "name": "yogur de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 281,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.033Z",
-        "updated_at": "2020-08-06T19:42:36.033Z",
-        "name": "vino blanco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 282,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.043Z",
-        "updated_at": "2020-08-06T19:42:36.043Z",
-        "name": "cds. de az\u00facar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 283,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.056Z",
-        "updated_at": "2020-08-06T19:42:36.056Z",
-        "name": "gelatina sin sabor mezclada con 2 cdas. de agua",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 284,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.062Z",
-        "updated_at": "2020-08-06T19:42:36.063Z",
-        "name": "hoja de oro comestible",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 285,
-    "fields": {
-        "created_at": "2020-08-06T19:42:36.067Z",
-        "updated_at": "2020-08-06T19:42:36.067Z",
-        "name": "racimo de uvas moscatel",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 286,
     "fields": {
         "created_at": "2020-08-06T19:42:40.609Z",
         "updated_at": "2020-08-06T19:42:40.610Z",
         "name": "galletas de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 287,
-    "fields": {
-        "created_at": "2020-08-06T19:42:40.621Z",
-        "updated_at": "2020-08-06T19:42:40.621Z",
-        "name": "chocolate derretido",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -14651,232 +13216,11 @@
 },
 {
     "model": "products.product",
-    "pk": 289,
-    "fields": {
-        "created_at": "2020-08-06T19:42:40.679Z",
-        "updated_at": "2020-08-06T19:42:40.679Z",
-        "name": "bananas cortadas en rodajas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 290,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.623Z",
-        "updated_at": "2020-08-06T19:42:43.623Z",
-        "name": "galletas cuadradas de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 291,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.636Z",
-        "updated_at": "2020-08-06T19:42:43.636Z",
-        "name": "caramelo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 292,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.648Z",
-        "updated_at": "2020-08-06T19:42:43.648Z",
-        "name": "cubeteras de silicona",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 293,
     "fields": {
         "created_at": "2020-08-06T19:42:43.662Z",
         "updated_at": "2020-08-06T19:42:43.662Z",
         "name": "fresas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 294,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.676Z",
-        "updated_at": "2020-08-06T19:42:43.676Z",
-        "name": "gelatina de fresa",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 295,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.693Z",
-        "updated_at": "2020-08-06T19:42:43.693Z",
-        "name": "mezcla de cheesecake",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 296,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.710Z",
-        "updated_at": "2020-08-06T19:42:43.710Z",
-        "name": "galletas molidas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 297,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.722Z",
-        "updated_at": "2020-08-06T19:42:43.722Z",
-        "name": "mezcla de brownie",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 298,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.731Z",
-        "updated_at": "2020-08-06T19:42:43.731Z",
-        "name": "salsa de chocolate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 299,
-    "fields": {
-        "created_at": "2020-08-06T19:42:43.743Z",
-        "updated_at": "2020-08-06T19:42:43.743Z",
-        "name": "galletas oreo procesadas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 300,
-    "fields": {
-        "created_at": "2020-08-06T19:42:47.510Z",
-        "updated_at": "2020-08-06T19:42:47.510Z",
-        "name": "matcha",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 301,
-    "fields": {
-        "created_at": "2020-08-06T19:42:47.517Z",
-        "updated_at": "2020-08-06T19:42:47.517Z",
-        "name": "chocolate blanco picado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 302,
-    "fields": {
-        "created_at": "2020-08-06T19:42:47.530Z",
-        "updated_at": "2020-08-06T19:42:47.530Z",
-        "name": "aceite",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 303,
-    "fields": {
-        "created_at": "2020-08-06T19:42:47.550Z",
-        "updated_at": "2020-08-06T19:42:47.550Z",
-        "name": "semillas de s\u00e9samo para los ojos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 304,
-    "fields": {
-        "created_at": "2020-08-06T19:42:58.604Z",
-        "updated_at": "2020-08-06T19:42:58.604Z",
-        "name": "mantequilla ablandada",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 305,
-    "fields": {
-        "created_at": "2020-08-06T19:42:58.610Z",
-        "updated_at": "2020-08-06T19:42:58.610Z",
-        "name": "az\u00facar blanca",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 306,
-    "fields": {
-        "created_at": "2020-08-06T19:42:58.661Z",
-        "updated_at": "2020-08-06T19:42:58.661Z",
-        "name": "colorante alimenticio azul",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -14963,58 +13307,6 @@
 },
 {
     "model": "products.product",
-    "pk": 313,
-    "fields": {
-        "created_at": "2020-08-06T20:38:44.289Z",
-        "updated_at": "2020-08-06T20:38:44.289Z",
-        "name": "anacardos crudos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 314,
-    "fields": {
-        "created_at": "2020-08-06T20:38:44.300Z",
-        "updated_at": "2020-08-06T20:38:44.300Z",
-        "name": "mangos secos empapados",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 315,
-    "fields": {
-        "created_at": "2020-08-06T20:38:44.307Z",
-        "updated_at": "2020-08-06T20:38:44.307Z",
-        "name": "coco rallado sin az\u00facar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 316,
-    "fields": {
-        "created_at": "2020-08-06T20:38:44.318Z",
-        "updated_at": "2020-08-06T20:38:44.318Z",
-        "name": "lima",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 317,
     "fields": {
         "created_at": "2020-08-06T20:38:48.700Z",
@@ -15093,128 +13385,11 @@
 },
 {
     "model": "products.product",
-    "pk": 323,
-    "fields": {
-        "created_at": "2020-08-06T20:38:53.949Z",
-        "updated_at": "2020-08-06T20:38:53.949Z",
-        "name": "vaina de semillas de vainilla",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 324,
-    "fields": {
-        "created_at": "2020-08-06T20:38:53.958Z",
-        "updated_at": "2020-08-06T20:38:53.958Z",
-        "name": "harina de ma\u00edz",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 325,
-    "fields": {
-        "created_at": "2020-08-06T20:38:53.967Z",
-        "updated_at": "2020-08-06T20:38:53.967Z",
-        "name": "fondant",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 326,
-    "fields": {
-        "created_at": "2020-08-06T20:39:03.287Z",
-        "updated_at": "2020-08-06T20:39:03.287Z",
-        "name": "paquetes de oreos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 327,
-    "fields": {
-        "created_at": "2020-08-06T20:39:03.338Z",
-        "updated_at": "2020-08-06T20:39:03.338Z",
-        "name": "crema chantilly",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 328,
-    "fields": {
-        "created_at": "2020-08-06T20:39:03.351Z",
-        "updated_at": "2020-08-06T20:39:03.351Z",
-        "name": "oreos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 329,
     "fields": {
         "created_at": "2020-08-06T21:11:31.497Z",
         "updated_at": "2020-08-06T21:11:31.497Z",
         "name": "pepino",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 330,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.503Z",
-        "updated_at": "2020-08-06T21:11:31.503Z",
-        "name": "at\u00fan rojo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 331,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.520Z",
-        "updated_at": "2020-08-06T21:11:31.520Z",
-        "name": "\u2192rolls de sushi poke",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 332,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.530Z",
-        "updated_at": "2020-08-06T21:11:31.530Z",
-        "name": "arroz",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15236,102 +13411,11 @@
 },
 {
     "model": "products.product",
-    "pk": 334,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.550Z",
-        "updated_at": "2020-08-06T21:11:31.550Z",
-        "name": "sriracha",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 335,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.560Z",
-        "updated_at": "2020-08-06T21:11:31.560Z",
-        "name": "cebolleta",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 336,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.572Z",
-        "updated_at": "2020-08-06T21:11:31.572Z",
-        "name": "\u2192rolls de sushi de pepino entrelazado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 337,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.589Z",
-        "updated_at": "2020-08-06T21:11:31.589Z",
-        "name": "salmon rosado en fetas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 338,
-    "fields": {
-        "created_at": "2020-08-06T21:11:31.601Z",
-        "updated_at": "2020-08-06T21:11:31.601Z",
-        "name": "langostinos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 339,
     "fields": {
         "created_at": "2020-08-06T21:11:52.347Z",
-        "updated_at": "2020-08-06T21:11:52.347Z",
-        "name": "manzanas verdes",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 340,
-    "fields": {
-        "created_at": "2020-08-06T21:11:52.411Z",
-        "updated_at": "2020-08-06T21:11:52.411Z",
-        "name": "canela + az\u00facar c/n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 341,
-    "fields": {
-        "created_at": "2020-08-06T21:11:58.207Z",
-        "updated_at": "2020-08-06T21:11:58.207Z",
-        "name": "calabaza cortada por la mitad a lo largo",
+        "updated_at": "2020-09-08T18:16:13.262Z",
+        "name": "manzana verde",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15343,21 +13427,8 @@
     "pk": 342,
     "fields": {
         "created_at": "2020-08-06T21:11:58.229Z",
-        "updated_at": "2020-08-06T21:11:58.229Z",
-        "name": "tocino en cubos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 343,
-    "fields": {
-        "created_at": "2020-08-06T21:11:58.241Z",
-        "updated_at": "2020-08-06T21:11:58.241Z",
-        "name": "yemas de huevo y 1 huevo entero batido",
+        "updated_at": "2020-09-08T18:32:06.224Z",
+        "name": "tocino",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15392,128 +13463,11 @@
 },
 {
     "model": "products.product",
-    "pk": 346,
-    "fields": {
-        "created_at": "2020-08-06T21:12:03.276Z",
-        "updated_at": "2020-08-06T21:12:03.276Z",
-        "name": "chocolate con leche",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 347,
-    "fields": {
-        "created_at": "2020-08-27T22:03:43.624Z",
-        "updated_at": "2020-08-27T22:03:43.624Z",
-        "name": "galletas de chocolate + helado de crema",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 348,
-    "fields": {
-        "created_at": "2020-08-27T22:03:43.635Z",
-        "updated_at": "2020-08-27T22:03:43.635Z",
-        "name": "galletas de chocolate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 349,
-    "fields": {
-        "created_at": "2020-08-27T22:03:43.652Z",
-        "updated_at": "2020-08-27T22:03:43.652Z",
-        "name": "cobertura de helado de chocolate caliente",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 350,
-    "fields": {
-        "created_at": "2020-08-27T22:03:43.669Z",
-        "updated_at": "2020-08-27T22:03:43.669Z",
-        "name": "asperja",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 351,
-    "fields": {
-        "created_at": "2020-08-27T22:03:43.679Z",
-        "updated_at": "2020-08-27T22:03:43.679Z",
-        "name": "cerezas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 352,
-    "fields": {
-        "created_at": "2020-08-27T22:03:46.997Z",
-        "updated_at": "2020-08-27T22:03:46.997Z",
-        "name": "salchicha parrillera grande",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 353,
-    "fields": {
-        "created_at": "2020-08-27T22:03:47.007Z",
-        "updated_at": "2020-08-27T22:03:47.007Z",
-        "name": "queso cheddar en rodajas",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 354,
     "fields": {
         "created_at": "2020-08-27T22:03:47.017Z",
         "updated_at": "2020-08-27T22:03:47.017Z",
         "name": "queso mozzarella rallado",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 355,
-    "fields": {
-        "created_at": "2020-08-27T22:03:47.027Z",
-        "updated_at": "2020-08-27T22:03:47.027Z",
-        "name": "huevo grande",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15639,45 +13593,6 @@
 },
 {
     "model": "products.product",
-    "pk": 365,
-    "fields": {
-        "created_at": "2020-09-03T18:00:04.764Z",
-        "updated_at": "2020-09-03T18:00:04.764Z",
-        "name": "mascarpone",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 366,
-    "fields": {
-        "created_at": "2020-09-03T18:00:04.786Z",
-        "updated_at": "2020-09-03T18:00:04.786Z",
-        "name": "jugo de lim\u00f3n c/n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 367,
-    "fields": {
-        "created_at": "2020-09-03T18:00:04.792Z",
-        "updated_at": "2020-09-03T18:00:04.792Z",
-        "name": "colorante para alimentos amarillo c/n",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 368,
     "fields": {
         "created_at": "2020-09-03T18:00:44.054Z",
@@ -15720,21 +13635,8 @@
     "pk": 371,
     "fields": {
         "created_at": "2020-09-03T18:00:44.079Z",
-        "updated_at": "2020-09-03T18:00:44.079Z",
-        "name": "tallos de apio picados",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 372,
-    "fields": {
-        "created_at": "2020-09-03T18:00:44.084Z",
-        "updated_at": "2020-09-03T18:00:44.084Z",
-        "name": "zanahorias ralladas",
+        "updated_at": "2020-09-08T18:43:34.778Z",
+        "name": "tallos de apio",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15782,19 +13684,6 @@
 },
 {
     "model": "products.product",
-    "pk": 376,
-    "fields": {
-        "created_at": "2020-09-03T18:00:44.112Z",
-        "updated_at": "2020-09-03T18:00:44.112Z",
-        "name": "\ud83d\udc49\ud83c\udffcpara la salsa de tomate",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 377,
     "fields": {
         "created_at": "2020-09-03T18:00:44.125Z",
@@ -15813,19 +13702,6 @@
         "created_at": "2020-09-03T18:00:44.158Z",
         "updated_at": "2020-09-03T18:00:44.158Z",
         "name": "ajo en polvo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 379,
-    "fields": {
-        "created_at": "2020-09-03T18:00:44.174Z",
-        "updated_at": "2020-09-03T18:00:44.174Z",
-        "name": "\ud83d\udc49\ud83c\udffcpara empanar el pollo",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -15977,71 +13853,6 @@
 },
 {
     "model": "products.product",
-    "pk": 391,
-    "fields": {
-        "created_at": "2020-09-03T18:01:16.797Z",
-        "updated_at": "2020-09-03T18:01:16.797Z",
-        "name": "tapa de masa de hojaldre\u2060\u2800",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 392,
-    "fields": {
-        "created_at": "2020-09-03T18:01:16.806Z",
-        "updated_at": "2020-09-03T18:01:16.806Z",
-        "name": "manteca pomada\u2060\u2800",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 393,
-    "fields": {
-        "created_at": "2020-09-03T18:01:16.816Z",
-        "updated_at": "2020-09-03T18:01:16.816Z",
-        "name": "perejil picado\u2060\u2800",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 394,
-    "fields": {
-        "created_at": "2020-09-03T18:01:16.827Z",
-        "updated_at": "2020-09-03T18:01:16.827Z",
-        "name": "ajo picado\u2060\u2800",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 395,
-    "fields": {
-        "created_at": "2020-09-03T18:01:16.837Z",
-        "updated_at": "2020-09-03T18:01:16.837Z",
-        "name": "queso rallado seco \u2060\u2800",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 396,
     "fields": {
         "created_at": "2020-09-03T18:35:58.122Z",
@@ -16123,8 +13934,8 @@
     "pk": 402,
     "fields": {
         "created_at": "2020-09-03T18:37:41.615Z",
-        "updated_at": "2020-09-03T18:37:41.615Z",
-        "name": "cebolla en cubitos",
+        "updated_at": "2020-09-08T18:34:54.008Z",
+        "name": "cebolla",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -16136,8 +13947,8 @@
     "pk": 403,
     "fields": {
         "created_at": "2020-09-03T18:37:41.625Z",
-        "updated_at": "2020-09-03T18:37:41.625Z",
-        "name": "pimiento verde en cubitos",
+        "updated_at": "2020-09-08T18:35:03.479Z",
+        "name": "pimiento verde",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -16383,8 +14194,8 @@
     "pk": 422,
     "fields": {
         "created_at": "2020-09-03T18:40:26.148Z",
-        "updated_at": "2020-09-03T18:40:26.148Z",
-        "name": "espinacas tiernas",
+        "updated_at": "2020-09-07T16:21:18.394Z",
+        "name": "espinaca",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -16606,71 +14417,6 @@
         "created_at": "2020-09-03T18:44:13.875Z",
         "updated_at": "2020-09-03T18:44:13.875Z",
         "name": "salsa teriyaki",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 440,
-    "fields": {
-        "created_at": "2020-09-03T18:44:24.850Z",
-        "updated_at": "2020-09-03T18:44:24.850Z",
-        "name": "chocolate semidulce",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 441,
-    "fields": {
-        "created_at": "2020-09-03T18:44:24.860Z",
-        "updated_at": "2020-09-03T18:44:24.860Z",
-        "name": "mantequilla en cubos",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 442,
-    "fields": {
-        "created_at": "2020-09-03T18:44:24.896Z",
-        "updated_at": "2020-09-03T18:44:24.897Z",
-        "name": "ramitas de romero para decorar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 443,
-    "fields": {
-        "created_at": "2020-09-03T18:44:24.905Z",
-        "updated_at": "2020-09-03T18:44:24.905Z",
-        "name": "cerezas para decorar",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 444,
-    "fields": {
-        "created_at": "2020-09-03T18:44:24.914Z",
-        "updated_at": "2020-09-03T18:44:24.914Z",
-        "name": "chocolate picado",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -16926,24 +14672,11 @@
 },
 {
     "model": "products.product",
-    "pk": 464,
-    "fields": {
-        "created_at": "2020-09-03T20:05:28.549Z",
-        "updated_at": "2020-09-03T20:05:28.549Z",
-        "name": "d\u00e1tiles sin carozo",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
     "pk": 465,
     "fields": {
         "created_at": "2020-09-03T20:05:28.585Z",
-        "updated_at": "2020-09-03T20:05:28.585Z",
-        "name": "casta\u00f1as de caj\u00fa remojadas durante la noche",
+        "updated_at": "2020-09-08T18:41:27.003Z",
+        "name": "casta\u00f1as de caj\u00fa",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -16957,19 +14690,6 @@
         "created_at": "2020-09-03T20:05:28.601Z",
         "updated_at": "2020-09-03T20:05:28.601Z",
         "name": "aceite de coco",
-        "available_dimensionalities": "[unit]",
-        "density": null,
-        "avg_unit_weight": null,
-        "avg_unit_volume": null
-    }
-},
-{
-    "model": "products.product",
-    "pk": 467,
-    "fields": {
-        "created_at": "2020-09-03T20:05:28.622Z",
-        "updated_at": "2020-09-03T20:05:28.622Z",
-        "name": "ralladura de 1 lim\u00f3n",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,
@@ -17633,6 +15353,19 @@
         "created_at": "2020-09-03T20:08:33.616Z",
         "updated_at": "2020-09-03T20:08:33.616Z",
         "name": "granas de chocolate",
+        "available_dimensionalities": "[unit]",
+        "density": null,
+        "avg_unit_weight": null,
+        "avg_unit_volume": null
+    }
+},
+{
+    "model": "products.product",
+    "pk": 519,
+    "fields": {
+        "created_at": "2020-09-08T18:39:29.360Z",
+        "updated_at": "2020-09-08T18:40:33.365Z",
+        "name": "colorante para alimentos",
         "available_dimensionalities": "[unit]",
         "density": null,
         "avg_unit_weight": null,

@@ -12,3 +12,7 @@ class UnitAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    readonly_fields = ('recipes',)
+
+    def recipes(self, obj):
+        return '\n'.join([str(recipe) for recipe in obj.recipe_set.all().distinct()])
