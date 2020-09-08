@@ -13,8 +13,8 @@ from common.widgets import DynamicArrayTextareaWidget
 class DishCategoryAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(DishCategoryAdmin, self).get_form(request, obj, **kwargs)
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super(DishCategoryAdmin, self).get_form(request, obj, change, **kwargs)
         form.base_fields['description'].widget = admin.widgets.AdminTextareaWidget()
         return form
 
@@ -72,7 +72,6 @@ class RecipeAdmin(admin.ModelAdmin):
     )
 
     def show_instructions(self, obj):
-        print(obj)
         return obj.instructions.displayable_steps
     show_instructions.short_description = "Steps"
 
