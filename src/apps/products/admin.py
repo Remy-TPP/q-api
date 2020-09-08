@@ -9,4 +9,6 @@ class UnitAdmin(admin.ModelAdmin):
     ordering = ('pk',)
 
 
-admin.site.register(Product)
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    ordering = ('name',)

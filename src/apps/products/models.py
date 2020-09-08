@@ -21,7 +21,7 @@ class Unit(models.Model):
 
 
 class Amount(models.Model):
-    quantity = models.DecimalField(max_digits=12, decimal_places=5, null=True)
+    quantity = models.DecimalField(max_digits=12, decimal_places=5, null=True, blank=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, null=True)
 
     class Meta:
@@ -71,7 +71,8 @@ class Amount(models.Model):
 
     @property
     def displayable_quantity(self):
-        return self.quantity
+        """Returns string of quantity with at most 2 decimals."""
+        return f'{self.quantity:.2f}'.rstrip('0').rstrip('.') if self.quantity else ''
 
 
 class Product(models.Model):
@@ -82,9 +83,9 @@ class Product(models.Model):
         max_length=300,
         default=Dimensionality.UNIT
     )  # split by comma
-    density = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # kg / m ** 3
-    avg_unit_weight = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # kg
-    avg_unit_volume = models.DecimalField(max_digits=12, decimal_places=5, null=True)  # L
+    density = models.DecimalField(max_digits=12, decimal_places=5, null=True, blank=True)  # kg / m ** 3
+    avg_unit_weight = models.DecimalField(max_digits=12, decimal_places=5, null=True, blank=True)  # kg
+    avg_unit_volume = models.DecimalField(max_digits=12, decimal_places=5, null=True, blank=True)  # L
 
     def __str__(self):
         return self.name
