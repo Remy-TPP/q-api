@@ -27,12 +27,6 @@ class RecipeInstructionsTests(TestCase):
             RecipeInstructions(steps=fake_steps_set[4]),
         ]
 
-    def test_str_shows_correct_amount_of_steps(self):
-        for i, r_i in enumerate(self.ri_set):
-            nb_steps = len(fake_steps_set[i]) if fake_steps_set[i] else 0
-            self.assertRegex(r_i.__str__(),
-                             rf'\b{nb_steps}\b')
-
     def test_empty_displayable_steps_when_no_steps(self):
         self.assertEqual(self.ri_set[0].displayable_steps, '')
         self.assertEqual(self.ri_set[3].displayable_steps, '')

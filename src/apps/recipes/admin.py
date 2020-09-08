@@ -39,6 +39,7 @@ class DishAdmin(admin.ModelAdmin):
 class RecipeInstructionsAdmin(admin.ModelAdmin, DynamicArrayMixin):
     list_display = ('recipe',)
     ordering = ('recipe__title',)
+    save_on_top = True
     readonly_fields = ('recipe',)
     fields = ('recipe', 'steps',)
     formfield_overrides = {
@@ -59,22 +60,27 @@ class IngredientInline(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('title', 'dish')
     ordering = ('title',)
+    save_on_top = True
     inlines = [IngredientInline]
     exclude = ('instructions',)
-    readonly_fields = ('show_instructions',)
+    readonly_fields = ('show_instructions', 'show_ingredients')
 
     fieldsets = (
         (None, {
             'fields': ('dish', 'title', 'description', 'image'),
         }),
         ('Instructions', {
-            'fields': ('show_instructions',),
-        })
+            'fields': ('show_instructions', 'show_ingredients'),
+        }),
     )
 
     def show_instructions(self, obj):
         return obj.instructions.displayable_steps
-    show_instructions.short_description = "Steps"
+    show_instructions.short_description = 'Steps'
+
+    def show_ingredients(self, obj):
+        return obj.displayable_ingredients
+    show_ingredients.short_description = 'Ingredients'
 
     def response_change(self, request, obj):
         """If pressing SAVE, redirect to next Recipe by title, if there is one; else use default behaviour."""

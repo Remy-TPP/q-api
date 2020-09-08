@@ -71,7 +71,8 @@ class Amount(models.Model):
 
     @property
     def displayable_quantity(self):
-        return self.quantity
+        """Returns string of quantity with at most 2 decimals."""
+        return f'{self.quantity:.2f}'.rstrip('0').rstrip('.') if self.quantity else ''
 
 
 class Product(models.Model):
