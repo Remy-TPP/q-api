@@ -119,9 +119,11 @@ media/
 # VS Code
 .vscode
 
-
 # Editorconfig
 # (remove if team starts using it)
 .editorconfig
 
 *.tags*
+
+# data files
+*.csv

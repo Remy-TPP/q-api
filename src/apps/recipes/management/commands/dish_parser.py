@@ -197,6 +197,9 @@ class DishParser:
     def __init__(self):
         self.rows_added_count = 0
 
+    def unrecognized_unit_names(self):
+        return unrecognized_unit_names
+
     def parse_and_create_dish(self, row):
         dish, is_new = Dish.objects.get_or_create(
             name=row['title'].strip(),
@@ -224,6 +227,3 @@ class DishParser:
 
         self.rows_added_count += 1
         return True
-
-    def unrecognized_unit_names(self):
-        return unrecognized_unit_names
