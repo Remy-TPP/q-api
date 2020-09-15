@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core import management
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework import permissions, status

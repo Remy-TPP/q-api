@@ -16,7 +16,7 @@ class AmountSerializer(serializers.Serializer):
         queryset=Unit.objects.all()
     )
 
-    quantity = serializers.DecimalField(max_digits=12, decimal_places=5)
+    quantity = serializers.DecimalField(max_digits=12, decimal_places=3)
 
     class Meta:
         fields = ['quantity', 'unit']
