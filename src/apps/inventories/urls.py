@@ -5,12 +5,14 @@ from apps.inventories.views import (PlaceViewSet,
                                     InventoryItemViewSet,
                                     PurchaseDetailView,
                                     PurchaseCreateView,
+                                    CartViewSet,
                                     default_place)
 
 router = SimpleRouter()
 
 router.register(r'places', PlaceViewSet, basename='place')                                   # places/
 router.register(r'inventoryitems', InventoryItemViewSet, basename='inventoryitems')          # inventoryitems/
+router.register(r'cart', CartViewSet, basename='cart')                                       # cart/
 
 urlpatterns = [
     path('', include(router.urls)),
