@@ -96,12 +96,12 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
         return items
 
 
-class CartSerializer(AmountSerializer):
+class CartSerializer(serializers.ModelSerializer, AmountSerializer):
     product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
 
     class Meta:
         model = Cart
-        fields = ['id', 'product']
+        exclude = ['place']
 
     def create(self, validated_data):
         place = validated_data.get('place')
