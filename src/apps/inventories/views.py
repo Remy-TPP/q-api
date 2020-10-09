@@ -354,12 +354,30 @@ class CartViewSet(viewsets.GenericViewSet,
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
 
         for ingredient in ingredients:
-            Cart.objects.create(
-                quantity=ingredient.quantity,
-                unit=ingredient.unit,
-                product=ingredient.product,
-                place=place
-            )
+            # TODO: mejorar para que no tenga que pedir el place siempre
+            place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+            serializer = self.get_serializer(data={
+                'quantity': ingredient.quantity,
+                'unit': ingredient.unit,
+                'product': ingredient.product
+            })
+            if serializer.is_valid():
+                if place:
+                    # place_id is correct for this user or has default one
+                    serializer.save(place=place)
+                else:
+                    # user does not have a place yet
+                    serializer.save()
+            else:
+                savepoint_rollback(sid)
+                return Response(
+                    {
+                        'msg': "Cannot add item to cart!",
+                        'errors': serializer.errors
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         savepoint_commit(sid)
         return Response({'message': 'All the items were created!'}, status=status.HTTP_201_CREATED)
