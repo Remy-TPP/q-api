@@ -5,7 +5,7 @@ from apps.inventories.models import (Place,
                                      InventoryItem,
                                      Purchase,
                                      PurchaseItem,
-                                     )
+                                     Cart)
 from apps.products.serializers import AmountSerializer
 
 
@@ -94,3 +94,22 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
         if not items:
             raise serializers.ValidationError({'items': "Can't be empty"})
         return items
+
+
+class CartSerializer(serializers.ModelSerializer, AmountSerializer):
+    product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
+
+    class Meta:
+        model = Cart
+        exclude = ['place']
+
+    def create(self, validated_data):
+        place = validated_data.get('place')
+
+        if place:
+            item = Cart.objects.create(**validated_data)
+        else:
+            place = PlaceSerializer.create(self, {'name': 'Home'})
+            item = Cart.objects.create(**validated_data, place=place)
+
+        return item

@@ -31,3 +31,7 @@ class Purchase(models.Model):
 
 class PurchaseItem(ProductWithAmount):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='items')
+
+
+class Cart(ProductWithAmount):
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='cart')

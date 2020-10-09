@@ -1,11 +1,12 @@
 from PIL import Image
-from django.http import HttpResponse
 from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
+from django.http import HttpResponse
 from django.db.models import Q
 from django.db.transaction import atomic, savepoint, savepoint_commit, savepoint_rollback
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -14,11 +15,14 @@ from apps.inventories.models import (Place,
                                      InventoryItem,
                                      PlaceMember,
                                      Purchase,
+                                     Cart,
                                      )
 from apps.inventories.serializers import (PlaceSerializer,
                                           InventoryItemSerializer,
                                           PurchaseSerializer,
+                                          CartSerializer
                                           )
+from apps.recipes.models import (Recipe, Ingredient)
 from common.utils import qr_image_from_string
 
 
@@ -57,11 +61,29 @@ class PlaceViewSet(viewsets.GenericViewSet,
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
-    operation_description="Returns items."
+    operation_description="Returns items.",
+    manual_parameters=[
+        openapi.Parameter(
+            'place',
+            in_=openapi.IN_QUERY,
+            description='Place. If wrong or null, default one is going to be used.',
+            type=openapi.TYPE_STRING,
+            required=False
+        ),
+    ]
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
     operation_summary="Gets the item with id={id}.",
-    operation_description="Returns item."
+    operation_description="Returns item.",
+    manual_parameters=[
+        openapi.Parameter(
+            'place',
+            in_=openapi.IN_QUERY,
+            description='Place. If wrong or null, default one is going to be used.',
+            type=openapi.TYPE_STRING,
+            required=False
+        ),
+    ]
 ))
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
     operation_summary="Partial updates item with id={id}.",
@@ -83,7 +105,6 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
                            mixins.DestroyModelMixin):
     serializer_class = InventoryItemSerializer
     lookup_field = 'pk'
-    filterset_fields = ['place']
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
@@ -92,6 +113,15 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         operation_summary="Create an item for that place.",
         operation_description="Returns the item.",
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            ),
+        ]
     )
     def create(self, request, *args, **kwargs):
         place = get_place_or_default(request.user.profile, request.query_params.get('place'))
@@ -117,6 +147,15 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
         method='post',
         operation_summary='Create a list of items for that place.',
         operation_description='Choose a place you are member as a default place',
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            ),
+        ]
     )
     @action(detail=False, methods=['POST'])
     @atomic
@@ -219,3 +258,126 @@ class PurchaseCreateView(generics.CreateAPIView):
         image_response = HttpResponse(status=status.HTTP_201_CREATED, content_type="image/jpeg")
         qr_img.save(image_response, "JPEG")
         return image_response
+
+
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_summary="Lists all items that cart has.",
+    operation_description="Returns items.",
+    manual_parameters=[
+        openapi.Parameter(
+            'place',
+            in_=openapi.IN_QUERY,
+            description='Place. If wrong or null, default one is going to be used.',
+            type=openapi.TYPE_STRING,
+            required=False
+        ),
+    ]
+))
+@method_decorator(name='destroy', decorator=swagger_auto_schema(
+    operation_summary="Deletes item with id={id}.",
+    operation_description="Returns none."
+))
+class CartViewSet(viewsets.GenericViewSet,
+                  mixins.CreateModelMixin,
+                  mixins.ListModelMixin,
+                  mixins.DestroyModelMixin):
+    serializer_class = CartSerializer
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
+        return Cart.objects.filter(place=place).order_by('product__name')
+
+    @swagger_auto_schema(
+        operation_summary="Create an item for the cart in that place.",
+        operation_description="Returns the item.",
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            ),
+        ]
+    )
+    def create(self, request, *args, **kwargs):
+        place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            if place:
+                # place_id is correct for this user or has default one
+                serializer.save(place=place)
+            else:
+                # user does not have a place yet
+                serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                'msg': "Cannot add item to cart!",
+                'errors': serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    @swagger_auto_schema(
+        method='post',
+        operation_summary='Create a list of items for the cart in that place.',
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            ),
+            openapi.Parameter(
+                'recipe',
+                in_=openapi.IN_QUERY,
+                description='Recipe.',
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=False, methods=['POST'])
+    @atomic
+    def add_recipe(self, request):
+        sid = savepoint()
+        recipe_id = request.query_params.get('recipe')
+        if not recipe_id:
+            return Response({'message': 'Must provide the recipe!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        recipe = get_object_or_404(Recipe.objects.all(), id=recipe_id)
+        ingredients = Ingredient.objects.filter(recipe=recipe)
+        place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
+
+        for ingredient in ingredients:
+            # TODO: mejorar para que no tenga que pedir el place siempre
+            place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+            serializer = self.get_serializer(data={
+                'quantity': ingredient.quantity,
+                'unit': ingredient.unit,
+                'product': ingredient.product
+            })
+            if serializer.is_valid():
+                if place:
+                    # place_id is correct for this user or has default one
+                    serializer.save(place=place)
+                else:
+                    # user does not have a place yet
+                    serializer.save()
+            else:
+                savepoint_rollback(sid)
+                return Response(
+                    {
+                        'msg': "Cannot add item to cart!",
+                        'errors': serializer.errors
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        savepoint_commit(sid)
+        return Response({'message': 'All the items were created!'}, status=status.HTTP_201_CREATED)

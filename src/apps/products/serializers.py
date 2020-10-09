@@ -13,10 +13,11 @@ class UnitSerializer(serializers.ModelSerializer):
 class AmountSerializer(serializers.Serializer):
     unit = serializers.SlugRelatedField(
         slug_field='name',
-        queryset=Unit.objects.all()
+        queryset=Unit.objects.all(),
+        allow_null=True
     )
 
-    quantity = serializers.DecimalField(max_digits=12, decimal_places=3)
+    quantity = serializers.DecimalField(max_digits=12, decimal_places=3, allow_null=True)
 
     class Meta:
         fields = ['quantity', 'unit']
