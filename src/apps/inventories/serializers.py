@@ -66,7 +66,7 @@ class PurchaseItemSerializer(AmountSerializer):
         # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
 
 
-class PurchaseSerializer(serializers.ModelSerializer):
+class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
     items = PurchaseItemSerializer(many=True)
 
     class Meta:
