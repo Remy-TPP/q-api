@@ -31,7 +31,7 @@ class ProfileMinimalSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'last_name', 'email']
 
 
-class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     profiletypes = serializers.SlugRelatedField(
         slug_field="name",
         many=True,
@@ -83,7 +83,7 @@ class RecipeCookedSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-class ProfileTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileType

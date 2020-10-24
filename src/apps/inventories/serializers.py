@@ -9,7 +9,7 @@ from apps.inventories.models import (Place,
 from apps.products.serializers import AmountSerializer
 
 
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place

@@ -53,6 +53,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
                    mixins.RetrieveModelMixin):
     serializer_class = PlaceSerializer
     lookup_field = 'pk'
+    search_fields = ['name']
 
     def get_queryset(self):
         user = self.request.user
@@ -105,6 +106,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
                            mixins.DestroyModelMixin):
     serializer_class = InventoryItemSerializer
     lookup_field = 'pk'
+    search_fields = ['product__name']
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
@@ -283,6 +285,7 @@ class CartViewSet(viewsets.GenericViewSet,
                   mixins.DestroyModelMixin):
     serializer_class = CartSerializer
     lookup_field = 'pk'
+    search_fields = ['product__name', 'place__name']
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
