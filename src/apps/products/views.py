@@ -41,6 +41,7 @@ class UnitViewSet(viewsets.ModelViewSet):
     serializer_class = UnitSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    search_fields = ['name', 'short_name', 'dimensionality']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -77,3 +78,4 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    search_fields = ['name']

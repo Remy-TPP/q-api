@@ -44,6 +44,7 @@ class DishCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = DishCategorySerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    search_fields = ['name', 'description']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -79,6 +80,7 @@ class DishLabelViewSet(viewsets.ModelViewSet):
     serializer_class = DishLabelSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    search_fields = ['name']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -114,7 +116,8 @@ class DishViewSet(viewsets.ModelViewSet):
     serializer_class = DishSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser | ReadOnly]
-    filterset_fields = ['labels']
+    filterset_fields = ['labels', 'categories']
+    search_fields = ['name', 'description']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -151,3 +154,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     parser_class = (FileUploadParser,)
     permission_classes = [permissions.IsAdminUser | ReadOnly]
+    filterset_fields = ['dish__labels', 'dish__categories']
+    search_fields = ['title', 'description', 'dish__name', 'dish__description']

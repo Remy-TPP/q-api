@@ -9,7 +9,7 @@ from apps.inventories.models import (Place,
 from apps.products.serializers import AmountSerializer
 
 
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
@@ -66,7 +66,7 @@ class PurchaseItemSerializer(AmountSerializer):
         # TODO: (discuss) is it okay for a Serializer.create() to not actually save to db?
 
 
-class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
+class PurchaseSerializer(serializers.ModelSerializer):
     items = PurchaseItemSerializer(many=True)
 
     class Meta:

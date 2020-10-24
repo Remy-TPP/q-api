@@ -195,6 +195,7 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileTypeSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
+    search_fields = ['name']
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -228,6 +229,7 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by("id")
     serializer_class = EventSerializer
     lookup_field = 'pk'
+    search_fields = ['name', 'place__name']
 
     def get_queryset(self):
         profile = self.request.user.profile
