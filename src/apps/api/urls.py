@@ -24,4 +24,5 @@ urlpatterns += [
     path('', include('apps.recipes.urls'), name='recipes'),
     path('', include('apps.inventories.urls'), name='inventories'),
     path('', include('apps.cooking.urls'), name='cooking'),
+    path('', include('apps.recommendations.urls'), name='recommendations'),
 ]

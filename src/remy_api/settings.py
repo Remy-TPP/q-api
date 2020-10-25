@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'apps.recipes',
     'apps.inventories',
     'apps.cooking',
+    'apps.recommendations'
 ]
 
 MIDDLEWARE = [
@@ -127,7 +128,7 @@ REST_FRAMEWORK = {
         # TODO: change to
         # 'rest_framework.permissions.IsAdminUser',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'common.pagination.ClientControlPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
