@@ -2,18 +2,16 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.recipes.models import Recipe
+from apps.recommendations.models import Recommendation
 
-from apps.recipes.serializers import RecipeSerializer
+from apps.recommendations.serializers import RecommendationSerializer
 
 
 class RecommendationViewSet(viewsets.GenericViewSet):
-    serializer_class = RecipeSerializer
+    serializer_class = RecommendationSerializer
 
     def get_queryset(self):
-        # TODO: filtrar recommendacion por usuario
-        # return Recommendation.objects.filter(user=self.request.user)
-        return Recipe.objects.all()
+        return Recommendation.objects.filter(profile__user=self.request.user).order_by('-score')
 
     def send_queryset(self, queryset):
         page = self.paginate_queryset(queryset)
