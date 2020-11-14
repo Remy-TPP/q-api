@@ -57,7 +57,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         user = self.request.user
-        return Place.objects.filter(members=user.profile).order_by("id")
+        return self.filter_queryset(Place.objects.filter(members=user.profile).order_by("id"))
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -110,7 +110,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
-        return InventoryItem.objects.filter(place=place).order_by('id')
+        return self.filter_queryset(InventoryItem.objects.filter(place=place).order_by('id'))
 
     @swagger_auto_schema(
         operation_summary="Create an item for that place.",
@@ -289,7 +289,7 @@ class CartViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
-        return Cart.objects.filter(place=place).order_by('product__name')
+        return self.filter_queryset(Cart.objects.filter(place=place).order_by('product__name'))
 
     @swagger_auto_schema(
         operation_summary="Create an item for the cart in that place.",

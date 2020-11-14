@@ -233,10 +233,10 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         profile = self.request.user.profile
-        return Event.objects.filter(
+        return self.filter_queryset(Event.objects.filter(
             Q(host=profile) |
             Q(attendees=profile)
-        ).order_by("id").distinct()
+        ).order_by("id").distinct())
 
     @swagger_auto_schema(
         method='post',
