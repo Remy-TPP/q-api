@@ -24,7 +24,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 Q(profile__user=self.request.user.id)
             ).order_by('-score')
         )
-
+        breakpoint()
         if bool(all_ingredients) is True:
             for rec in recommendations:
                 item = inventory_items.filter(

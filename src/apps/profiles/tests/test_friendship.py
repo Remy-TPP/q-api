@@ -93,7 +93,7 @@ class FriendshipTests(APITestCase):
             FRIENDSHIP,
             payload
         )
-        breakpoint()
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(res.data)
         self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
