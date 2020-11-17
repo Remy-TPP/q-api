@@ -86,7 +86,7 @@ class FriendshipTests(APITestCase):
         self.client.force_authenticate(user=u_1)
 
         payload = {
-            'profile_requested': u_2.profile.id
+            'profile_requested_id': u_2.profile.id
         }
 
         res = self.client.post(
@@ -96,8 +96,8 @@ class FriendshipTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(res.data)
-        self.assertEqual(res.data['profile_requesting'], u_1.profile.id)
-        self.assertEqual(res.data['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
+        self.assertEqual(res.data['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['status'], 'REQUESTED')
 
     def test_get_friendship_u_3(self):
@@ -129,7 +129,7 @@ class FriendshipTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(res.data)
         self.assertEqual(res.data['count'], 1)
-        self.assertEqual(res.data['results'][0]['profile_requesting'], u_1.profile.id)
+        self.assertEqual(res.data['results'][0]['profile_requesting']['id'], u_1.profile.id)
         self.assertEqual(res.data['results'][0]['status'], 'REQUESTED')
 
     def test_get_friendship_requested_u_2(self):
@@ -146,7 +146,7 @@ class FriendshipTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(res.data)
         self.assertEqual(res.data['count'], 1)
-        self.assertEqual(res.data['results'][0]['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['results'][0]['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['results'][0]['status'], 'REQUESTED')
 
     def test_reject_u_2(self):
@@ -163,8 +163,8 @@ class FriendshipTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(res.data)
-        self.assertEqual(res.data['profile_requesting'], u_1.profile.id)
-        self.assertEqual(res.data['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
+        self.assertEqual(res.data['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['status'], 'REJECTED')
 
     def test_reject_u_1(self):
@@ -181,8 +181,8 @@ class FriendshipTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(res.data)
-        self.assertEqual(res.data['profile_requesting'], u_1.profile.id)
-        self.assertEqual(res.data['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
+        self.assertEqual(res.data['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['status'], 'REJECTED')
 
     def test_post_after_reject(self):
@@ -200,7 +200,7 @@ class FriendshipTests(APITestCase):
         self.client.force_authenticate(user=u_1)
 
         payload = {
-            'profile_requested': u_2.profile.id
+            'profile_requested_id': u_2.profile.id
         }
 
         res = self.client.post(
@@ -210,8 +210,8 @@ class FriendshipTests(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(res.data)
-        self.assertEqual(res.data['profile_requesting'], u_1.profile.id)
-        self.assertEqual(res.data['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
+        self.assertEqual(res.data['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['status'], 'REQUESTED')
 
     def test_reject_after_reject(self):
@@ -261,8 +261,8 @@ class FriendshipTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_202_ACCEPTED)
         self.assertTrue(res.data)
         self.assertEqual(res.data['id'], 1)
-        self.assertEqual(res.data['profile_requesting'], u_1.profile.id)
-        self.assertEqual(res.data['profile_requested'], u_2.profile.id)
+        self.assertEqual(res.data['profile_requesting']['id'], u_1.profile.id)
+        self.assertEqual(res.data['profile_requested']['id'], u_2.profile.id)
         self.assertEqual(res.data['status'], 'ACCEPTED')
         self.assertTrue(u_1.profile in u_2.profile.friends.all())
         self.assertTrue(u_2.profile in u_1.profile.friends.all())

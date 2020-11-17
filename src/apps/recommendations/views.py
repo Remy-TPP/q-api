@@ -1,3 +1,4 @@
+from distutils.util import strtobool
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -25,7 +26,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             ).order_by('-score')
         )
 
-        if bool(all_ingredients) is True:
+        if all_ingredients and strtobool(all_ingredients):
             for rec in recommendations:
                 item = inventory_items.filter(
                     Q(product__in=rec.recipe.ingredients.values_list('id', flat=True))

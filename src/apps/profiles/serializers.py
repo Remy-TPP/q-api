@@ -127,16 +127,20 @@ class EventSerializer(serializers.ModelSerializer):
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
-    profile_requesting = serializers.PrimaryKeyRelatedField(
+    profile_requesting = ProfileMinimalSerializer(
         read_only=True
     )
-    profile_requested = serializers.PrimaryKeyRelatedField(
-        queryset=Profile.objects.all()
+    profile_requested = ProfileMinimalSerializer(
+        read_only=True
+    )
+    profile_requested_id = serializers.PrimaryKeyRelatedField(
+        queryset=Profile.objects.all(),
+        write_only=True
     )
 
     def create(self, validated_data):
         current_profile = Profile.objects.get(user=self.context['request'].user)
-        requested_profile = validated_data['profile_requested']
+        requested_profile = validated_data['profile_requested_id']
         requested_status = FriendshipStatus.objects.get(name='REQUESTED')
 
         friendship_request, created = FriendshipRequest.objects.get_or_create(
