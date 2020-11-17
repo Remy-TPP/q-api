@@ -118,8 +118,9 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         return FriendshipRequest.objects.filter(
-            Q(profile_requesting__user_id=self.request.user.id) |
-            Q(profile_requested__user_id=self.request.user.id)
+            (Q(profile_requesting__user_id=self.request.user.id) |
+             Q(profile_requested__user_id=self.request.user.id)) &
+            Q(status='REQUESTED')
         ).order_by("id")
 
     @swagger_auto_schema(
