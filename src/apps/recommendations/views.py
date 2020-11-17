@@ -29,7 +29,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         if all_ingredients and strtobool(all_ingredients):
             for rec in recommendations:
                 item = inventory_items.filter(
-                    Q(product__in=rec.recipe.ingredients.values_list('id', flat=True))
+                    Q(product_id__in=rec.recipe.ingredients.values_list('id', flat=True))
                 )
                 if item.count() != rec.recipe.ingredients.count():
                     recommendations = recommendations.exclude(id=rec.id)
