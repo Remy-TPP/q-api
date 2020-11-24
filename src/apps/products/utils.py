@@ -6,8 +6,8 @@ from apps.products.dimensionality import Dimensionality
 def convert_to_correct_unit(obj, other):
     """Receive ProductWithAmount and Amount/ProductWithAmount"""
 
-    obj_amount = Q_(obj.quantity, obj.unit.short_name or obj.unit.name)
-    other_amount = Q_(other.quantity, other.unit.short_name or other.unit.name)
+    obj_amount = Q_(obj.quantity, obj.unit.name)
+    other_amount = Q_(other.quantity, other.unit.name)
 
     other_amount_dim = other_amount.dimensionality
     obj_amount_dim = obj_amount.dimensionality
