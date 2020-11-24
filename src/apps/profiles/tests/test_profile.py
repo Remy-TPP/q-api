@@ -81,13 +81,13 @@ class ProfileTests(APITestCase):
         u_2 = sample_user_2()
         u_1.profile.friends.add(u_2.profile)
 
-    def test_get_profiles(self):
-        """Test when trying to access profiles endpoint not login, must return Profiles"""
-        sample_user_1()
-        sample_user_2()
-        res = self.client.get(PROFILES)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertTrue(res.data)
+    # def test_get_profiles(self):
+    #     """Test when trying to access profiles endpoint not login, must return Profiles"""
+    #     sample_user_1()
+    #     sample_user_2()
+    #     res = self.client.get(PROFILES)
+    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
+    #     self.assertTrue(res.data)
 
     def test_get_profile(self):
         """Test when get a profile with id, should return the profile"""

@@ -60,6 +60,22 @@ class ProfileViewSet(viewsets.GenericViewSet,
     permission_classes = [UpdateOwnProfile]
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(
+            Profile.objects
+            .exclude(id=self.request.user.profile.id)
+            .exclude(id__in=self.request.user.profile.friends.values_list('id', flat=True)).order_by('id')
+        )
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
     @swagger_auto_schema(
         method='post',
         operation_summary="Set profile's user is_active to False.",
