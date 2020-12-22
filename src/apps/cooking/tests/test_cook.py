@@ -174,4 +174,5 @@ class CookingTest(APITestCase):
 
         resp = self.client.get(reverse('profile-cooked-recipes'))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(resp.data), 1)
+        self.assertEqual(resp.data.get('count'), 1)
+        self.assertEqual(len(resp.data.get('results')), 1)

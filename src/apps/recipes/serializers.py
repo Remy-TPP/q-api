@@ -94,7 +94,7 @@ class InteractionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interaction
-        exclude = ['id']
+        fields = '__all__'
         read_only_fields = ['id', 'cooked_at']
 
     def create(self, validated_data):

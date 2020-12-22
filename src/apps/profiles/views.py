@@ -121,7 +121,6 @@ class ProfileViewSet(viewsets.GenericViewSet,
         queryset = sorted(queryset, key=lambda i: i.last_cooked, reverse=True)
 
         page = self.paginate_queryset(queryset)
-        print(page)
         if page is not None:
             recipes_cooked_by_user = InteractionSerializer(page, many=True)
             return self.get_paginated_response(recipes_cooked_by_user.data)
