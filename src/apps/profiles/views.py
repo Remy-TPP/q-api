@@ -13,7 +13,7 @@ from apps.profiles.models import (Profile,
                                   Event,
                                   FriendshipRequest,
                                   FriendshipStatus,
-                                  RecipeCooked)
+                                 )
 from apps.recipes.models import (Interaction)
 
 from apps.profiles.serializers import (ProfileSerializer,
@@ -23,7 +23,7 @@ from apps.profiles.serializers import (ProfileSerializer,
                                        EventSerializer,
                                        FriendshipRequestSerializer,
                                        FriendshipStatusSerializer,
-                                       RecipeCookedSerializer)
+                                      )
 from apps.recipes.serializers import (InteractionSerializer)
 
 from apps.profiles.permissions import (UpdateOwnProfile,
@@ -107,18 +107,6 @@ class ProfileViewSet(viewsets.GenericViewSet,
         filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
         friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
         return Response(friends.data, status=status.HTTP_200_OK)
-
-    # # TODO: remove
-    # @swagger_auto_schema(
-    #     method='get',
-    #     operation_summary="Get a list of my cooked recipes.",
-    #     responses={200: RecipeCookedSerializer(many=True)}
-    # )
-    # @action(detail=False, methods=['GET'], url_path='recipes')
-    # def my_recipes(self, request):
-    #     queryset = RecipeCooked.objects.filter(profile=request.user.profile).order_by('-cooked_at')
-    #     recipes = RecipeCookedSerializer(queryset, many=True)
-    #     return Response(recipes.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
         method='get',
@@ -360,21 +348,3 @@ class FriendshipStatusViewSet(viewsets.ModelViewSet):
     serializer_class = FriendshipStatusSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
-
-
-# # TODO: Use for this? should replace with one for Interaction? Just remove?
-# @method_decorator(name='partial_update', decorator=swagger_auto_schema(
-#     operation_summary="Partial updates recipe cooked with id={id}.",
-#     operation_description="Returns RecipeCooked."
-# ))
-# @method_decorator(name='update', decorator=swagger_auto_schema(
-#     operation_summary="Updates recipe cooked with id={id}.",
-#     operation_description="Returns RecipeCooked."
-# ))
-# class RecipeCookedViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin):
-#     """
-#     Manage the recipes cooked by profiles.
-#     """
-#     queryset = RecipeCooked.objects.all().order_by('id')
-#     serializer_class = RecipeCookedSerializer
-#     lookup_field = 'pk'

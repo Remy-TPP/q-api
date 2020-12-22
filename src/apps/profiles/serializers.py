@@ -8,7 +8,7 @@ from apps.profiles.models import (Profile,
                                   Event,
                                   FriendshipRequest,
                                   FriendshipStatus,
-                                  RecipeCooked)
+                                 )
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,8 +57,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        # TODO
-        exclude = ['user', 'interactions', 'recipes_cooked']
+        exclude = ['user', 'interactions']
 
     def update(self, instance, validated_data):
         user = validated_data.pop('user', None)
@@ -70,19 +69,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             instance.user.save()
 
         return super(ProfileSerializer, self).update(instance, validated_data)
-
-
-# TODO: remove
-class RecipeCookedSerializer(serializers.ModelSerializer):
-    score = serializers.IntegerField(min_value=1, max_value=10, required=False)
-    profile = serializers.StringRelatedField()
-    recipe = serializers.StringRelatedField()
-    cooked_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = RecipeCooked
-        fields = '__all__'
-        read_only_fields = ['id']
 
 
 class ProfileTypeSerializer(serializers.ModelSerializer):

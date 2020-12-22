@@ -6,8 +6,7 @@ from apps.recipes.views import (DishCategoryViewSet,
                                 RecipeViewSet,
                                 DishViewSet,
                                 rate_recipe,
-                                )
-                                # InteractionViewSet)
+                               )
 
 
 router = SimpleRouter()
@@ -16,7 +15,6 @@ router.register(r'dishcategories', DishCategoryViewSet)            # dishcategor
 router.register(r'dishlabels', DishLabelViewSet)                   # dishlabels/
 router.register(r'recipes', RecipeViewSet)                         # recipes/
 router.register(r'dishes', DishViewSet)                            # dishes/
-# router.register(r'interactions', InteractionViewSet)               # interactions/
 
 
 urlpatterns = [

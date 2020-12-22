@@ -8,10 +8,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from common.permissions import ReadOnly
-# from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
 from apps.recipes.models import DishCategory, DishLabel, Dish, Recipe, Interaction
-# from apps.recipes.serializers import (DishCategorySerializer, DishLabelSerializer, DishSerializer,
-#                                       IngredientSerializer, RecipeSerializer)
 from apps.recipes.serializers import (DishCategorySerializer,
                                       DishLabelSerializer,
                                       DishSerializer,
