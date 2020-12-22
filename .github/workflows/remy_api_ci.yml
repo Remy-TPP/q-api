@@ -2,6 +2,7 @@ name: Remy API CI
 on: [push]
 
 env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
   SECRET_KEY: fakesecretkey
   EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
   EMAIL_PASSWORD: FakeEmailPassword
@@ -50,13 +51,6 @@ jobs:
         path: ~/.local/share/virtualenvs
         key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
-    # - uses: actions/cache@v1
-    #   with:
-    #     path: ~/.cache/pip
-    #     key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-pip-
-
     - name: Install dependencies
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
@@ -67,13 +61,6 @@ jobs:
         cd src/
         pipenv run test
         pipenv run cov-report
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-        TEST_DB_HOST: localhost
-        TEST_DB_NAME: postgres
-        TEST_DB_USER: postgres
-        TEST_DB_PASS: postgres
-        TEST_DB_PORT: 5432
 
     - name: Lint
       run: |
