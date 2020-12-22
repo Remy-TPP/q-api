@@ -1,0 +1,72 @@
+name: Remy API CI
+
+on: [push]
+
+
+defaults:
+  run:
+    working-directory: .
+
+
+jobs:
+  lint_and_test_jobs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+          # TODO: this is not ideal
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    # TODO: cache dependencies; should install pipenv before
+    # - uses: actions/cache@v1
+    #   with:
+    #     path: ~/.cache/pip
+    #     key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        # sudo apt install -qy libpq-dev
+        python -m pip install --upgrade pip
+        pip install pipenv --upgrade
+        pipenv install --dev
+
+    - name: Set up db
+      run: |
+        pslq -c 'create database test_db;' -U postgres
+        cd src/
+        python manage.py migrate
+
+    - name: Test
+      run: |
+        cd src/
+        pipenv run test
+        pipenv run cov-report
+
+    - name: Lint
+      run: |
+        cd src/
+        pipenv run lint
+        pipenv run pylint
