@@ -1,14 +1,19 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import api_view
 from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
 from django.utils.decorators import method_decorator
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from common.permissions import ReadOnly
-# from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
 from apps.recipes.models import DishCategory, DishLabel, Dish, Recipe
-# from apps.recipes.serializers import (DishCategorySerializer, DishLabelSerializer, DishSerializer,
-#                                       IngredientSerializer, RecipeSerializer)
-from apps.recipes.serializers import DishCategorySerializer, DishLabelSerializer, DishSerializer, RecipeSerializer
+from apps.recipes.serializers import (DishCategorySerializer,
+                                      DishLabelSerializer,
+                                      DishSerializer,
+                                      RecipeSerializer,
+                                      InteractionSerializer
+                                      )
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -156,3 +161,28 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | ReadOnly]
     filterset_fields = ['dish__labels', 'dish__categories']
     search_fields = ['title', 'description', 'dish__name', 'dish__description']
+
+
+@swagger_auto_schema(
+    method='put',
+    operation_summary='Leave a rating for recipe from current user',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'recipe': openapi.Schema(type=openapi.TYPE_INTEGER, description='Id of recipe to rate'),
+            'rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Rating given'),
+        },
+        required=['recipe', 'rating'],
+    ),
+    responses={200: InteractionSerializer()},
+)
+@api_view(['PUT'])
+def rate_recipe(request):
+    if not request.data.get('rating'):
+        return Response({'message': 'Must provide the recipe and rating'}, status=status.HTTP_400_BAD_REQUEST)
+
+    interaction_serializer = InteractionSerializer(data=request.data)
+    interaction_serializer.is_valid(raise_exception=True)
+    interaction_serializer.save(profile=request.user.profile)
+
+    return Response(interaction_serializer.data, status=status.HTTP_200_OK)

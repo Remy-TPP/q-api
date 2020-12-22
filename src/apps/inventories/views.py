@@ -234,7 +234,7 @@ class PurchaseDetailView(generics.RetrieveAPIView):
     permission_classes = []
 
 
-# TODO: not working
+# TODO: this schema doesn't seem to be working
 @method_decorator(name='create', decorator=swagger_auto_schema(
     operation_summary="Creates a purchase with the given items.",
     operation_description="Returns image (content_type 'image/jpeg') of QR code with purchase URL embedded.",

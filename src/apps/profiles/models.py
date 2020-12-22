@@ -2,8 +2,6 @@ from django.db import models
 from django.conf import settings
 from rest_framework.serializers import ValidationError
 
-from apps.recipes.models import Recipe
-
 
 class ProfileType(models.Model):
     name = models.CharField(max_length=300, unique=True)
@@ -22,32 +20,15 @@ class Profile(models.Model):
     profiletypes = models.ManyToManyField(ProfileType, related_name='profile')
     friends = models.ManyToManyField("self", blank=True)
 
-    recipes_cooked = models.ManyToManyField(
-        Recipe,
+    interactions = models.ManyToManyField(
+        'recipes.Recipe',
         related_name='profile',
         blank=True,
-        through='RecipeCooked'
+        through='recipes.Interaction',
     )
 
     def __str__(self):
         return '%s %s (%s)' % (self.user.first_name, self.user.last_name, self.user.username)
-
-
-class RecipeCooked(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    cooked_at = models.DateTimeField(auto_now=True)
-    score = models.IntegerField(
-        blank=True,
-        null=True,
-    )
-
-    def __str__(self):
-        return 'Recipe %s cooked by %s with score: %s' % (
-            str(self.recipe),
-            str(self.profile),
-            str(self.score) if self.score else 'No score yet'
-        )
 
 
 class FriendshipStatus(models.Model):
