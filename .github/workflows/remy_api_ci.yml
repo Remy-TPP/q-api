@@ -1,13 +1,5 @@
 name: Remy API CI
-
 on: [push]
-
-defaults:
-  run:
-    working-directory: .
-
-env:
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
 
 jobs:
   lint_and_test_jobs:
@@ -20,7 +12,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
+          POSTGRES_DB: postgres
           # TODO: this is not ideal
           POSTGRES_HOST_AUTH_METHOD: trust
         # Set health checks to wait until postgres has started
@@ -33,14 +25,26 @@ jobs:
           - 5432:5432
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out repository code
+      uses: actions/checkout@v2
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
 
-    # TODO: cache dependencies; should install pipenv before
+    - name: Install pipenv
+      run: |
+        python -m pip install pipenv wheel
+
+    - name: Cache dependencies
+      id: cache-pipenv
+      # TODO: switch to v2
+      uses: actions/cache@v1
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+
     # - uses: actions/cache@v1
     #   with:
     #     path: ~/.cache/pip
@@ -49,26 +53,23 @@ jobs:
     #       ${{ runner.os }}-pip-
 
     - name: Install dependencies
+      if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
-        # sudo apt install -qy libpq-dev
-        python -m pip install --upgrade pip
-        pip install pipenv --upgrade
-        pipenv install --dev
-
-    - name: Set up db
-      run: |
-        # psql 'postgres://postgres:postgres@localhost:5432/postgres' -c 'CREATE DATABASE test_db;'
-        cd src/
-        python manage.py migrate
+        pipenv install --deploy --dev
 
     - name: Test
       run: |
         cd src/
         pipenv run test
         pipenv run cov-report
+      env:
+        TEST_DB_HOST: localhost
+        TEST_DB_NAME: postgres
+        TEST_DB_USER: postgres
+        TEST_DB_PASS: postgres
+        TEST_DB_PORT: 5432
 
     - name: Lint
       run: |
-        cd src/
         pipenv run lint
         pipenv run pylint
