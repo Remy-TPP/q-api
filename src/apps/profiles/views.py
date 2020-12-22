@@ -78,7 +78,6 @@ class ProfileViewSet(viewsets.GenericViewSet,
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-
     @swagger_auto_schema(
         method='post',
         operation_summary="Set profile's user is_active to False.",
