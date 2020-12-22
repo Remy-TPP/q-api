@@ -57,7 +57,7 @@ jobs:
 
     - name: Set up db
       run: |
-        psql 'postgres://postgres:postgres@localhost:5432/postgres' -c 'CREATE DATABASE test_db CHARACTER SET utf8;'
+        # psql 'postgres://postgres:postgres@localhost:5432/postgres' -c 'CREATE DATABASE test_db;'
         cd src/
         python manage.py migrate
 
