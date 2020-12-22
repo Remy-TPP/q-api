@@ -8,7 +8,7 @@ from apps.profiles.models import (Profile,
                                   Event,
                                   FriendshipRequest,
                                   FriendshipStatus,
-                                 )
+                                  )
 
 
 class UserSerializer(serializers.ModelSerializer):

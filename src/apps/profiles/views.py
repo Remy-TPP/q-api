@@ -13,7 +13,7 @@ from apps.profiles.models import (Profile,
                                   Event,
                                   FriendshipRequest,
                                   FriendshipStatus,
-                                 )
+                                  )
 from apps.recipes.models import (Interaction)
 
 from apps.profiles.serializers import (ProfileSerializer,
@@ -23,7 +23,7 @@ from apps.profiles.serializers import (ProfileSerializer,
                                        EventSerializer,
                                        FriendshipRequestSerializer,
                                        FriendshipStatusSerializer,
-                                      )
+                                       )
 from apps.recipes.serializers import (InteractionSerializer)
 
 from apps.profiles.permissions import (UpdateOwnProfile,
@@ -116,7 +116,7 @@ class ProfileViewSet(viewsets.GenericViewSet,
     def cooked_recipes(self, request):
         queryset = (
             Interaction.objects
-                .filter(profile=request.user.profile, cooked_at__len__gt=0)
+            .filter(profile=request.user.profile, cooked_at__len__gt=0)
         )
         queryset = sorted(queryset, key=lambda i: i.last_cooked, reverse=True)
 

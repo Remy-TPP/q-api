@@ -6,7 +6,7 @@ from apps.profiles.views import (ProfileViewSet,
                                  EventViewSet,
                                  FriendshipRequestViewSet,
                                  FriendshipStatusViewSet,
-                                )
+                                 )
 
 router = SimpleRouter()
 

@@ -6,7 +6,7 @@ from apps.recipes.views import (DishCategoryViewSet,
                                 RecipeViewSet,
                                 DishViewSet,
                                 rate_recipe,
-                               )
+                                )
 
 
 router = SimpleRouter()

@@ -1,10 +1,8 @@
 from collections import OrderedDict
-from datetime import datetime
-import pytz
 
+from django.utils import timezone
 from django.db import models
 from django_better_admin_arrayfield.models.fields import ArrayField
-from django.utils import timezone
 
 from apps.products.models import Product, ProductWithAmount
 from apps.profiles.models import Profile

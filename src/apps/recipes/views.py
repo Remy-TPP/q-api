@@ -3,18 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from common.permissions import ReadOnly
-from apps.recipes.models import DishCategory, DishLabel, Dish, Recipe, Interaction
+from apps.recipes.models import DishCategory, DishLabel, Dish, Recipe
 from apps.recipes.serializers import (DishCategorySerializer,
                                       DishLabelSerializer,
                                       DishSerializer,
                                       RecipeSerializer,
                                       InteractionSerializer
-                                     )
+                                      )
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
