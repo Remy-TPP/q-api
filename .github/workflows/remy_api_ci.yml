@@ -2,11 +2,12 @@ name: Remy API CI
 
 on: [push]
 
-
 defaults:
   run:
     working-directory: .
 
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
 
 jobs:
   lint_and_test_jobs:
@@ -18,10 +19,11 @@ jobs:
         image: postgres:11
         env:
           POSTGRES_USER: postgres
-          # POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: test_db
           # TODO: this is not ideal
           POSTGRES_HOST_AUTH_METHOD: trust
+        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -55,7 +57,7 @@ jobs:
 
     - name: Set up db
       run: |
-        psql -U postgres -c 'CREATE DATABASE test_db CHARACTER SET utf8;'
+        psql 'postgres://postgres:postgres@localhost:5432/postgres' -c 'CREATE DATABASE test_db CHARACTER SET utf8;'
         cd src/
         python manage.py migrate
 
