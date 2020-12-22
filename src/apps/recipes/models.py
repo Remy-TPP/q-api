@@ -104,15 +104,18 @@ class Ingredient(ProductWithAmount):
         return super().__str__() + (f' ({self.notes})' if self.notes else '')
 
 
-# TODO: uniqueness of [recipe, profile]
-# https://docs.djangoproject.com/en/3.1/ref/models/constraints/#django.db.models.UniqueConstraint
 class Interaction(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     cooked_at = ArrayField(models.DateTimeField(), default=list)
     # User-inputed ratings are naturals in [1; 10] but store a bit more precision
     # TODO: min and max validations?
     rating = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['profile', 'recipe'], name='unique_interaction')
+        ]
 
     def __str__(self):
         return (

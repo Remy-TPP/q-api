@@ -15,7 +15,10 @@ from apps.inventories.utils import get_place_or_default
 @swagger_auto_schema(
     method='post',
     operation_summary='Cook recipe',
-    operation_description='Cook recipe as current user, in place given by ID or in default place',
+    operation_description='''
+        Cook recipe as current user, in place given by ID or in default place.
+        Can optionally receive other details for the interaction in the request body, such as rating.
+    ''',
     manual_parameters=[
         openapi.Parameter(
             'recipe_id',
