@@ -2,8 +2,6 @@ from django.db import models
 from django.conf import settings
 from rest_framework.serializers import ValidationError
 
-from apps.recipes.models import Recipe
-
 
 class ProfileType(models.Model):
     name = models.CharField(max_length=300, unique=True)
@@ -22,20 +20,29 @@ class Profile(models.Model):
     profiletypes = models.ManyToManyField(ProfileType, related_name='profile')
     friends = models.ManyToManyField("self", blank=True)
 
+    # TODO: remove
     recipes_cooked = models.ManyToManyField(
-        Recipe,
+        'recipes.Recipe',
         related_name='profile',
         blank=True,
-        through='RecipeCooked'
+        through='RecipeCooked',
+    )
+    # TODO: is this needed?
+    interactions = models.ManyToManyField(
+        'recipes.Recipe',
+        related_name='profile_2',  # TODO
+        blank=True,
+        through='recipes.Interaction',
     )
 
     def __str__(self):
         return '%s %s (%s)' % (self.user.first_name, self.user.last_name, self.user.username)
 
 
+# TODO: remove this, serializer, everything
 class RecipeCooked(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE)
     cooked_at = models.DateTimeField(auto_now=True)
     score = models.IntegerField(
         blank=True,

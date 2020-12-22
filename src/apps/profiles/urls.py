@@ -6,7 +6,8 @@ from apps.profiles.views import (ProfileViewSet,
                                  EventViewSet,
                                  FriendshipRequestViewSet,
                                  FriendshipStatusViewSet,
-                                 RecipeCookedViewSet)
+                                )
+                                #  RecipeCookedViewSet)
 
 router = SimpleRouter()
 
@@ -15,7 +16,7 @@ router.register(r'profiletypes', ProfileTypeViewSet)            # profilestypes/
 router.register(r'events', EventViewSet)                        # events/
 router.register(r'friendship', FriendshipRequestViewSet)        # friendship/
 router.register(r'friendshipstatus', FriendshipStatusViewSet)   # friendshipstatus/    (only admin)
-router.register(r'recipecooked', RecipeCookedViewSet)           # recipecooked/
+# router.register(r'recipecooked', RecipeCookedViewSet)           # recipecooked/
 
 
 urlpatterns = [

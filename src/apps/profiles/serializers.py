@@ -57,7 +57,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        exclude = ['user', 'recipes_cooked']
+        # TODO
+        exclude = ['user', 'interactions', 'recipes_cooked']
 
     def update(self, instance, validated_data):
         user = validated_data.pop('user', None)
@@ -71,6 +72,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return super(ProfileSerializer, self).update(instance, validated_data)
 
 
+# TODO: remove
 class RecipeCookedSerializer(serializers.ModelSerializer):
     score = serializers.IntegerField(min_value=1, max_value=10, required=False)
     profile = serializers.StringRelatedField()
