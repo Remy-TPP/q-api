@@ -18,8 +18,8 @@ jobs:
         image: postgres:11
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          # POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
           # TODO: this is not ideal
           POSTGRES_HOST_AUTH_METHOD: trust
         options: >-
@@ -55,7 +55,7 @@ jobs:
 
     - name: Set up db
       run: |
-        psql -c 'create database test_db;' -U postgres
+        psql -U postgres -c 'CREATE DATABASE test_db CHARACTER SET utf8;'
         cd src/
         python manage.py migrate
 
