@@ -3,6 +3,8 @@ on: [push]
 
 env:
   SECRET_KEY: fakesecretkey
+  EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+  EMAIL_PASSWORD: FakeEmailPassword
 
 jobs:
   lint_and_test_jobs:
