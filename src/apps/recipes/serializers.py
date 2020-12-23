@@ -87,14 +87,14 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class InteractionSerializer(serializers.ModelSerializer):
-    # TODO: extract min and max as constants
-    profile = serializers.StringRelatedField()
+    # profile = serializers.StringRelatedField()
     recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+    # TODO: extract min and max as constants
     rating = serializers.DecimalField(max_digits=4, decimal_places=2, min_value=1, max_value=10, required=False)
 
     class Meta:
         model = Interaction
-        fields = '__all__'
+        exclude = ['profile']
         read_only_fields = ['id', 'cooked_at']
 
     def create(self, validated_data):
