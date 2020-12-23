@@ -28,6 +28,13 @@ class RecipeMinimalSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
+class RecommendedRecipeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'title', 'description']
+
+
 class DishSerializer(serializers.ModelSerializer):
     categories = DishCategorySerializer(many=True)
     recipes = RecipeMinimalSerializer(many=True, read_only=True)
