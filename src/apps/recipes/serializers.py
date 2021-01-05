@@ -25,7 +25,7 @@ class RecipeMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'image']
 
 
 class DishSerializer(serializers.ModelSerializer):
@@ -89,7 +89,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 class InteractionSerializer(serializers.ModelSerializer):
     # TODO: extract min and max as constants
     profile = serializers.StringRelatedField()
-    recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+    recipe = RecipeMinimalSerializer(read_only=True)
+    recipe_id = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all(), write_only=True)
     rating = serializers.DecimalField(max_digits=4, decimal_places=2, min_value=1, max_value=10, required=False)
 
     class Meta:
@@ -100,7 +101,7 @@ class InteractionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         interaction = Interaction.objects.get_or_create(
             profile=validated_data.pop('profile'),
-            recipe=validated_data.pop('recipe'),
+            recipe=validated_data.pop('recipe_id'),
         )[0]
         try:
             interaction.rating = validated_data.pop('rating')

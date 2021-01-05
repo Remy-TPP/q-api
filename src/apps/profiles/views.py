@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status, mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.utils.decorators import method_decorator
@@ -59,7 +60,7 @@ class ProfileViewSet(viewsets.GenericViewSet,
     queryset = Profile.objects.all().order_by('id')
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
-    permission_classes = [UpdateOwnProfile]
+    permission_classes = [UpdateOwnProfile, IsAuthenticated]
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
 
     def list(self, request, *args, **kwargs):
