@@ -169,10 +169,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'recipe': openapi.Schema(type=openapi.TYPE_INTEGER, description='Id of recipe to rate'),
+            'recipe_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Id of recipe to rate'),
             'rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Rating given'),
         },
-        required=['recipe', 'rating'],
+        required=['recipe_id', 'rating'],
     ),
     responses={200: InteractionSerializer()},
 )

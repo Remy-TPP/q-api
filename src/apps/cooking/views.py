@@ -63,7 +63,7 @@ def cook_recipe(request):
             status=status.HTTP_404_NOT_FOUND,
         )
 
-    interaction_serializer = InteractionSerializer(data={**request.data, 'recipe': recipe_id})
+    interaction_serializer = InteractionSerializer(data={**request.data, 'recipe_id': recipe_id})
     interaction_serializer.is_valid(raise_exception=True)
 
     with transaction.atomic():
