@@ -105,7 +105,6 @@ class CartSerializer(serializers.ModelSerializer, AmountSerializer):
 
     def create(self, validated_data):
         place = validated_data.get('place')
-        breakpoint()
 
         if place:
             item = Cart.objects.create(**validated_data)
