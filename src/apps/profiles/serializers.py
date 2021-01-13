@@ -9,6 +9,7 @@ from apps.profiles.models import (Profile,
                                   FriendshipRequest,
                                   FriendshipStatus,
                                   )
+from apps.products.models import Product
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -54,6 +55,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.EmailField(read_only=True, source='user.email')
     date_joined = serializers.DateTimeField(read_only=True, source='user.date_joined')
+
+    forbidden_products = serializers.SlugRelatedField(
+        slug_field="name",
+        many=True,
+        queryset=Product.objects.all()
+    )
 
     class Meta:
         model = Profile
