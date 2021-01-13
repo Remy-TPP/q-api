@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from rest_framework.serializers import ValidationError
 
+from apps.products.models import Product
+
 
 class ProfileType(models.Model):
     name = models.CharField(max_length=300, unique=True)
@@ -19,6 +21,7 @@ class Profile(models.Model):
 
     profiletypes = models.ManyToManyField(ProfileType, related_name='profile')
     friends = models.ManyToManyField("self", blank=True)
+    forbidden_products = models.ManyToManyField(Product, related_name='profile', blank=True)
 
     interactions = models.ManyToManyField(
         'recipes.Recipe',
