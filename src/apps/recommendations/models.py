@@ -19,7 +19,7 @@ class Recommendation(models.Model):
 class RecipeRecommendation(models.Model):
     # profile = models.ForeignKey(Profile, blank=False, null=False, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, blank=False, null=False, on_delete=models.CASCADE)
-    rating = models.DecimalField(max_digits=4, decimal_places=2, blank=False, null=False)
+    rating = models.DecimalField(max_digits=5, decimal_places=3, blank=False, null=False)
     rating_is_real = models.BooleanField()
 
     class Meta:
