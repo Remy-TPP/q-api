@@ -7,17 +7,19 @@ REMY_RS_BASE_URL = config('REMY_RS_BASE_URL')
 
 
 class RemyRSService:
-    class RecommenderSystemException(RuntimeError):
+    class RecSysException(RuntimeError):
         pass
 
     @staticmethod
     def get_recommendations_for_user(profile_id, n=10):
+        if n == 'all':
+            n = 0
         rs_response = requests.get(
             f'{REMY_RS_BASE_URL}/recommendations/user/{profile_id}',
             params={'n': n},
         )
         if rs_response.status_code != 200:
-            raise RemyRSService.RecommenderSystemException(
+            raise RemyRSService.RecSysException(
                 f'Failed to get recommendations for user from RS: {rs_response.status_code}, {rs_response.json()}')
         return rs_response.json()['predictions']
 
@@ -27,6 +29,6 @@ class RemyRSService:
             f'{REMY_RS_BASE_URL}/recommendations/user/{profile_id}/recipe/{recipe_id}',
         )
         if rs_response.status_code != 200:
-            raise RemyRSService.RecommenderSystemException(
+            raise RemyRSService.RecSysException(
                 f'Failed to get predicted rating from RS: {rs_response.status_code}, {rs_response.json()}')
         return rs_response.json()['prediction']
