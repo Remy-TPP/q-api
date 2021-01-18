@@ -17,25 +17,11 @@ class RecommendationSerializer(serializers.ModelSerializer):
         exclude = ['id', 'profile', 'recipe']
 
 
-# TODO: to make strictly read-only, can use BaseSerializer and implement to_representation
 class RecipeRecommendationSerializer(serializers.ModelSerializer):
     recipe_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Recipe.objects.all())
     recipe = RecommendedRecipeSerializer(read_only=True)
     rating = serializers.DecimalField(max_digits=4, decimal_places=2, min_value=1, max_value=10)
-    # rating_is_real = serializers.BooleanField(source='real')
 
     class Meta:
         model = RecipeRecommendation
-        # exclude = ['id', 'recipe']
         exclude = ['id']
-
-    # def to_representation(self, instance):
-    #     response = super().to_representation(instance)
-    #     print(instance)
-    #     # response['recipe'] = RecommendedRecipeSerializer(
-    #     #     Recipe.objects.get(pk=instance['recipe_id'])
-    #     # ).data
-    #     # response['recipe'] = RecommendedRecipeSerializer(instance['recipe_id']).data
-    #     print('---')
-    #     print(response)
-    #     return response

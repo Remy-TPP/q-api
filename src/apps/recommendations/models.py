@@ -17,16 +17,12 @@ class Recommendation(models.Model):
 
 
 class RecipeRecommendation(models.Model):
-    # profile = models.ForeignKey(Profile, blank=False, null=False, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, blank=False, null=False, on_delete=models.CASCADE)
     rating = models.DecimalField(max_digits=5, decimal_places=3, blank=False, null=False)
     rating_is_real = models.BooleanField()
 
     class Meta:
         managed = False
-        # constraints = [
-        #     models.UniqueConstraint(fields=['profile', 'recipe'], name='unique_recommendation')
-        # ]
 
     def __str__(self):
         return f'For recipe {self.recipe} rating {self.rating} ({"real" if self.rating_is_real else "generated"})'

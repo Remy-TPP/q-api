@@ -30,23 +30,14 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
         except (RequestException, RemyRSService.RecSysException):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # # TODO: TEMPORARY PATCH before fixing irid vs rrid in remy-rs
-        # for i, r in enumerate(recommendations):
-        #     r['recipe_id'] += 276
-        #     r['rating_is_real'] = r['real']
-        #     recommendations[i] = r
-        # # END of temp patch
-
         all_recipes = Recipe.objects.all()  # TODO: prefetch?
 
-        # TODO: TEMPORARY PATCH before fixing irid vs rrid in remy-rs: `+276`
         recommendations = [
+            # TODO: remove TEMPORARY PATCH after fixing irid vs rrid in remy-rs: `+276`
             RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']+276), rating=r['rating'], rating_is_real=r['real'])
             for r in recommendations
         ]
         recommendations.sort(key=lambda r: -r.rating)
-        # recommendations = RecipeRecommendationSerializer(data=recommendations, many=True)
-        # print(recommendations.is_valid(raise_exception=True))
 
         return recommendations
 
@@ -73,16 +64,14 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
                 try:
                     # look for ingredient in inventory
                     inventory_item = next(
-                        (ii for ii in aux_inventory if (ii.product_id == ingredient.product_id and ii.quantity > 0))
+                        (ii for ii in aux_inventory
+                        if (ii.product_id == ingredient.product_id and ii.quantity > 0))
                     )
                 except StopIteration:
                     # missing ingredient, won't recommend this recipe
                     break
                 # substract amount from inventory and check whether there's enough
                 if (inventory_item - ingredient) and (inventory_item.quantity < 0):
-                    # # TODO: temp just for test; see if insufficient ingr was changed in original inventory
-                    # print('insufficient:', inventory_item)
-                    # print('in orig inv:', user_inventory.filter(product_id=inventory_item.product_id))
                     # missing something, won't recommend this recipe
                     break
             else:
@@ -91,18 +80,6 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
                 # TODO: break if enough recommendations? or delete this?
                 if len(filtered_recs) >= 10:
                     break
-
-            # # ...
-            # # TODO: any simpler way of doing this?
-            # # TODO: should these be products?
-            # recipe_ingredients = recomm.recipe.ingredients.distinct('id').values_list('id', flat=True)
-            # recipe_products_present_in_inventory = user_inventory_items.filter(
-            #     Q(product_id__in=recipe_ingredients)
-            # ).distinct('product_id').values_list('product_id', flat=True)
-
-            # if recipe_products_present_in_inventory.count() < recipe_ingredients.count():
-            #     # TODO: will probably fail for lack of id
-            #     recommendations = recommendations.exclude(id=recomm.id)
 
         return filtered_recs
 
