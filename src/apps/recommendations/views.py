@@ -1,3 +1,4 @@
+from copy import deepcopy
 from distutils.util import strtobool
 
 from rest_framework import viewsets, status
@@ -20,41 +21,41 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
     search_fields = ['recipe__title', 'recipe__description']
 
     def get_queryset(self):
-        try:
-            recommendations = RemyRSService.get_recommendations_for_user(
-                # TODO: temp value for tests
-                profile_id=2,
-                # profile_id=self.request.user.profile_id,
-                n='all',
-            )
-        except (RequestException, RemyRSService.RecSysException):
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # TODO: actually returns a list, fix wording?
+        recommendations = RemyRSService.get_recommendations_for_user(
+            # TODO: temp value for tests
+            # profile_id=2,
+            profile_id=self.request.user.profile.id,
+            n='all',
+        )
 
         all_recipes = Recipe.objects.all()  # TODO: prefetch?
 
         recommendations = [
             # TODO: remove TEMPORARY PATCH after fixing irid vs rrid in remy-rs: `+276`
-            RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']+276), rating=r['rating'], rating_is_real=r['real'])
+            RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']+276),
+                                 rating=r['rating'], rating_is_real=r['real'])
             for r in recommendations
         ]
         recommendations.sort(key=lambda r: -r.rating)
 
         return recommendations
 
-    def postprocess_recommendations(self, recommendations, place, needs_all_ingredients=False):
-        if not needs_all_ingredients:
+    def postprocess_recommendations(self, recommendations, place, need_all_ingredients=False):
+        if not need_all_ingredients:
             return recommendations
 
         prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
-        # grab user's inventory
-        user_inventory = place.inventory.all()
-        filtered_recs = []
+        # get and prefetch user's inventory
+        user_inventory = place.inventory.all().prefetch_related('product', 'unit')
+        list_inventory = list(user_inventory)
+        prefetch_related_objects(list_inventory, 'product', 'unit')
 
+        filtered_recs = []
         for recommendation in recommendations:
-            # make a copy of the inventory
-            aux_inventory = list(user_inventory)
-            prefetch_related_objects(user_inventory, 'product', 'unit')
+            # make a copy of the inventory to play with
+            aux_inventory = deepcopy(list_inventory)
 
             # substract each recipe ingredient from inventory until something's missing
             for ingredient in recommendation.recipe.ingredient_set.all():
@@ -65,7 +66,7 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
                     # look for ingredient in inventory
                     inventory_item = next(
                         (ii for ii in aux_inventory
-                        if (ii.product_id == ingredient.product_id and ii.quantity > 0))
+                         if (ii.product_id == ingredient.product_id and ii.quantity > 0))
                     )
                 except StopIteration:
                     # missing ingredient, won't recommend this recipe
@@ -105,7 +106,7 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
                 required=False,
             ),
             openapi.Parameter(
-                'needs_all_ingredients',
+                'need_all_ingredients',
                 in_=openapi.IN_QUERY,
                 description="Whether place must have all of a recipe's ingredients for the recipe to be recommended.",
                 type=openapi.TYPE_BOOLEAN,
@@ -113,19 +114,23 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
             ),
         ],
     )
-    @action(detail=False)
+    @action(detail=False, methods=['GET'], url_path='recommend_me', url_name='recommend-me')
     def recommend_me(self, request):
-        needs_all_ingredients = strtobool(self.request.query_params.get('needs_all_ingredients', 'false'))
+        need_all_ingredients = strtobool(self.request.query_params.get('need_all_ingredients', 'false'))
         # TODO: remove temp
-        # place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place_id'))
-        from apps.profiles.models import Profile
-        place = get_place_or_default(Profile.objects.get(user_id=3), self.request.query_params.get('place_id'))
+        # from apps.profiles.models import Profile
+        # place = get_place_or_default(Profile.objects.get(user_id=3), self.request.query_params.get('place_id'))
+        place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place_id'))
 
-        if needs_all_ingredients and not place:
+        if need_all_ingredients and not place:
             return Response({"error": "You don't have a place"}, status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = self.get_queryset()
-        queryset = self.postprocess_recommendations(queryset, place, needs_all_ingredients)
+        try:
+            queryset = self.get_queryset()
+        except (RequestException, RemyRSService.RecSysException) as rs_error:
+            return Response({"error": rs_error}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        queryset = self.postprocess_recommendations(queryset, place, need_all_ingredients)
         return self._send_queryset(queryset)
 
 

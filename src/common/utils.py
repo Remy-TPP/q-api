@@ -21,6 +21,10 @@ def query_reverse(viewname, kwargs=None, query_kwargs=None):
     url = reverse(viewname, kwargs=kwargs)
 
     if query_kwargs:
+        # remove items with value None
+        query_kwargs = {k: v for k, v in query_kwargs.items() if v is not None}
+
+    if query_kwargs:
         return u'%s?%s' % (url, urlencode(query_kwargs))
 
     return url

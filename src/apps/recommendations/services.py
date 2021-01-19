@@ -1,6 +1,7 @@
 import requests
 
 from decouple import config
+from rest_framework import status
 
 
 REMY_RS_BASE_URL = config('REMY_RS_BASE_URL')
@@ -18,9 +19,9 @@ class RemyRSService:
             f'{REMY_RS_BASE_URL}/recommendations/user/{profile_id}',
             params={'n': n},
         )
-        if rs_response.status_code != 200:
+        if rs_response.status_code != status.HTTP_200_OK:
             raise RemyRSService.RecSysException(
-                f'Failed to get recommendations for user from RS: {rs_response.status_code}, {rs_response.json()}')
+                f'Failed to get recommendations for user from RS: {rs_response.status_code}, {rs_response.content}')
         return rs_response.json()['predictions']
 
     @staticmethod
@@ -28,7 +29,7 @@ class RemyRSService:
         rs_response = requests.get(
             f'{REMY_RS_BASE_URL}/recommendations/user/{profile_id}/recipe/{recipe_id}',
         )
-        if rs_response.status_code != 200:
+        if rs_response.status_code != status.HTTP_200_OK:
             raise RemyRSService.RecSysException(
                 f'Failed to get predicted rating from RS: {rs_response.status_code}, {rs_response.json()}')
         return rs_response.json()['prediction']
