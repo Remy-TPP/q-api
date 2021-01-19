@@ -6,17 +6,17 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from django.db.models import Q, prefetch_related_objects
+from django.db.models import prefetch_related_objects
 from requests.exceptions import RequestException
 
 from apps.inventories.utils import get_place_or_default
 from apps.recipes.models import Recipe
-from apps.recommendations.models import Recommendation, RecipeRecommendation
-from apps.recommendations.serializers import RecommendationSerializer, RecipeRecommendationSerializer
+from apps.recommendations.models import RecipeRecommendation
+from apps.recommendations.serializers import RecipeRecommendationSerializer
 from apps.recommendations.services import RemyRSService
 
 
-class Recommendation2ViewSet(viewsets.GenericViewSet):
+class RecommendationViewSet(viewsets.GenericViewSet):
     serializer_class = RecipeRecommendationSerializer
     search_fields = ['recipe__title', 'recipe__description']
 
@@ -57,7 +57,7 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
             # make a copy of the inventory to play with
             aux_inventory = deepcopy(list_inventory)
 
-            # substract each recipe ingredient from inventory until something's missing
+            # substract each recipe ingredient from inventory to find if something's missing
             for ingredient in recommendation.recipe.ingredient_set.all():
                 if not ingredient.quantity:
                     # ignore non-quantified ingredients (TODO: maybe should check that it exists in inventory?)
@@ -132,66 +132,3 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
 
         queryset = self.postprocess_recommendations(queryset, place, need_all_ingredients)
         return self._send_queryset(queryset)
-
-
-# TODO: old one, delete view, model, serializer
-class RecommendationViewSet(viewsets.GenericViewSet):
-    serializer_class = RecommendationSerializer
-    search_fields = ['recipe__title', 'recipe__description']
-
-    def get_queryset(self):
-        place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
-        all_ingredients = self.request.query_params.get('all_ingredients')
-
-        inventory_items = place.inventory.all()
-        recommendations = self.filter_queryset(
-            Recommendation.objects.filter(
-                Q(profile__user=self.request.user.id)
-            ).order_by('-score')
-        )
-
-        if all_ingredients and strtobool(all_ingredients):
-            for rec in recommendations:
-                ingredients_products = rec.recipe.ingredients.distinct('id').values_list('id', flat=True)
-
-                inventory_products = inventory_items.filter(
-                    Q(product_id__in=ingredients_products)
-                ).distinct('product_id').values_list('product_id', flat=True)
-                if inventory_products.count() < ingredients_products.count():
-                    recommendations = recommendations.exclude(id=rec.id)
-
-        return recommendations
-
-    def send_queryset(self, queryset):
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    @swagger_auto_schema(
-        method='get',
-        operation_summary='Get my recommendations.',
-        manual_parameters=[
-            openapi.Parameter(
-                'place',
-                in_=openapi.IN_QUERY,
-                description='Place. If wrong or null, default is used.',
-                type=openapi.TYPE_STRING,
-                required=False
-            ),
-            openapi.Parameter(
-                'all_ingredients',
-                in_=openapi.IN_QUERY,
-                description='Boolean to define if I need to have all ingredients. Default: false.',
-                type=openapi.TYPE_BOOLEAN,
-                required=False
-            ),
-        ]
-    )
-    @action(detail=False)
-    def my_recommendations(self, request):
-        queryset = self.get_queryset()
-        return self.send_queryset(queryset)
