@@ -128,7 +128,7 @@ class Recommendation2ViewSet(viewsets.GenericViewSet):
         try:
             queryset = self.get_queryset()
         except (RequestException, RemyRSService.RecSysException) as rs_error:
-            return Response({"error": rs_error}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         queryset = self.postprocess_recommendations(queryset, place, need_all_ingredients)
         return self._send_queryset(queryset)
