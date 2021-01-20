@@ -1,37 +1,5 @@
 [
     {
-        "model": "auth.user",
-        "pk": 1,
-        "fields": {
-            "password": "pbkdf2_sha256$180000$z4mKWN5XVgse$gfRGYTAOwn4DMhCcl2OzS8kgl4BMveS1jfJfDBfAYoA=",
-            "last_login": "2020-12-29T17:57:29.975Z",
-            "is_superuser": false,
-            "username": "Franco",
-            "first_name": "",
-            "last_name": "",
-            "email": "franco@mail.com",
-            "is_staff": true,
-            "is_active": true,
-            "date_joined": "2020-05-23T12:43:36Z",
-            "groups": [],
-            "user_permissions": []
-        }
-    },
-
-    {
-        "model": "profiles.profile",
-        "pk": 1,
-        "fields": {
-            "user": 1,
-            "biography": "",
-            "avatar": "",
-            "updated_at": "2020-05-23T12:43:36.208Z",
-            "profiletypes": [],
-            "friends": []
-        }
-    },
-
-    {
         "model": "recipes.ingredient",
         "pk": 1,
         "fields": {

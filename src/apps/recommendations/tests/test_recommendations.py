@@ -20,13 +20,21 @@ def recommend_recipes_url(place_id=None, need_all_ingredients=None):
     )
 
 
+def sample_user_1():
+    return get_user_model().objects.get_or_create(
+        email='test1@test.com',
+        username='soyTest1',
+        password='Test1pass123',
+    )[0]
+
+
 class RecommendationTest(APITestCase):
     fixtures = ['unit', 'product', 'recipes_for_recommendations']
 
     def setUp(self):
+        self.u_1 = sample_user_1()
         self.mock_get_patcher = mock.patch('apps.recommendations.services.requests.get')
         self.mock_get = self.mock_get_patcher.start()
-        self.u_1 = get_user_model().objects.get(pk=1)
 
     def tearDown(self):
         Place.objects.all().delete()
