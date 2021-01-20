@@ -84,7 +84,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         return filtered_recs
 
-
     def _send_queryset(self, queryset):
         page = self.paginate_queryset(queryset)
         if page is not None:
