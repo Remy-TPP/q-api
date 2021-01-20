@@ -342,12 +342,20 @@ class CartViewSet(viewsets.GenericViewSet,
                 type=openapi.TYPE_STRING,
                 required=True
             ),
+            openapi.Parameter(
+                'only_missing',
+                in_=openapi.IN_QUERY,
+                description='Parameter indicating whether only missing products need to be added to the cart.',
+                type=openapi.TYPE_BOOLEAN,
+                required=False
+            ),
         ]
     )
     @action(detail=False, methods=['POST'])
     @atomic
     def add_recipe(self, request):
         sid = savepoint()
+        only_missing = request.query_params.get('only_missing')
         recipe_id = request.query_params.get('recipe')
         if not recipe_id:
             return Response({'message': 'Must provide the recipe!'}, status=status.HTTP_400_BAD_REQUEST)
@@ -359,6 +367,9 @@ class CartViewSet(viewsets.GenericViewSet,
         for ingredient in ingredients:
             # TODO: mejorar para que no tenga que pedir el place siempre
             place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+            if (only_missing and place and place.inventory.filter(product__id=ingredient.id).exists()):
+                continue
 
             serializer = self.get_serializer(data={
                 'quantity': ingredient.quantity,

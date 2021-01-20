@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status, mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.utils.decorators import method_decorator
@@ -59,14 +60,24 @@ class ProfileViewSet(viewsets.GenericViewSet,
     queryset = Profile.objects.all().order_by('id')
     serializer_class = ProfileSerializer
     lookup_field = 'pk'
-    permission_classes = [UpdateOwnProfile]
+    permission_classes = [UpdateOwnProfile, IsAuthenticated]
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
 
     def list(self, request, *args, **kwargs):
+        friendship_requests_sent = FriendshipRequest.objects.filter(
+            Q(profile_requesting__user_id=self.request.user.id) &
+            Q(status='REQUESTED')).values_list('profile_requested_id', flat=True)
+
+        friendship_requests_received = FriendshipRequest.objects.filter(
+            Q(profile_requested__user_id=self.request.user.id) &
+            Q(status='REQUESTED')).values_list('profile_requesting_id', flat=True)
+
         queryset = self.filter_queryset(
             Profile.objects
             .exclude(id=self.request.user.profile.id)
             .exclude(id__in=self.request.user.profile.friends.values_list('id', flat=True))
+            .exclude(id__in=friendship_requests_sent)
+            .exclude(id__in=friendship_requests_received)
             .order_by('id')
         )
 

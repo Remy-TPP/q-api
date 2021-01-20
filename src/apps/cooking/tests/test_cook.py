@@ -136,7 +136,7 @@ class CookingTest(APITestCase):
     def test_cooking_without_rating(self):
         """
         Cooking a recipe without rating should leave no rating and return 200.
-        Rating can be added after.
+        Rating can be added later.
         """
         recipe_1 = Recipe.objects.get(id=1)
         self.client.force_authenticate(user=self.u_1)
@@ -152,7 +152,7 @@ class CookingTest(APITestCase):
         resp2 = self.client.put(
             reverse('rate-recipe'),
             data={
-                'recipe': recipe_1.id,
+                'recipe_id': recipe_1.id,
                 'rating': 9,
             },
         )
