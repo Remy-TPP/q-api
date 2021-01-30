@@ -45,25 +45,6 @@ class RecommendationTest(APITestCase):
         self.mock_get.return_value.status_code = status_code
         self.mock_get.return_value.json.return_value = response
 
-    def test_get_sorted_recommendations(self):
-        """Test should return recipes sorted by rating."""
-        self._set_mock_rs_response(response=mock_rs_responses[1])
-        self.client.force_authenticate(user=self.u_1)
-
-        resp = self.client.get(
-            recommend_recipes_url()
-        )
-
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        self.assertEqual(resp.data.get('count'), 2)
-        recommendations = resp.data.get('results')
-        self.assertEqual(recommendations[0].get('recipe').get('id'), 2)
-        self.assertEqual(float(recommendations[0].get('rating')), 3.7)
-        self.assertEqual(recommendations[0].get('rating_is_real'), False)
-        self.assertEqual(recommendations[1].get('recipe').get('id'), 1)
-        self.assertEqual(float(recommendations[1].get('rating')), 3.4)
-        self.assertEqual(recommendations[1].get('rating_is_real'), True)
-
     def test_getting_filtered_recommendations_without_place_fails(self):
         """
         Asking for filtered (need_all_ingredients) recommendations while
