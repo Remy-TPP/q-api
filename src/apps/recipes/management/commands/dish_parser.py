@@ -106,7 +106,7 @@ def seems_like_section_name(line):
 
 def parse_ingredient_list(raw_ingrs_list):
     print('\n--- Original ---\n')
-    [print(line) for line in raw_ingrs_list]
+    _ = [print(line) for line in raw_ingrs_list]
 
     ingrs = []
     d = defaultdict(list)  # TODO: this structure is redundant against ingrs but easier to print
@@ -142,7 +142,7 @@ def parse_ingredient_list(raw_ingrs_list):
     print('\n--- Parsed ---')
     for section_ingrs in d.items():
         print(f'\nSección: {section_ingrs[0]}')
-        [print(f'  {pretty_ingr(ingr)}') for ingr in section_ingrs[1]]
+        _ = [print(f'  {pretty_ingr(ingr)}') for ingr in section_ingrs[1]]
 
     # TODO: should use sys.stdin?
     if not input('\nInput any character IF the parsing seems CORRECT >'):

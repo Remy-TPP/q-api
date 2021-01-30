@@ -60,15 +60,12 @@ mock_rs_responses = {
         "size": 2,
         "predictions": [
             {
-                # TODO: rollback when fixed in RS
-                # "recipe_id": 1,
-                "recipe_id": -275,
+                "recipe_id": 1,
                 "rating": 3.4,
                 "real": True
             },
             {
-                # "recipe_id": 2,
-                "recipe_id": -274,
+                "recipe_id": 2,
                 "rating": 3.7,
                 "real": False
             },
@@ -79,21 +76,17 @@ mock_rs_responses = {
         "size": 3,
         "predictions": [
             {
-                # TODO: rollback when fixed in RS
-                # "recipe_id": 1,
-                "recipe_id": -275,
+                "recipe_id": 1,
                 "rating": 3.4,
                 "real": True
             },
             {
-                # "recipe_id": 2,
-                "recipe_id": -274,
+                "recipe_id": 2,
                 "rating": 3.7,
                 "real": False
             },
             {
-                # "recipe_id": 3,
-                "recipe_id": -273,
+                "recipe_id": 3,
                 "rating": 5,
                 "real": False
             },

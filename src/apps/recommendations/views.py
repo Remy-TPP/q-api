@@ -32,8 +32,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         all_recipes = Recipe.objects.all()  # TODO: prefetch?
 
         recommendations = [
-            # TODO: remove TEMPORARY PATCH after fixing irid vs rrid in remy-rs: `+276`
-            RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']+276),
+            RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']),
                                  rating=r['rating'], rating_is_real=r['real'])
             for r in recommendations
         ]
@@ -78,7 +77,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             else:
                 # because nothing was missing, recommend recipe
                 filtered_recs.append(recommendation)
-                # TODO: break if enough recommendations? or delete this?
+                # breaks if enough recommendations  # TODO: delete this?
                 if len(filtered_recs) >= 10:
                     break
 
@@ -116,7 +115,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['GET'], url_path='recommend_me', url_name='recommend-me')
     def recommend_me(self, request):
         need_all_ingredients = strtobool(self.request.query_params.get('need_all_ingredients', 'false'))
-        # TODO: remove temp
+        # TODO: clean-up temp
         # from apps.profiles.models import Profile
         # place = get_place_or_default(Profile.objects.get(user_id=3), self.request.query_params.get('place_id'))
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place_id'))
