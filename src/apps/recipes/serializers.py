@@ -32,7 +32,7 @@ class RecommendedRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'description']
+        fields = ['id', 'title', 'description', 'image']
 
 
 class DishSerializer(serializers.ModelSerializer):

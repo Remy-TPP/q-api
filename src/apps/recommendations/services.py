@@ -21,7 +21,9 @@ class RemyRSService:
         )
         if rs_response.status_code != status.HTTP_200_OK:
             raise RemyRSService.RecSysException(
-                f'Failed to get recommendations for user from RS: {rs_response.status_code}, {rs_response.content}')
+                f'Failed to get recommendations for user {profile_id}'
+                f' from RS: {rs_response.status_code}, {rs_response.content}'
+            )
         return rs_response.json()['predictions']
 
     @staticmethod
@@ -31,5 +33,7 @@ class RemyRSService:
         )
         if rs_response.status_code != status.HTTP_200_OK:
             raise RemyRSService.RecSysException(
-                f'Failed to get predicted rating from RS: {rs_response.status_code}, {rs_response.json()}')
+                f'Failed to get predicted rating for {profile_id}:{recipe_id}'
+                f' from RS: {rs_response.status_code}, {rs_response.json()}'
+            )
         return rs_response.json()['prediction']
