@@ -36,8 +36,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                                  rating=r['rating'], rating_is_real=r['real'])
             for r in recommendations
         ]
-        recommendations.sort(key=lambda r: -r.rating)
-
         return recommendations
 
     def postprocess_recommendations(self, recommendations, place, need_all_ingredients=False):

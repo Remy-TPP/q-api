@@ -25,13 +25,6 @@ class RecipeMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'image']
-
-
-class RecommendedRecipeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Recipe
         fields = ['id', 'title', 'description', 'image']
 
 
