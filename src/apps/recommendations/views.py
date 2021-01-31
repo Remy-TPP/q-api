@@ -110,8 +110,8 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             ),
         ],
     )
-    @action(detail=False, methods=['GET'], url_path='recommend_me', url_name='recommend-me')
-    def recommend_me(self, request):
+    @action(detail=False, methods=['GET'], url_path='recommend/recipes/me', url_name='recommend-recipes-me')
+    def recommend_recipes_me(self, request):
         need_all_ingredients = strtobool(self.request.query_params.get('need_all_ingredients', 'false'))
         # TODO: clean-up temp
         # from apps.profiles.models import Profile

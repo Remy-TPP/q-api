@@ -12,7 +12,7 @@ from .mock_rs_responses import mock_rs_responses
 
 def recommend_recipes_url(place_id=None, need_all_ingredients=None):
     return query_reverse(
-        'recommendations-recommend-me',
+        'recommendations-recommend-recipes-me',
         query_kwargs={
             'place_id': place_id,
             'need_all_ingredients': need_all_ingredients,
