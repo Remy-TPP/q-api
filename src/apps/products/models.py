@@ -42,7 +42,6 @@ class Amount(models.Model):
             other
         )
         self.quantity = quantity_result
-        self.save()
         return quantity_result <= 0
 
     def __add__(self, other):
@@ -55,7 +54,6 @@ class Amount(models.Model):
             other
         )
         self.quantity = quantity_result
-        self.save()
 
     @property
     def displayable_unit(self):
@@ -102,8 +100,11 @@ class ProductWithAmount(Amount):
 
     def add_amount(self, other_amount):
         _ = self + other_amount
+        self.save()
 
     def reduce_amount(self, amount):
         must_be_deleted = self - amount
         if must_be_deleted:
             self.delete()
+        else:
+            self.save()

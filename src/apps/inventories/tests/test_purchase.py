@@ -29,7 +29,7 @@ class PurchaseTests(APITestCase):
         self.assertEqual(resp_1.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(resp_2.status_code, status.HTTP_400_BAD_REQUEST)
 
-    # TODO: every so often (~20 attempts) OpenCV fails to identify data in QR image, and this test fails
+    # Note: every so often (~20 attempts) OpenCV fails to identify data in QR image, and this test fails
     def test_qr_image_contains_url_to_created_purchase(self):
         resp = self.client.post(
             CREATE_PURCHASE_URL,
