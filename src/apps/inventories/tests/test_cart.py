@@ -119,4 +119,3 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIsNotNone(res.data)
         self.assertEqual(u_1.profile.places.count(), 0)
-
