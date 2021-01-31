@@ -368,7 +368,7 @@ class CartViewSet(viewsets.GenericViewSet,
             # TODO: mejorar para que no tenga que pedir el place siempre
             place = get_place_or_default(request.user.profile, request.query_params.get('place'))
 
-            if (only_missing and place and place.inventory.filter(product__id=ingredient.id).exists()):
+            if (only_missing == 'True' and place and place.inventory.filter(product__id=ingredient.product.id).exists()):
                 continue
 
             serializer = self.get_serializer(data={
