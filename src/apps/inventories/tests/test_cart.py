@@ -5,7 +5,6 @@ from rest_framework.test import APITestCase
 from common.utils import query_reverse
 
 from apps.recipes.models import Recipe
-from apps.inventories.models import Place
 
 ITEM_URL = reverse('cart-list')
 
