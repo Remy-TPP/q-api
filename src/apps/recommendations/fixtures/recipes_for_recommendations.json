@@ -4,6 +4,8 @@
         "pk": 1,
         "fields": {
             "recipe": 1,
+            "unit": 1,
+            "quantity": 500,
             "product": 1
         }
     },
@@ -12,6 +14,8 @@
         "pk": 2,
         "fields": {
             "recipe": 1,
+            "unit": 1,
+            "quantity": 500,
             "product": 3
         }
     },
@@ -20,6 +24,8 @@
         "pk": 3,
         "fields": {
             "recipe": 2,
+            "unit": 1,
+            "quantity": 500,
             "product": 2
         }
     },
@@ -28,6 +34,28 @@
         "pk": 4,
         "fields": {
             "recipe": 2,
+            "unit": 1,
+            "quantity": 500,
+            "product": 3
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 5,
+        "fields": {
+            "recipe": 3,
+            "unit": 1,
+            "quantity": 800,
+            "product": 3
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 6,
+        "fields": {
+            "recipe": 3,
+            "unit": 1,
+            "quantity": 500,
             "product": 3
         }
     },
@@ -52,6 +80,16 @@
             "updated_at": "2020-07-28T14:40:18.012Z"
         }
     },
+    {
+        "model": "recipes.recipe",
+        "pk": 3,
+        "fields": {
+            "title": "Cortado",
+            "description": "Cortado",
+            "created_at": "2020-07-28T14:40:18.012Z",
+            "updated_at": "2020-07-28T14:40:18.012Z"
+        }
+    },
 
     {
         "model": "inventories.place",
@@ -61,15 +99,14 @@
         }
     },
 
-
     {
         "model": "inventories.inventoryitem",
         "pk": 1,
         "fields": {
             "place": 1,
             "product": 1,
-            "unit": 4,
-            "quantity": 1
+            "unit": 1,
+            "quantity": 750
         }
     },
     {
@@ -78,7 +115,7 @@
         "fields": {
             "place": 1,
             "product": 3,
-            "unit": 5,
+            "unit": 1,
             "quantity": 500
         }
     }

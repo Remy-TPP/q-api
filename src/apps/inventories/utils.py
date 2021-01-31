@@ -5,7 +5,7 @@ from apps.inventories.models import PlaceMember
 
 def get_place_or_default(profile, place_id=None):
     """
-    Uses get() to return an place by its id.
+    Uses get() to return a place by its id.
     If profile doesn't have this place, it will return Profile's default place.
 
     profile must be a Profile.

@@ -1,88 +1,94 @@
+from unittest import mock
+
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from common.utils import query_reverse
 
-from apps.recommendations.models import Recommendation
-from apps.recipes.models import Recipe
+from apps.profiles.models import Profile
 from apps.inventories.models import Place
+from common.utils import query_reverse
+from .mock_rs_responses import mock_rs_responses
 
-MY_RECOMMENDATIONS = reverse('recommendations-my-recommendations')
 
-
-def my_recommendations(place, all_ingredients):
-    """Return recommendation url"""
+def recommend_recipes_url(place_id=None, need_all_ingredients=None):
     return query_reverse(
-        'recommendations-my-recommendations',
+        'recommendations-recommend-recipes-me',
         query_kwargs={
-            'place': place,
-            'all_ingredients': all_ingredients
+            'place_id': place_id,
+            'need_all_ingredients': need_all_ingredients,
         }
     )
 
 
-users = {
-    'user_1': {
-        'email': 'test1@test.com',
-        'username': 'soyTest1',
-        'password': 'Test1pass123',
-    }
-}
-
-
 def sample_user_1():
     return get_user_model().objects.get_or_create(
-        username=users['user_1']['username'],
-        email=users['user_1']['email'],
-        password=users['user_1']['password'],
+        email='test1@test.com',
+        username='soyTest1',
+        password='Test1pass123',
     )[0]
 
 
 class RecommendationTest(APITestCase):
-    fixtures = ['unit', 'product', 'recipes_for_recommendations.json']
-    highest_score_rec = {}
-    lowest_score_rec = {}
+    fixtures = ['unit', 'product', 'recipes_for_recommendations']
 
     def setUp(self):
-        u_1 = sample_user_1()
-        place = Place.objects.get(id=1)
-        place.members.add(u_1.profile.id)
+        self.u_1 = sample_user_1()
+        self.mock_get_patcher = mock.patch('apps.recommendations.services.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
 
-        self.highest_score_rec = Recommendation.objects.create(
-            profile=u_1.profile,
-            recipe=Recipe.objects.get(id=1),
-            score=4.12345
+    def tearDown(self):
+        Place.objects.all().delete()
+        self.mock_get_patcher.stop()
+
+    def _set_mock_rs_response(self, response, status_code=status.HTTP_200_OK):
+        self.mock_get.return_value = mock.Mock()
+        self.mock_get.return_value.status_code = status_code
+        self.mock_get.return_value.json.return_value = response
+
+    def test_getting_filtered_recommendations_without_place_fails(self):
+        """
+        Asking for filtered (need_all_ingredients) recommendations while
+        not having a place should return 400.
+        """
+        self._set_mock_rs_response(response=mock_rs_responses[1])
+        self.client.force_authenticate(user=self.u_1)
+
+        resp = self.client.get(
+            recommend_recipes_url(need_all_ingredients=True)
         )
 
-        self.lowest_score_rec = Recommendation.objects.create(
-            profile=u_1.profile,
-            recipe=Recipe.objects.get(id=2),
-            score=4.12344
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_filtered_recommendations_with_ingredients(self):
+        """Should return only recipes the user can make with what's in their inventory."""
+        Place.objects.first().members.add(Profile.objects.get_or_create(user=self.u_1)[0])
+        self._set_mock_rs_response(response=mock_rs_responses[1])
+        self.client.force_authenticate(user=self.u_1)
+
+        resp = self.client.get(
+            recommend_recipes_url(need_all_ingredients=True)
         )
 
-    def test_recommendations_without_all_ingredients(self):
-        """Test when get my recommendation should return in correct order."""
-        u_1 = sample_user_1()
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(resp.data.get('count'), 1)
+        recommendations = resp.data.get('results')
+        self.assertEqual(recommendations[0].get('recipe').get('id'), 1)
+        self.assertEqual(float(recommendations[0].get('rating')), 3.4)
+        self.assertEqual(recommendations[0].get('rating_is_real'), True)
 
-        self.client.force_authenticate(user=u_1)
+    def test_get_filtered_recommendations_with_amounts(self):
+        """Leave out recipes for which user has all ingredients but not enough of any."""
+        Place.objects.first().members.add(Profile.objects.get_or_create(user=self.u_1)[0])
+        self._set_mock_rs_response(response=mock_rs_responses[2])
+        self.client.force_authenticate(user=self.u_1)
 
-        res = self.client.get(MY_RECOMMENDATIONS)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data.get('count'), 2)
-        self.assertEqual(int(res.data.get('results')[0]['recipe_id']), self.highest_score_rec.recipe.id)
-        self.assertEqual(int(res.data.get('results')[1]['recipe_id']), self.lowest_score_rec.recipe.id)
-
-    def test_recommendations_with_all_ingredients(self):
-        """Test when get my recommendation with all ingredients should return only one."""
-        u_1 = sample_user_1()
-        place = Place.objects.get(id=1)
-
-        self.client.force_authenticate(user=u_1)
-
-        res = self.client.get(
-            my_recommendations(place.id, True)
+        resp = self.client.get(
+            recommend_recipes_url(need_all_ingredients=True)
         )
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data.get('count'), 1)
-        self.assertEqual(int(res.data.get('results')[0]['recipe_id']), self.highest_score_rec.recipe.id)
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(resp.data.get('count'), 1)
+        recommendations = resp.data.get('results')
+        self.assertEqual(recommendations[0].get('recipe').get('id'), 1)
+        self.assertEqual(float(recommendations[0].get('rating')), 3.4)
+        self.assertEqual(recommendations[0].get('rating_is_real'), True)
