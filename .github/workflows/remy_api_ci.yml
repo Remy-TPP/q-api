@@ -1,0 +1,68 @@
+name: Remy API CI
+on: [push]
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+  SECRET_KEY: fakesecretkey
+  EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+  EMAIL_PASSWORD: FakeEmailPassword
+
+jobs:
+  lint_and_test_jobs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+          # TODO: this is not ideal
+          POSTGRES_HOST_AUTH_METHOD: trust
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install pipenv
+      run: |
+        python -m pip install pipenv wheel
+
+    - name: Cache dependencies
+      id: cache-pipenv
+      # TODO: switch to v2
+      uses: actions/cache@v1
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+
+    - name: Install dependencies
+      if: steps.cache-pipenv.outputs.cache-hit != 'true'
+      run: |
+        pipenv install --deploy --dev
+
+    - name: Test
+      run: |
+        cd src/
+        pipenv run test
+        pipenv run cov-report
+
+    - name: Lint
+      run: |
+        pipenv run lint
+        pipenv run pylint

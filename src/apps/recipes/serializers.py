@@ -3,7 +3,7 @@ from django.db.models import Q
 from rest_framework import serializers
 # from rest_framework_recursive.fields import RecursiveField
 
-from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe
+from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe, Interaction
 from apps.products.serializers import AmountSerializer, ProductSerializer, ProductMinimalSerializer
 
 
@@ -25,7 +25,7 @@ class RecipeMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'image']
 
 
 class DishSerializer(serializers.ModelSerializer):
@@ -84,3 +84,28 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.ingredients.set(ingredients)
         return recipe
+
+
+class InteractionSerializer(serializers.ModelSerializer):
+    # TODO: extract min and max as constants
+    profile = serializers.StringRelatedField()
+    recipe = RecipeMinimalSerializer(read_only=True)
+    recipe_id = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all(), write_only=True)
+    rating = serializers.DecimalField(max_digits=4, decimal_places=2, min_value=1, max_value=10, required=False)
+
+    class Meta:
+        model = Interaction
+        fields = '__all__'
+        read_only_fields = ['id', 'cooked_at']
+
+    def create(self, validated_data):
+        interaction = Interaction.objects.get_or_create(
+            profile=validated_data.pop('profile'),
+            recipe=validated_data.pop('recipe_id'),
+        )[0]
+        try:
+            interaction.rating = validated_data.pop('rating')
+        except KeyError:
+            pass
+        interaction.save()
+        return interaction

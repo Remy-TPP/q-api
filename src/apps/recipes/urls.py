@@ -1,7 +1,12 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from apps.recipes.views import DishCategoryViewSet, DishLabelViewSet, RecipeViewSet, DishViewSet
+from apps.recipes.views import (DishCategoryViewSet,
+                                DishLabelViewSet,
+                                RecipeViewSet,
+                                DishViewSet,
+                                rate_recipe,
+                                )
 
 
 router = SimpleRouter()
@@ -14,4 +19,5 @@ router.register(r'dishes', DishViewSet)                            # dishes/
 
 urlpatterns = [
     path('', include(router.urls)),
+    path(r'recipes/rate', rate_recipe, name='rate-recipe'),        # recipes/rate/
 ]
