@@ -1,14 +1,16 @@
 from copy import deepcopy
 from distutils.util import strtobool
 
+from requests.exceptions import RequestException
+from django.shortcuts import get_object_or_404
+from django.db.models import prefetch_related_objects
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from django.db.models import prefetch_related_objects
-from requests.exceptions import RequestException
 
+from apps.profiles.models import Event
 from apps.inventories.utils import get_place_or_default
 from apps.recipes.models import Recipe
 from apps.recommendations.models import RecipeRecommendation
@@ -20,14 +22,18 @@ class RecommendationViewSet(viewsets.GenericViewSet):
     serializer_class = RecipeRecommendationSerializer
     search_fields = ['recipe__title', 'recipe__description']
 
-    def get_queryset(self):
+    def get_queryset(self, profile_ids=None):
         # TODO: actually returns a list, fix wording?
-        recommendations = RemyRSService.get_recommendations_for_user(
-            # TODO: temp value for tests
-            # profile_id=2,
-            profile_id=self.request.user.profile.id,
-            n='all',
-        )
+        if not profile_ids:
+            recommendations = RemyRSService.get_recommendations_for_user(
+                profile_id=self.request.user.profile.id,
+                n='all',
+            )
+        else:
+            recommendations = RemyRSService.get_recommendations_for_group(
+                profile_ids=profile_ids,
+                n='all',
+            )
 
         all_recipes = Recipe.objects.all()  # TODO: prefetch?
 
@@ -107,6 +113,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 description="Whether place must have all of a recipe's ingredients for the recipe to be recommended.",
                 type=openapi.TYPE_BOOLEAN,
                 required=False,
+                default=False,
             ),
         ],
     )
@@ -123,6 +130,49 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         try:
             queryset = self.get_queryset()
+        except (RequestException, RemyRSService.RecSysException) as rs_error:
+            return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        queryset = self.postprocess_recommendations(queryset, place.inventory, need_all_ingredients)
+        return self._send_queryset(queryset)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary='Get recommended recipes for event',
+        manual_parameters=[
+            openapi.Parameter(
+                'id',
+                in_=openapi.IN_QUERY,
+                description='Id of event for whose users to generate recommendations.',
+                type=openapi.TYPE_INTEGER,
+                required=True,
+            ),
+            openapi.Parameter(
+                'need_all_ingredients',
+                in_=openapi.IN_QUERY,
+                description="Whether must have all of a recipe's ingredients for the recipe to be recommended.",
+                type=openapi.TYPE_BOOLEAN,
+                required=False,
+                default=False,
+            ),
+        ],
+    )
+    @action(detail=False, methods=['GET'], url_path='recommend/recipes/event', url_name='recommend-recipes-event')
+    def recommend_recipes_event(self, request):
+        event_id = request.query_params.get('id', None)
+        need_all_ingredients = strtobool(request.query_params.get('need_all_ingredients', 'false'))
+
+        event = get_object_or_404(Event.objects.all(), id=event_id)
+        # if not flag host_only, sumar todos los inventarios
+        # else event.place
+        # TODO: do more than one inventory, checking event.only_host_inventory
+        place = event.place
+
+        if need_all_ingredients and not place:
+            return Response({"error": "Event doesn't have a place"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            queryset = self.get_queryset(profile_ids=[m.pk for m in place.members.all()])
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
