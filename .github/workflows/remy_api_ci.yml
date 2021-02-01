@@ -67,3 +67,4 @@ jobs:
       run: |
         pipenv run lint
         pipenv run pylint
+      continue-on-error: True

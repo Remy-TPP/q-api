@@ -5,7 +5,6 @@ from rest_framework.test import APITestCase
 from common.utils import query_reverse
 
 from apps.recipes.models import Recipe
-from apps.inventories.models import Place
 
 ITEM_URL = reverse('cart-list')
 
@@ -119,38 +118,3 @@ class InventoryItemTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIsNotNone(res.data)
         self.assertEqual(u_1.profile.places.count(), 0)
-
-
-class CartOnlyMissingTests(APITestCase):
-    fixtures = ['unit', 'product', 'cart']
-
-    def setUp(self):
-        self.u_1 = sample_user_1()
-        self.place = Place.objects.get(id=1)
-        self.place.members.add(self.u_1.profile.id)
-
-    def test_adding_a_recipe_with_only_missing_not_add(self):
-        u_1 = sample_user_1()
-        self.client.force_authenticate(user=u_1)
-
-        res = self.client.post(
-            cart_recipe(1, 1, True),
-            format='json'
-        )
-
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        items = u_1.profile.places.first().cart
-        self.assertEqual(items.count(), 0)
-
-    def test_adding_a_recipe_with_only_missing_add_one(self):
-        u_1 = sample_user_1()
-        self.client.force_authenticate(user=u_1)
-
-        res = self.client.post(
-            cart_recipe(1, 2, True),
-            format='json'
-        )
-
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        items = u_1.profile.places.first().cart
-        self.assertEqual(items.count(), 1)
