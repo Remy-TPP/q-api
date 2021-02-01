@@ -121,9 +121,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['GET'], url_path='recommend/recipes/me', url_name='recommend-recipes-me')
     def recommend_recipes_me(self, request):
         need_all_ingredients = strtobool(self.request.query_params.get('need_all_ingredients', 'false'))
-        # TODO: clean-up temp
-        # from apps.profiles.models import Profile
-        # place = get_place_or_default(Profile.objects.get(user_id=3), self.request.query_params.get('place_id'))
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place_id'))
 
         if need_all_ingredients and not place:
