@@ -10,8 +10,9 @@ from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-from apps.profiles.models import Event
 from apps.inventories.utils import get_place_or_default
+from apps.inventories.models import InventoryItem
+from apps.profiles.models import Event
 from apps.recipes.models import Recipe
 from apps.recommendations.models import RecipeRecommendation
 from apps.recommendations.serializers import RecipeRecommendationSerializer
@@ -133,7 +134,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        queryset = self.postprocess_recommendations(queryset, place.inventory, need_all_ingredients)
+        queryset = self.postprocess_recommendations(queryset, place.inventory.all(), need_all_ingredients)
         return self._send_queryset(queryset)
 
     @swagger_auto_schema(
@@ -163,18 +164,25 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         need_all_ingredients = strtobool(request.query_params.get('need_all_ingredients', 'false'))
 
         event = get_object_or_404(Event.objects.all(), id=event_id)
-        # if not flag host_only, sumar todos los inventarios
-        # else event.place
-        # TODO: do more than one inventory, checking event.only_host_inventory
-        place = event.place
 
-        if need_all_ingredients and not place:
+        if need_all_ingredients and not event.place:
+            # TODO: should not care for event's place and just check if there's a place for _any_ attendee?
             return Response({"error": "Event doesn't have a place"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # always include event's place's inventory (which should be the host's)
+        places_pk = set([event.place.pk])
+        if not event.only_host_inventory:
+            # add each non-host member's inventory, without duplicates
+            for attendee in event.attendees.all():
+                # TODO: assumes event's place is from the host so that we can ignore them here; is this right?
+                if attendee != event.host:
+                    places_pk.add(attendee.default_place.pk)
+        event_inventory = InventoryItem.objects.filter(place__in=places_pk)
+
         try:
-            queryset = self.get_queryset(profile_ids=[m.pk for m in place.members.all()])
+            queryset = self.get_queryset(profile_ids=[att.pk for att in event.attendees.all()])
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        queryset = self.postprocess_recommendations(queryset, place.inventory, need_all_ingredients)
+        queryset = self.postprocess_recommendations(queryset, event_inventory, need_all_ingredients)
         return self._send_queryset(queryset)
