@@ -33,6 +33,10 @@ class Profile(models.Model):
     def __str__(self):
         return '%s %s (%s)' % (self.user.first_name, self.user.last_name, self.user.username)
 
+    @property
+    def default_place(self):
+        return self.placemember_set.filter(is_the_default_one=True)[0].place
+
 
 class FriendshipStatus(models.Model):
     name = models.CharField(max_length=50, unique=True, primary_key=True)

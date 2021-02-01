@@ -27,6 +27,21 @@ class RemyRSService:
         return rs_response.json()['predictions']
 
     @staticmethod
+    def get_recommendations_for_group(profile_ids, n=10):
+        if n == 'all':
+            n = 0
+        rs_response = requests.get(
+            f'{REMY_RS_BASE_URL}/recommendations/group/',
+            params={'n': n, 'user_id': profile_ids},
+        )
+        if rs_response.status_code != status.HTTP_200_OK:
+            raise RemyRSService.RecSysException(
+                f'Failed to get recommendations for users {profile_ids}'
+                f' from RS: {rs_response.status_code}, {rs_response.content}'
+            )
+        return rs_response.json()['predictions']
+
+    @staticmethod
     def get_predicted_rating_for_interaction(profile_id, recipe_id):
         rs_response = requests.get(
             f'{REMY_RS_BASE_URL}/recommendations/user/{profile_id}/recipe/{recipe_id}',
