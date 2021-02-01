@@ -32,20 +32,23 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         all_recipes = Recipe.objects.all()  # TODO: prefetch?
 
         recommendations = [
-            RecipeRecommendation(recipe=all_recipes.get(pk=r['recipe_id']),
-                                 rating=r['rating'], rating_is_real=r['real'])
+            RecipeRecommendation(
+                recipe=all_recipes.get(pk=r['recipe_id']),
+                rating=r['rating'],
+                rating_is_real=r['real']
+            )
             for r in recommendations
         ]
         return recommendations
 
-    def postprocess_recommendations(self, recommendations, place, need_all_ingredients=False):
+    def postprocess_recommendations(self, recommendations, inventory, need_all_ingredients=False):
         if not need_all_ingredients:
             return recommendations
 
         prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
         # get and prefetch user's inventory
-        user_inventory = place.inventory.all().prefetch_related('product', 'unit')
+        user_inventory = inventory.all().prefetch_related('product', 'unit')
         list_inventory = list(user_inventory)
         prefetch_related_objects(list_inventory, 'product', 'unit')
 
@@ -75,9 +78,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             else:
                 # because nothing was missing, recommend recipe
                 filtered_recs.append(recommendation)
-                # breaks if enough recommendations  # TODO: delete this?
-                if len(filtered_recs) >= 10:
-                    break
 
         return filtered_recs
 
@@ -126,5 +126,5 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        queryset = self.postprocess_recommendations(queryset, place, need_all_ingredients)
+        queryset = self.postprocess_recommendations(queryset, place.inventory, need_all_ingredients)
         return self._send_queryset(queryset)
