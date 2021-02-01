@@ -191,6 +191,7 @@ AUTHENTICATION_BACKENDS = (
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER':
         'apps.api.serializers.CustomPasswordResetSerializer',
+    'TOKEN_SERIALIZER': 'apps.api.serializers.TokenSerializer'
 }
 
 EMAIL_HOST = 'smtp.gmail.com'
