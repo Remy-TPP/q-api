@@ -84,7 +84,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
         place.members.add(member)
 
         return Response({"msg": "Member has been added!"}, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(
         method='post',
         operation_summary="Remove a member from the event.",
