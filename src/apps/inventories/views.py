@@ -59,6 +59,60 @@ class PlaceViewSet(viewsets.GenericViewSet,
         user = self.request.user
         return self.filter_queryset(Place.objects.filter(members=user.profile).order_by("id"))
 
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Add a member to a place.",
+        manual_parameters=[
+            openapi.Parameter(
+                'member_id',
+                in_=openapi.IN_QUERY,
+                description='ID of a member',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def add_member(self, request, pk=None):
+        member_id = request.query_params.get('member_id')
+        if not member_id:
+            return Response({"error": "Must provide member_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        member = get_object_or_404(request.user.profile.friends.all(), id=member_id)
+        place = get_object_or_404(request.user.profile.places.all(), id=pk)
+
+        place.members.add(member)
+
+        return Response({"msg": "Member has been added!"}, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Remove a member from the event.",
+        manual_parameters=[
+            openapi.Parameter(
+                'member_id',
+                in_=openapi.IN_QUERY,
+                description='ID of a member',
+                type=openapi.TYPE_INTEGER,
+                required=True
+            ),
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def remove_member(self, request, pk=None):
+        member_id = request.query_params.get('member_id')
+        if not member_id:
+            return Response({"error": "Must provide member_id!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        place = get_object_or_404(request.user.profile.places.all(), id=pk)
+
+        if not place.members.filter(id=member_id).exists():
+            return Response({"error": "That member is not part of the place!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        place.members.remove(member_id)
+
+        return Response({"msg": "Member has been deleted!"}, status=status.HTTP_200_OK)
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary="Lists all items that place has.",
