@@ -61,7 +61,8 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             # check if there's any forbidden product in recipe
             if any(ppk in recipe_product_pks_set for ppk in forbidden_products_pks):
                 continue
-            dish_categories = {category.name.lower() for category in recommendation.recipe.dish.categories.all()}
+            dish_categories = {category.name.lower() for category in recommendation.recipe.dish.categories.all()} \
+                                if recommendation.recipe.dish else set()
             # check all profile types are respected
             if not all(restriction in dish_categories for restriction in restrictions):
                 continue
