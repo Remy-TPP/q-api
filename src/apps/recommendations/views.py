@@ -49,17 +49,27 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         return recommendations
 
     def postprocess_recommendations(self, recommendations, inventory, need_all_ingredients=False):
-        if not need_all_ingredients:
-            return recommendations
-
         prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
+        filtered_recs = []
+
+        forbidden_products_pks = [product.pk for product in self.request.user.profile.forbidden_products.all()]
+        # exclude recommendations that have a forbidden ingredient
+        for recommendation in recommendations:
+            recipe_product_pks_set = set([product.pk for product in recommendation.recipe.ingredients.all()])
+            # check if any element in both
+            if any(ppk in recipe_product_pks_set for ppk in forbidden_products_pks):
+                continue
+            filtered_recs.append(recommendation)
+
+        if not need_all_ingredients:
+            return filtered_recs
 
         # get and prefetch user's inventory
         user_inventory = inventory.all().prefetch_related('product', 'unit')
         list_inventory = list(user_inventory)
         prefetch_related_objects(list_inventory, 'product', 'unit')
 
-        filtered_recs = []
+        recommendations, filtered_recs = filtered_recs, []
         for recommendation in recommendations:
             # make a copy of the inventory to play with
             aux_inventory = deepcopy(list_inventory)
