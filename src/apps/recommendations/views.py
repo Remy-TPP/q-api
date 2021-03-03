@@ -74,7 +74,8 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             profiles = [self.request.user.profile]
         prefetch_related_objects(
             recommendations,
-            'recipe__ingredient_set__product', 'recipe__ingredient_set__unit', 'recipe__dish__categories')
+            'recipe__ingredients', 'recipe__dish__categories',
+            'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
         filtered_recs = self.filter_on_users_restrictions(recommendations, profiles)
 
