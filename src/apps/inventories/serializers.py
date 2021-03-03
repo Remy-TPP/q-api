@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from apps.products.models import Amount, Product
 from apps.inventories.models import (Place,
+                                     PlaceMember,
                                      InventoryItem,
                                      Purchase,
                                      PurchaseItem,
@@ -10,6 +11,13 @@ from apps.products.serializers import AmountSerializer
 
 
 class PlaceSerializer(serializers.ModelSerializer):
+    is_the_default_one = serializers.SerializerMethodField()
+
+    def get_is_the_default_one(self, obj):
+        return PlaceMember.objects.filter(
+            place_id=obj.id,
+            member_id=self.context['request'].user.profile.id
+        ).first().is_the_default_one
 
     class Meta:
         model = Place
