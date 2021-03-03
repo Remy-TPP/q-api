@@ -26,12 +26,16 @@ class DishLabelAdmin(admin.ModelAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
-    list_display = ('name', 'labels_str')
+    list_display = ('name', 'categories_str', 'labels_str')
     ordering = ('name',)
 
     def labels_str(self, obj):
         return ', '.join([label.name for label in obj.labels.all()])
     labels_str.short_description = "Labels"
+
+    def categories_str(self, obj):
+        return ', '.join([category.name for category in obj.categories.all()])
+    categories_str.short_description = "Categories"
 
 
 # TODO: would be cleaner to embed these inline on their respective recipes instead of registering
