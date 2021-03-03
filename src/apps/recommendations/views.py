@@ -48,21 +48,37 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         ]
         return recommendations
 
-    def postprocess_recommendations(self, recommendations, inventory, profiles=None, need_all_ingredients=False):
-        prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
+    def filter_on_users_restrictions(self, recommendations, profiles):
+        """ Exclude recommendations that have a forbidden ingredient or not in users' categories. """
         filtered_recs = []
 
-        if not profiles:
-            profiles = [self.request.user.profile]
-        # TODO: maybe another prefetch (for the forbidden_products) would be a good idea
+        # TODO: maybe another prefetch (for the forbidden_products & profiletypes) would be a good idea
         forbidden_products_pks = {product.pk for profile in profiles for product in profile.forbidden_products.all()}
-        # exclude recommendations that have a forbidden ingredient
+        restrictions = {profiletype.name.lower() for profile in profiles for profiletype in profile.profiletypes.all()}
+
         for recommendation in recommendations:
             recipe_product_pks_set = {product.pk for product in recommendation.recipe.ingredients.all()}
-            # check if any element in both
+            # check if there's any forbidden product in recipe
             if any(ppk in recipe_product_pks_set for ppk in forbidden_products_pks):
                 continue
+            dish_categories = {category.name.lower() for category in recommendation.recipe.dish.categories.all()} \
+                                if recommendation.recipe.dish else set()
+            # check all profile types are respected
+            if not all(restriction in dish_categories for restriction in restrictions):
+                continue
             filtered_recs.append(recommendation)
+
+        return filtered_recs
+
+    def postprocess_recommendations(self, recommendations, inventory, profiles=None, need_all_ingredients=False):
+        if not profiles:
+            profiles = [self.request.user.profile]
+        prefetch_related_objects(
+            recommendations,
+            'recipe__ingredients', 'recipe__dish__categories',
+            'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
+
+        filtered_recs = self.filter_on_users_restrictions(recommendations, profiles)
 
         if not need_all_ingredients:
             return filtered_recs
