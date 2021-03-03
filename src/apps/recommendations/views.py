@@ -49,18 +49,24 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         return recommendations
 
     def postprocess_recommendations(self, recommendations, inventory, profiles=None, need_all_ingredients=False):
-        prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
+        prefetch_related_objects(recommendations,
+            'recipe__ingredient_set__product', 'recipe__ingredient_set__unit', 'recipe__dish__categories')
         filtered_recs = []
-
         if not profiles:
             profiles = [self.request.user.profile]
-        # TODO: maybe another prefetch (for the forbidden_products) would be a good idea
+
+        # exclude recommendations that have a forbidden ingredient or not in users' categories
+        # TODO: maybe another prefetch (for the forbidden_products & profiletypes) would be a good idea
         forbidden_products_pks = {product.pk for profile in profiles for product in profile.forbidden_products.all()}
-        # exclude recommendations that have a forbidden ingredient
+        restrictions = {profiletype.name.lower() for profile in profiles for profiletype in profile.profiletypes.all()}
         for recommendation in recommendations:
             recipe_product_pks_set = {product.pk for product in recommendation.recipe.ingredients.all()}
-            # check if any element in both
+            # check if there's any forbidden product in recipe
             if any(ppk in recipe_product_pks_set for ppk in forbidden_products_pks):
+                continue
+            dish_categories = {category.name.lower() for category in recommendation.recipe.dish.categories.all()}
+            # check all profile types are respected
+            if not all(restriction in dish_categories for restriction in restrictions):
                 continue
             filtered_recs.append(recommendation)
 
