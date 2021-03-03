@@ -48,14 +48,17 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         ]
         return recommendations
 
-    def postprocess_recommendations(self, recommendations, inventory, need_all_ingredients=False):
+    def postprocess_recommendations(self, recommendations, inventory, profiles=None, need_all_ingredients=False):
         prefetch_related_objects(recommendations, 'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
         filtered_recs = []
 
-        forbidden_products_pks = [product.pk for product in self.request.user.profile.forbidden_products.all()]
+        if not profiles:
+            profiles = [self.request.user.profile]
+        # TODO: maybe another prefetch (for the forbidden_products) would be a good idea
+        forbidden_products_pks = {product.pk for profile in profiles for product in profile.forbidden_products.all()}
         # exclude recommendations that have a forbidden ingredient
         for recommendation in recommendations:
-            recipe_product_pks_set = set([product.pk for product in recommendation.recipe.ingredients.all()])
+            recipe_product_pks_set = {product.pk for product in recommendation.recipe.ingredients.all()}
             # check if any element in both
             if any(ppk in recipe_product_pks_set for ppk in forbidden_products_pks):
                 continue
@@ -141,7 +144,11 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        queryset = self.postprocess_recommendations(queryset, place.inventory.all(), need_all_ingredients)
+        queryset = self.postprocess_recommendations(
+            queryset,
+            place.inventory.all(),
+            need_all_ingredients=need_all_ingredients
+        )
         return self._send_queryset(queryset)
 
     @swagger_auto_schema(
@@ -187,9 +194,14 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         event_inventory = InventoryItem.objects.filter(place__in=places_pk)
 
         try:
-            queryset = self.get_queryset(profile_ids=[att.pk for att in event.attendees.all()])
+            queryset = self.get_queryset(profile_ids=[attendee.pk for attendee in event.attendees.all()])
         except (RequestException, RemyRSService.RecSysException) as rs_error:
             return Response({"error": repr(rs_error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        queryset = self.postprocess_recommendations(queryset, event_inventory, need_all_ingredients)
+        queryset = self.postprocess_recommendations(
+            queryset,
+            event_inventory,
+            profiles=event.attendees.all(),
+            need_all_ingredients=need_all_ingredients,
+        )
         return self._send_queryset(queryset)
