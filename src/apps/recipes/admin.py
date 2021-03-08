@@ -28,6 +28,7 @@ class DishLabelAdmin(admin.ModelAdmin):
 class DishAdmin(admin.ModelAdmin):
     list_display = ('name', 'categories_str', 'labels_str')
     ordering = ('name',)
+    save_on_top = True
 
     def labels_str(self, obj):
         return ', '.join([label.name for label in obj.labels.all()])
@@ -36,6 +37,15 @@ class DishAdmin(admin.ModelAdmin):
     def categories_str(self, obj):
         return ', '.join([category.name for category in obj.categories.all()])
     categories_str.short_description = "Categories"
+
+    def response_change(self, request, obj):
+        """If pressing SAVE, redirect to next Dish by name, if there is one; else use default behaviour."""
+        if ('_continue' not in request.POST) \
+                and (next_dish := Dish.objects.filter(name__gt=obj.name).order_by('name').first()):
+            msg = format_html(_('Changed successfully. Redirected to next dish by name.'))
+            self.message_user(request, msg, messages.SUCCESS)
+            return HttpResponseRedirect(f'../../{next_dish.pk}/change')
+        return super(DishAdmin, self).response_change(request, obj)
 
 
 # TODO: would be cleaner to embed these inline on their respective recipes instead of registering
