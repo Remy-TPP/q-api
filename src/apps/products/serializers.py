@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from decimal import Decimal
 
 from apps.products.models import Unit, Product
 
@@ -22,6 +23,13 @@ class AmountSerializer(serializers.Serializer):
     class Meta:
         fields = ['quantity', 'unit']
         abstract = True
+
+    def to_representation(self, instance):
+        """Convert `quantity` to rounded value."""
+        ret = super().to_representation(instance)
+        s = str(round(Decimal(ret['quantity']), 2))
+        ret['quantity'] = s.rstrip('0').rstrip('.') if '.' in s else s
+        return ret
 
 
 class ProductSerializer(serializers.ModelSerializer):
