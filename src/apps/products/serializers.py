@@ -17,7 +17,6 @@ class AmountSerializer(serializers.Serializer):
         queryset=Unit.objects.all(),
         allow_null=True
     )
-
     quantity = serializers.DecimalField(max_digits=12, decimal_places=3, allow_null=True)
 
     class Meta:
@@ -27,8 +26,9 @@ class AmountSerializer(serializers.Serializer):
     def to_representation(self, instance):
         """Convert `quantity` to rounded value."""
         ret = super().to_representation(instance)
-        s = str(round(Decimal(ret['quantity']), 2))
-        ret['quantity'] = s.rstrip('0').rstrip('.') if '.' in s else s
+        if (ret['quantity']):
+            s = str(round(Decimal(ret['quantity']), 2))
+            ret['quantity'] = s.rstrip('0').rstrip('.') if '.' in s else s
         return ret
 
 
