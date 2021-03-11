@@ -74,8 +74,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_ingredients(self, obj):
+        ingrs = Ingredient.objects.filter(recipe=obj).prefetch_related('product', 'unit')
         return RecipeIngredientSerializer(
-            Ingredient.objects.filter(recipe=obj), many=True, context=self.context
+            ingrs, many=True, context=self.context
         ).data
 
     def create(self, validated_data):
