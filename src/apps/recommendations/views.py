@@ -23,6 +23,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
     serializer_class = RecipeRecommendationSerializer
     search_fields = ['recipe__title', 'recipe__description']
 
+    # TODO: probably needs to call self.filter_queryset() to actually search
     def get_queryset(self, profile_ids=None):
         # TODO: actually returns a list, fix wording?
         if not profile_ids:
