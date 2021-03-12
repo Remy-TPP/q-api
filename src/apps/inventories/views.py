@@ -345,6 +345,16 @@ class CartViewSet(viewsets.GenericViewSet,
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
         return self.filter_queryset(Cart.objects.filter(place=place).order_by('product__name'))
 
+    def destroy(self, *args, **kwargs):
+        c = get_object_or_404(Cart, id=kwargs['pk'])
+        c.delete()
+        return Response(
+            {
+                'msg': f"Cart item {kwargs['pk']} deleted",
+            },
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
     @swagger_auto_schema(
         operation_summary="Create an item for the cart in that place.",
         operation_description="Returns the item.",
