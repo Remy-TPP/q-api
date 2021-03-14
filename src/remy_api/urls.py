@@ -1,8 +1,9 @@
-from django.contrib import admin
 from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
+
+from apps.api.admin import admin
 
 
 favicon_view = RedirectView.as_view(url=f'{settings.MEDIA_URL}favicon_v1.ico')
