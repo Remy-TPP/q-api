@@ -150,7 +150,7 @@ class PlaceViewSet(viewsets.GenericViewSet,
 ))
 @method_decorator(name='destroy', decorator=swagger_auto_schema(
     operation_summary="Deletes item with id={id}.",
-    operation_description="Returns none."
+    operation_description="Returns id of deleted inventory item."
 ))
 class InventoryItemViewSet(viewsets.GenericViewSet,
                            mixins.CreateModelMixin,
@@ -193,7 +193,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(
             {
-                'msg': "Cannot add Item!",
+                'msg': "Cannot add item!",
                 'errors': serializer.errors
             },
             status=status.HTTP_400_BAD_REQUEST
@@ -206,7 +206,7 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
             {
                 'msg': f"Inventory item {kwargs['pk']} deleted",
             },
-            status=status.HTTP_204_NO_CONTENT,
+            status=status.HTTP_200_OK,
         )
 
     @swagger_auto_schema(
@@ -341,7 +341,7 @@ class PurchaseCreateView(generics.CreateAPIView):
 ))
 @method_decorator(name='destroy', decorator=swagger_auto_schema(
     operation_summary="Deletes item with id={id}.",
-    operation_description="Returns none."
+    operation_description="Returns id of deleted cart item."
 ))
 class CartViewSet(viewsets.GenericViewSet,
                   mixins.CreateModelMixin,
@@ -362,7 +362,7 @@ class CartViewSet(viewsets.GenericViewSet,
             {
                 'msg': f"Cart item {kwargs['pk']} deleted",
             },
-            status=status.HTTP_204_NO_CONTENT,
+            status=status.HTTP_200_OK,
         )
 
     @swagger_auto_schema(
