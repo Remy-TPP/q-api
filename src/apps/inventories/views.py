@@ -199,6 +199,16 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
             status=status.HTTP_400_BAD_REQUEST
         )
 
+    def destroy(self, *args, **kwargs):
+        ii = get_object_or_404(InventoryItem, id=kwargs['pk'])
+        ii.delete()
+        return Response(
+            {
+                'msg': f"Inventory item {kwargs['pk']} deleted",
+            },
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
     @swagger_auto_schema(
         method='post',
         operation_summary='Create a list of items for that place.',
