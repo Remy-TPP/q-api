@@ -473,3 +473,23 @@ class CartViewSet(viewsets.GenericViewSet,
 
         savepoint_commit(sid)
         return Response({'message': 'All the items were created!'}, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(
+        operation_summary="Delete all cart items for a place.",
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            )
+        ]
+    )
+    @action(detail=False, methods=['DELETE'])
+    def delete_all_items(self, request):
+        place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+        Cart.objects.filter(place=place).delete()
+
+        return Response({'message': 'All the items were deleted!'}, status=status.HTTP_200_OK)
