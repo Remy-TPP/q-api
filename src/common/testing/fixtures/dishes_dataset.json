@@ -28,7 +28,7 @@
     "pk": 1,
     "fields": {
         "name": "desayuno",
-        "image": ""
+        "image": "/images/dish-labels/desayuno.png"
     }
 },
 {
@@ -36,7 +36,7 @@
     "pk": 2,
     "fields": {
         "name": "almuerzo",
-        "image": ""
+        "image": "/images/dish-labels/almuerzo.png"
     }
 },
 {
@@ -44,7 +44,7 @@
     "pk": 3,
     "fields": {
         "name": "cena",
-        "image": ""
+        "image": "/images/dish-labels/cena.png"
     }
 },
 {
@@ -68,7 +68,7 @@
     "pk": 23,
     "fields": {
         "name": "frutas",
-        "image": ""
+        "image": "/images/dish-labels/frutas.png"
     }
 },
 {
@@ -84,7 +84,7 @@
     "pk": 25,
     "fields": {
         "name": "f\u00e1cil",
-        "image": ""
+        "image": "/images/dish-labels/facil.png"
     }
 },
 {
@@ -92,7 +92,7 @@
     "pk": 26,
     "fields": {
         "name": "r\u00e1pido",
-        "image": ""
+        "image": "/images/dish-labels/rapido.png"
     }
 },
 {
@@ -100,7 +100,7 @@
     "pk": 27,
     "fields": {
         "name": "postres",
-        "image": ""
+        "image": "/images/dish-labels/postres.png"
     }
 },
 {
@@ -115,8 +115,8 @@
     "model": "recipes.dishlabel",
     "pk": 29,
     "fields": {
-        "name": "frutillas",
-        "image": ""
+        "name": "frutas",
+        "image": "/images/dish-labels/frutas.png"
     }
 },
 {

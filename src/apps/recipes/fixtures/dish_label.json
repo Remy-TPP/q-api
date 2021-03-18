@@ -22,5 +22,37 @@
             "name": "cena",
             "image": "/images/dish-labels/cena.png"
         }
+    },
+    {
+        "model": "recipes.dishlabel",
+        "pk": 4,
+        "fields": {
+            "name": "rapido",
+            "image": "/images/dish-labels/rapido.png"
+        }
+    },
+    {
+        "model": "recipes.dishlabel",
+        "pk": 5,
+        "fields": {
+            "name": "fácil",
+            "image": "/images/dish-labels/facil.png"
+        }
+    },
+    {
+        "model": "recipes.dishlabel",
+        "pk": 6,
+        "fields": {
+            "name": "frutas",
+            "image": "/images/dish-labels/frutas.png"
+        }
+    },
+    {
+        "model": "recipes.dishlabel",
+        "pk": 7,
+        "fields": {
+            "name": "postre",
+            "image": "/images/dish-labels/postre.png"
+        }
     }
 ]
