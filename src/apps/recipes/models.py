@@ -21,7 +21,7 @@ class DishCategory(models.Model):
 
 class DishLabel(models.Model):
     name = models.CharField(max_length=60)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, max_length=255)
 
     class Meta:
         verbose_name_plural = "dish labels"
