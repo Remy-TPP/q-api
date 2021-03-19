@@ -360,7 +360,7 @@ class FriendshipStatusViewSet(viewsets.ModelViewSet):
 
     Only Admin.
     """
-    queryset = FriendshipStatus.objects.all().order_by("id")
+    queryset = FriendshipStatus.objects.all().order_by("pk")
     serializer_class = FriendshipStatusSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
