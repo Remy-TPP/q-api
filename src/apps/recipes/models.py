@@ -77,6 +77,7 @@ class Recipe(models.Model):
     instructions = models.OneToOneField(RecipeInstructions,
                                         default=RecipeInstructions.default,
                                         on_delete=models.CASCADE)
+    duration = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.title if self.title else self.dish.name
