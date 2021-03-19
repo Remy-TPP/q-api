@@ -443,9 +443,9 @@ class CartViewSet(viewsets.GenericViewSet,
             place = get_place_or_default(request.user.profile, request.query_params.get('place'))
 
             if (
-                only_missing == 'True' and
-                place and
-                place.inventory.filter(product__id=ingredient.product.id).exists()
+                    only_missing == 'True' and
+                    place and
+                    place.inventory.filter(product__id=ingredient.product.id).exists()
             ):
                 continue
 
