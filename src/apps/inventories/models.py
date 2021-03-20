@@ -35,3 +35,7 @@ class PurchaseItem(ProductWithAmount):
 
 class Cart(ProductWithAmount):
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='cart')
+
+
+class BarCode(ProductWithAmount):
+    id = models.CharField(primary_key=True, max_length=13)
