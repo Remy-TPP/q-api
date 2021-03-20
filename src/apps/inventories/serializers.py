@@ -6,7 +6,8 @@ from apps.inventories.models import (Place,
                                      InventoryItem,
                                      Purchase,
                                      PurchaseItem,
-                                     Cart)
+                                     Cart,
+                                     BarCode)
 from apps.products.serializers import AmountSerializer
 
 
@@ -122,3 +123,19 @@ class CartSerializer(serializers.ModelSerializer, AmountSerializer):
             item = Cart.objects.create(**validated_data, place=place)
 
         return item
+
+
+class BarCodeSerializer(serializers.ModelSerializer, AmountSerializer):
+    product = serializers.SlugRelatedField(slug_field='name', queryset=Product.objects.all())
+
+    def validate(self, attrs):
+        """
+        Check barcode is all numbers.
+        """
+        if not attrs['id'].isdigit():
+            raise serializers.ValidationError({"id": "barcode id should be all numbers"})
+        return attrs
+
+    class Meta:
+        model = BarCode
+        fields = '__all__'

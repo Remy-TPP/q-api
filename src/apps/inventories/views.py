@@ -16,12 +16,13 @@ from apps.inventories.models import (Place,
                                      PlaceMember,
                                      Purchase,
                                      Cart,
+                                     BarCode
                                      )
 from apps.inventories.serializers import (PlaceSerializer,
                                           InventoryItemSerializer,
                                           PurchaseSerializer,
-                                          CartSerializer
-                                          )
+                                          CartSerializer,
+                                          BarCodeSerializer)
 from apps.recipes.models import (Recipe, Ingredient)
 from common.utils import qr_image_from_string
 
@@ -493,3 +494,65 @@ class CartViewSet(viewsets.GenericViewSet,
         Cart.objects.filter(place=place).delete()
 
         return Response({'message': 'All the items were deleted!'}, status=status.HTTP_200_OK)
+
+
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_summary="Lists all the products with its barcode.",
+    operation_description="Returns products."
+))
+@method_decorator(name='create', decorator=swagger_auto_schema(
+    operation_summary="Creates a product with its barcode.",
+    operation_description="Returns product."
+))
+@method_decorator(name='destroy', decorator=swagger_auto_schema(
+    operation_summary="Destroys the product with its barcode.",
+    operation_description="Returns product."
+))
+class BarCodeViewSet(mixins.CreateModelMixin,
+                     mixins.DestroyModelMixin,
+                     mixins.ListModelMixin,
+                     viewsets.GenericViewSet):
+    queryset = BarCode.objects.all()
+    serializer_class = BarCodeSerializer
+    lookup_field = 'pk'
+
+    @swagger_auto_schema(
+        operation_summary="Add item to inventory by it's barcode.",
+        manual_parameters=[
+            openapi.Parameter(
+                'place',
+                in_=openapi.IN_QUERY,
+                description='Place. If wrong or null, default one is going to be used.',
+                type=openapi.TYPE_STRING,
+                required=False
+            )
+        ]
+    )
+    @action(detail=True, methods=['POST'])
+    def add_item(self, request, pk=None):
+        place = get_place_or_default(request.user.profile, request.query_params.get('place'))
+
+        item = get_object_or_404(BarCode.objects.all(), id=pk)
+
+        serializer = InventoryItemSerializer(
+            data={
+                'quantity': item.quantity,
+                'unit': item.unit,
+                'product': item.product
+            }
+        )
+        if serializer.is_valid():
+            if place:
+                # place_id is correct for this user or has default one
+                serializer.save(place=place)
+            else:
+                # user does not have a place yet
+                serializer.save()
+            return Response({'msg': 'Item added to inventory!'}, status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                'msg': "Cannot add item to inventory!",
+                'errors': serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
