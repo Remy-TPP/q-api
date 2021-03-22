@@ -68,6 +68,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(max_length=None, use_url=False, allow_null=True)
     instructions = serializers.SlugRelatedField(slug_field='steps', read_only=True)
     ingredients = serializers.SerializerMethodField(method_name='get_ingredients')
+    rating_given_by_profile = serializers.SerializerMethodField(method_name='get_profile_rating')
 
     class Meta:
         model = Recipe
@@ -78,6 +79,18 @@ class RecipeSerializer(serializers.ModelSerializer):
         return RecipeIngredientSerializer(
             ingrs, many=True, context=self.context
         ).data
+
+    def get_profile_rating(self, obj):
+        try:
+            profile = self.context['request'].user.profile
+        except AttributeError:
+            return None
+        # TODO: this is a highly inefficient implementation; should get all profile's interactions
+        # in the view and just pass the correct one to serializer (through context for example)
+        interaction_with_user = Interaction.objects.filter(profile=profile, recipe=obj).first()
+        if not interaction_with_user:
+            return None
+        return interaction_with_user.rating
 
     def create(self, validated_data):
         ingredients_serializer = IngredientSerializer(many=True, read_only=True)
