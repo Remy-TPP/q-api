@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from pint import errors as pint_errors
 
 from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import InventoryItem
@@ -112,8 +113,12 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                     # missing ingredient, won't recommend this recipe
                     break
                 # substract amount from inventory and check whether there's enough
-                if (inventory_item - ingredient) and (inventory_item.quantity < 0):
-                    # missing something, won't recommend this recipe
+                try:
+                    if (inventory_item - ingredient) and (inventory_item.quantity < 0):
+                        # missing something, won't recommend this recipe
+                        break
+                except pint_errors.DimensionalityError:
+                    # some problem with converting units, won't recommend this recipe; TODO: maybe not ideal
                     break
             else:
                 # because nothing was missing, recommend recipe
