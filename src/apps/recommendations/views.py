@@ -14,7 +14,6 @@ from pint import errors as pint_errors
 from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import InventoryItem
 from apps.profiles.models import Event
-from apps.recipes.models import Recipe
 from apps.recommendations.models import RecipeRecommendation
 from apps.recommendations.serializers import RecipeRecommendationSerializer
 from apps.recommendations.services import RemyRSService
@@ -157,7 +156,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             openapi.Parameter(
                 'ignore_restrictions',
                 in_=openapi.IN_QUERY,
-                description="Whether to ignore user's restrictions, i.e. diet (profile types) and forbidden ingredients.",
+                description="Whether to ignore user's restrictions, i.e. profile types and forbidden ingredients.",
                 type=openapi.TYPE_BOOLEAN,
                 required=False,
                 default=False,
@@ -208,7 +207,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             openapi.Parameter(
                 'ignore_restrictions',
                 in_=openapi.IN_QUERY,
-                description="Whether to ignore attendees' restrictions, i.e. diet (profile types) and forbidden ingredients.",
+                description="Whether to ignore attendees' restrictions, i.e. profile types & forbidden ingredients.",
                 type=openapi.TYPE_BOOLEAN,
                 required=False,
                 default=False,
