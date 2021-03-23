@@ -37,11 +37,9 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 n='all',
             )
 
-        all_recipes = Recipe.objects.all()  # TODO: prefetch?
-
         recommendations = [
             RecipeRecommendation(
-                recipe=all_recipes.get(pk=r['recipe_id']),
+                recipe_id=r['recipe_id'],
                 rating=r['rating'],
                 rating_is_real=r['real']
             )
