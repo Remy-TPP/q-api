@@ -9,11 +9,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from pint import errors as pint_errors
 
 from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import InventoryItem
 from apps.profiles.models import Event
-from apps.recipes.models import Recipe
 from apps.recommendations.models import RecipeRecommendation
 from apps.recommendations.serializers import RecipeRecommendationSerializer
 from apps.recommendations.services import RemyRSService
@@ -37,11 +37,9 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 n='all',
             )
 
-        all_recipes = Recipe.objects.all()  # TODO: prefetch?
-
         recommendations = [
             RecipeRecommendation(
-                recipe=all_recipes.get(pk=r['recipe_id']),
+                recipe_id=r['recipe_id'],
                 rating=r['rating'],
                 rating_is_real=r['real']
             )
@@ -73,7 +71,8 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         return filtered_recs
 
-    def postprocess_recommendations(self, recommendations, inventory, profiles=None, need_all_ingredients=False):
+    def postprocess_recommendations(self, recommendations, inventory, profiles=None,
+                                    need_all_ingredients=False, ignore_restrictions=False):
         if not profiles:
             profiles = [self.request.user.profile]
         prefetch_related_objects(
@@ -81,7 +80,9 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             'recipe__ingredients', 'recipe__dish__categories',
             'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
-        filtered_recs = self.filter_on_users_restrictions(recommendations, profiles)
+        filtered_recs = (recommendations
+                         if ignore_restrictions
+                         else self.filter_on_users_restrictions(recommendations, profiles))
 
         if not need_all_ingredients:
             return filtered_recs
@@ -111,8 +112,12 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                     # missing ingredient, won't recommend this recipe
                     break
                 # substract amount from inventory and check whether there's enough
-                if (inventory_item - ingredient) and (inventory_item.quantity < 0):
-                    # missing something, won't recommend this recipe
+                try:
+                    if (inventory_item - ingredient) and (inventory_item.quantity < 0):
+                        # missing something, won't recommend this recipe
+                        break
+                except pint_errors.DimensionalityError:
+                    # some problem with converting units, won't recommend this recipe; TODO: maybe not ideal
                     break
             else:
                 # because nothing was missing, recommend recipe
@@ -148,11 +153,20 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 required=False,
                 default=False,
             ),
+            openapi.Parameter(
+                'ignore_restrictions',
+                in_=openapi.IN_QUERY,
+                description="Whether to ignore user's restrictions, i.e. profile types and forbidden ingredients.",
+                type=openapi.TYPE_BOOLEAN,
+                required=False,
+                default=False,
+            ),
         ],
     )
     @action(detail=False, methods=['GET'], url_path='recommend/recipes/me', url_name='recommend-recipes-me')
     def recommend_recipes_me(self, request):
         need_all_ingredients = strtobool(self.request.query_params.get('need_all_ingredients', 'false'))
+        ignore_restrictions = strtobool(self.request.query_params.get('ignore_restrictions', 'false'))
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place_id'))
 
         if need_all_ingredients and not place:
@@ -166,7 +180,8 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         queryset = self.postprocess_recommendations(
             queryset,
             place.inventory.all(),
-            need_all_ingredients=need_all_ingredients
+            need_all_ingredients=need_all_ingredients,
+            ignore_restrictions=ignore_restrictions,
         )
         return self._send_queryset(queryset)
 
@@ -189,12 +204,22 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                 required=False,
                 default=False,
             ),
+            openapi.Parameter(
+                'ignore_restrictions',
+                in_=openapi.IN_QUERY,
+                description="Whether to ignore attendees' restrictions, i.e. profile types & forbidden ingredients.",
+                type=openapi.TYPE_BOOLEAN,
+                required=False,
+                default=False,
+            ),
+
         ],
     )
     @action(detail=False, methods=['GET'], url_path='recommend/recipes/event', url_name='recommend-recipes-event')
     def recommend_recipes_event(self, request):
         event_id = request.query_params.get('id', None)
         need_all_ingredients = strtobool(request.query_params.get('need_all_ingredients', 'false'))
+        ignore_restrictions = strtobool(self.request.query_params.get('ignore_restrictions', 'false'))
 
         event = get_object_or_404(Event.objects.all(), id=event_id)
 
@@ -222,5 +247,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
             event_inventory,
             profiles=event.attendees.all(),
             need_all_ingredients=need_all_ingredients,
+            ignore_restrictions=ignore_restrictions,
         )
         return self._send_queryset(queryset)
