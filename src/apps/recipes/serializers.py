@@ -100,6 +100,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         return recipe
 
 
+class ListedRecipeSerializer(RecipeSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'title', 'description', 'image', 'duration']
+
+
 class InteractionSerializer(serializers.ModelSerializer):
     recipe = RecipeMinimalSerializer(read_only=True)
     recipe_id = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all(), write_only=True)
