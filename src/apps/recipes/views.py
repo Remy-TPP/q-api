@@ -14,6 +14,7 @@ from apps.recipes.serializers import (DishCategorySerializer,
                                       RecipeSerializer,
                                       InteractionSerializer
                                       )
+from apps.recommendations.services import RemyRSService
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -161,6 +162,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | ReadOnly]
     filterset_fields = ['dish__labels', 'dish__categories']
     search_fields = ['title', 'description', 'dish__name', 'dish__description']
+
+    def get_serializer(self, *args, **kwargs):
+        # we override this method and add ratings in context for serializer
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+
+        try:
+            # TODO: add flag to conditionally add scores?
+            ratings_for_user = RemyRSService.get_recommendations_for_user(
+                profile_id=self.request.user.profile.id,
+                n='all',
+            )
+            kwargs['context']['ratings'] = {r['recipe_id']: r for r in ratings_for_user}
+        except AttributeError:
+            # this catches the case that there's no profile (i.e. not logged in)
+            pass
+
+        return serializer_class(*args, **kwargs)
 
 
 @swagger_auto_schema(
