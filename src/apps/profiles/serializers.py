@@ -34,7 +34,7 @@ class ProfileMinimalSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     profiletypes = serializers.SlugRelatedField(
-        slug_field="name",
+        slug_field='name',
         many=True,
         queryset=ProfileType.objects.all()
     )
@@ -57,7 +57,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     date_joined = serializers.DateTimeField(read_only=True, source='user.date_joined')
 
     forbidden_products = serializers.SlugRelatedField(
-        slug_field="name",
+        slug_field='name',
         many=True,
         queryset=Product.objects.all()
     )
@@ -90,7 +90,7 @@ class EventSerializer(serializers.ModelSerializer):
     attendees_id = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Profile.objects.all(),
-        source="attendees",
+        source='attendees',
         write_only=True
     )
     attendees = AttendeeField(
