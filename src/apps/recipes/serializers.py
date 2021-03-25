@@ -68,7 +68,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(max_length=None, use_url=False, allow_null=True)
     instructions = serializers.SlugRelatedField(slug_field='steps', read_only=True)
     ingredients = serializers.SerializerMethodField(method_name='get_ingredients')
-    rating_given_by_profile = serializers.SerializerMethodField(method_name='get_profile_rating')
+    rating = serializers.SerializerMethodField(method_name='get_profile_rating')
 
     class Meta:
         model = Recipe
@@ -81,16 +81,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         ).data
 
     def get_profile_rating(self, obj):
-        try:
-            profile = self.context['request'].user.profile
-        except AttributeError:
-            return None
-        # TODO: this is a highly inefficient implementation; should get all profile's interactions
-        # in the view and just pass the correct one to serializer (through context for example)
-        interaction_with_user = Interaction.objects.filter(profile=profile, recipe=obj).first()
-        if not interaction_with_user:
-            return None
-        return interaction_with_user.rating
+        """Gives either real (given by profile) or predicted (for profile) rating for recipe."""
+        rating = self.context['ratings'].get(obj.id, None)
+        if rating:
+            rating = {'score': rating['rating'], 'real': rating['real']}
+        return rating
 
     def create(self, validated_data):
         ingredients_serializer = IngredientSerializer(many=True, read_only=True)
@@ -98,6 +93,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.ingredients.set(ingredients)
         return recipe
+
+
+class ListedRecipeSerializer(RecipeSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'title', 'description', 'image', 'duration']
 
 
 class InteractionSerializer(serializers.ModelSerializer):

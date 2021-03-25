@@ -65,12 +65,14 @@ class ProfileViewSet(viewsets.GenericViewSet,
 
     def list(self, request, *args, **kwargs):
         friendship_requests_sent = FriendshipRequest.objects.filter(
-            Q(profile_requesting__user_id=self.request.user.id) &
-            Q(status='REQUESTED')).values_list('profile_requested_id', flat=True)
+            Q(profile_requesting__user_id=self.request.user.id)
+            & Q(status='REQUESTED')
+            ).values_list('profile_requested_id', flat=True)
 
         friendship_requests_received = FriendshipRequest.objects.filter(
-            Q(profile_requested__user_id=self.request.user.id) &
-            Q(status='REQUESTED')).values_list('profile_requesting_id', flat=True)
+            Q(profile_requested__user_id=self.request.user.id)
+            & Q(status='REQUESTED')
+            ).values_list('profile_requesting_id', flat=True)
 
         queryset = self.filter_queryset(
             Profile.objects
@@ -115,6 +117,7 @@ class ProfileViewSet(viewsets.GenericViewSet,
     @action(detail=False, methods=['GET'], url_path='friends')
     def my_friends(self, request):
         filtered_queryset = self.filter_queryset(request.user.profile.friends.all()).order_by('id')
+        # TODO: maybe context={'request': request} is already included by default
         friends = ProfileMinimalSerializer(filtered_queryset, many=True, context={'request': request})
         return Response(friends.data, status=status.HTTP_200_OK)
 
