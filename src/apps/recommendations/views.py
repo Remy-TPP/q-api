@@ -179,7 +179,7 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         queryset = self.postprocess_recommendations(
             queryset,
-            place.inventory.all(),
+            place.inventory.all() if (place and place.inventory) else None,
             need_all_ingredients=need_all_ingredients,
             ignore_restrictions=ignore_restrictions,
         )
