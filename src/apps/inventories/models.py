@@ -6,6 +6,9 @@ from apps.profiles.models import Profile
 from apps.products.models import ProductWithAmount
 
 
+DEFAULT_PLACE_NAME = 'Home'
+
+
 class Place(models.Model):
     name = models.CharField(max_length=300)
     members = models.ManyToManyField(Profile, related_name='places', blank=True, through='PlaceMember')

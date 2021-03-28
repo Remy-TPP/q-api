@@ -7,7 +7,9 @@ from apps.inventories.models import (Place,
                                      Purchase,
                                      PurchaseItem,
                                      Cart,
-                                     BarCode)
+                                     BarCode,
+                                     DEFAULT_PLACE_NAME,
+                                     )
 from apps.products.serializers import AmountSerializer
 
 
@@ -56,7 +58,7 @@ class InventoryItemSerializer(AmountSerializer):
             else:
                 item = InventoryItem.objects.create(**validated_data)
         else:
-            place = PlaceSerializer.create(self, {'name': 'Home'})
+            place = PlaceSerializer.create(self, {'name': DEFAULT_PLACE_NAME})
             item = InventoryItem.objects.create(**validated_data, place=place)
 
         return item
@@ -119,7 +121,7 @@ class CartSerializer(serializers.ModelSerializer, AmountSerializer):
         if place:
             item = Cart.objects.create(**validated_data)
         else:
-            place = PlaceSerializer.create(self, {'name': 'Home'})
+            place = PlaceSerializer.create(self, {'name': DEFAULT_PLACE_NAME})
             item = Cart.objects.create(**validated_data, place=place)
 
         return item
