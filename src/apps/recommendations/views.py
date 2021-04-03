@@ -224,7 +224,6 @@ class RecommendationViewSet(viewsets.GenericViewSet):
         event = get_object_or_404(Event.objects.all(), id=event_id)
 
         if need_all_ingredients and not event.place:
-            # TODO: should not care for event's place and just check if there's a place for _any_ attendee?
             return Response({"error": "Event doesn't have a place"}, status=status.HTTP_400_BAD_REQUEST)
 
         # always include event's place's inventory (which should be the host's)

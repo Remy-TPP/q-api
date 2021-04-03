@@ -169,7 +169,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         kwargs['context'] = self.get_serializer_context()
 
         try:
-            # TODO: add flag to conditionally add scores?
             ratings_for_user = RemyRSService.get_recommendations_for_user(
                 profile_id=self.request.user.profile.id,
                 n='all',

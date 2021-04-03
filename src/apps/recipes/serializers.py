@@ -1,7 +1,5 @@
-# TODO: test CRUD'ing using serializers
 from django.db.models import Q
 from rest_framework import serializers
-# from rest_framework_recursive.fields import RecursiveField
 
 from apps.recipes.models import DishCategory, DishLabel, Dish, Ingredient, Recipe, Interaction
 from apps.products.serializers import AmountSerializer, ProductSerializer, ProductMinimalSerializer

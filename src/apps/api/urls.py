@@ -1,6 +1,11 @@
 from django.urls import path, include
+from django.shortcuts import redirect
 
 from apps.api.views import SchemaView, reset_db
+
+
+def redirect_to_swagger(request):
+    return redirect('/api/v1/swagger')
 
 
 urlpatterns = [
@@ -25,4 +30,5 @@ urlpatterns += [
     path('', include('apps.inventories.urls'), name='inventories'),
     path('', include('apps.cooking.urls'), name='cooking'),
     path('', include('apps.recommendations.urls'), name='recommendations'),
+    path('', redirect_to_swagger),
 ]
