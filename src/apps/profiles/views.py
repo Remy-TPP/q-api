@@ -209,7 +209,7 @@ class FriendshipRequestViewSet(viewsets.GenericViewSet,
     operation_description="Returns profiletypes."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets profiletype with id={id}..",
+    operation_summary="Gets profiletype with id={id}.",
     operation_description="Returns profiletype."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(
@@ -246,7 +246,7 @@ class ProfileTypeViewSet(viewsets.ModelViewSet):
     operation_description="Returns groups."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets event with id={id}..",
+    operation_summary="Gets event with id={id}.",
     operation_description="Returns group."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(
@@ -338,7 +338,7 @@ class EventViewSet(viewsets.ModelViewSet):
     operation_description="Returns friendshipstatus."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets friendshipstatus with id={id}..",
+    operation_summary="Gets friendshipstatus with id={id}.",
     operation_description="Returns friendshipstatus."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(

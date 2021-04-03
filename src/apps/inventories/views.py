@@ -32,7 +32,7 @@ from common.utils import qr_image_from_string
     operation_description="Returns places."
 ))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary="Gets the place with id={id}..",
+    operation_summary="Gets the place with id={id}.",
     operation_description="Returns place."
 ))
 @method_decorator(name='create', decorator=swagger_auto_schema(
