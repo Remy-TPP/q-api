@@ -129,7 +129,7 @@ class Interaction(models.Model):
 
     @property
     def last_cooked(self):
-        return self.cooked_at[-1]
+        return self.cooked_at[-1] if len(self.cooked_at) > 0 else None
 
     def cook(self):
         self.cooked_at.append(timezone.now())
