@@ -84,9 +84,14 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                          if ignore_restrictions
                          else self.filter_on_users_restrictions(recommendations, profiles))
 
-        if not need_all_ingredients:
-            return filtered_recs
+        filtered_recs = (filtered_recs
+                         if not need_all_ingredients
+                         else self.filter_on_ingredients(filtered_recs, inventory))
 
+        return filtered_recs
+
+
+    def filter_on_ingredients(self, filtered_recs, inventory):
         # get and prefetch user's inventory
         user_inventory = inventory.all().prefetch_related('product', 'unit')
         list_inventory = list(user_inventory)
