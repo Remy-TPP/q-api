@@ -17,6 +17,7 @@ from apps.profiles.models import Event
 from apps.recommendations.models import RecipeRecommendation
 from apps.recommendations.serializers import RecipeRecommendationSerializer
 from apps.recommendations.services import RemyRSService
+from apps.recommendations.utils import ComparableInventory
 
 
 class RecommendationViewSet(viewsets.GenericViewSet):
@@ -75,9 +76,11 @@ class RecommendationViewSet(viewsets.GenericViewSet):
                                     need_all_ingredients=False, ignore_restrictions=False):
         if not profiles:
             profiles = [self.request.user.profile]
+
+        # TODO: place where more optimization can be made
         prefetch_related_objects(
             recommendations,
-            'recipe__ingredients', 'recipe__dish__categories',
+            'recipe__dish__categories', 'recipe__ingredients',
             'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
         filtered_recs = (recommendations
@@ -86,18 +89,23 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         filtered_recs = (filtered_recs
                          if not need_all_ingredients
-                         else self.filter_on_ingredients(filtered_recs, inventory))
+                         else self.filter_on_ingredients__new(filtered_recs, inventory))
 
         return filtered_recs
 
+    def filter_on_ingredients__new(self, recommendations, inventory):
+        user_inventory = inventory.all().prefetch_related('product', 'unit')
+        inv = ComparableInventory(inventory_items=user_inventory)
 
-    def filter_on_ingredients(self, filtered_recs, inventory):
+        return [rec for rec in recommendations if inv.can_make(rec.recipe)]
+
+    def filter_on_ingredients(self, recommendations, inventory):
         # get and prefetch user's inventory
         user_inventory = inventory.all().prefetch_related('product', 'unit')
         list_inventory = list(user_inventory)
         prefetch_related_objects(list_inventory, 'product', 'unit')
 
-        recommendations, filtered_recs = filtered_recs, []
+        filtered_recs = []
         for recommendation in recommendations:
             # make a copy of the inventory to play with
             aux_inventory = deepcopy(list_inventory)
