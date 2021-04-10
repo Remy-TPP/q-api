@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from decimal import Decimal
+
+from rest_framework import serializers
 
 from apps.products.models import Unit, Product
 

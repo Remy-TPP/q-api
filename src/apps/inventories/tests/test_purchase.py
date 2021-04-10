@@ -2,8 +2,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .utils import get_data_in_qr_image, image_from_bytestring
 from apps.inventories.models import Purchase
+from apps.inventories.tests.utils import get_data_in_qr_image, image_from_bytestring
 
 
 CREATE_PURCHASE_URL = reverse('purchase-create')

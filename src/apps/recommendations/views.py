@@ -1,4 +1,3 @@
-from copy import deepcopy
 from distutils.util import strtobool
 
 from requests.exceptions import RequestException
@@ -9,7 +8,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from pint import errors as pint_errors
 
 from apps.inventories.utils import get_place_or_default
 from apps.inventories.models import InventoryItem
@@ -17,6 +15,7 @@ from apps.profiles.models import Event
 from apps.recommendations.models import RecipeRecommendation
 from apps.recommendations.serializers import RecipeRecommendationSerializer
 from apps.recommendations.services import RemyRSService
+from apps.recommendations.utils import ComparableInventory
 
 
 class RecommendationViewSet(viewsets.GenericViewSet):
@@ -71,57 +70,30 @@ class RecommendationViewSet(viewsets.GenericViewSet):
 
         return filtered_recs
 
+    def filter_on_ingredients(self, recommendations, inventory):
+        user_inventory = inventory.all().prefetch_related('product', 'unit')
+        inv = ComparableInventory(inventory_items=user_inventory)
+
+        return [rec for rec in recommendations if inv.can_make(rec.recipe)]
+
     def postprocess_recommendations(self, recommendations, inventory, profiles=None,
                                     need_all_ingredients=False, ignore_restrictions=False):
         if not profiles:
             profiles = [self.request.user.profile]
+
+        # TODO: more optimization can be made here
         prefetch_related_objects(
             recommendations,
-            'recipe__ingredients', 'recipe__dish__categories',
+            'recipe__dish__categories', 'recipe__ingredients',
             'recipe__ingredient_set__product', 'recipe__ingredient_set__unit')
 
         filtered_recs = (recommendations
                          if ignore_restrictions
                          else self.filter_on_users_restrictions(recommendations, profiles))
 
-        if not need_all_ingredients:
-            return filtered_recs
-
-        # get and prefetch user's inventory
-        user_inventory = inventory.all().prefetch_related('product', 'unit')
-        list_inventory = list(user_inventory)
-        prefetch_related_objects(list_inventory, 'product', 'unit')
-
-        recommendations, filtered_recs = filtered_recs, []
-        for recommendation in recommendations:
-            # make a copy of the inventory to play with
-            aux_inventory = deepcopy(list_inventory)
-
-            # substract each recipe ingredient from inventory to find if something's missing
-            for ingredient in recommendation.recipe.ingredient_set.all():
-                if not ingredient.quantity:
-                    # ignore non-quantified ingredients (TODO: maybe should check that it exists in inventory?)
-                    continue
-                try:
-                    # look for ingredient in inventory
-                    inventory_item = next(
-                        (ii for ii in aux_inventory
-                         if (ii.product_id == ingredient.product_id and ii.quantity > 0))
-                    )
-                except StopIteration:
-                    # missing ingredient, won't recommend this recipe
-                    break
-                # substract amount from inventory and check whether there's enough
-                try:
-                    if (inventory_item - ingredient) and (inventory_item.quantity < 0):
-                        # missing something, won't recommend this recipe
-                        break
-                except pint_errors.DimensionalityError:
-                    # some problem with converting units, won't recommend this recipe; TODO: maybe not ideal
-                    break
-            else:
-                # because nothing was missing, recommend recipe
-                filtered_recs.append(recommendation)
+        filtered_recs = (filtered_recs
+                         if not need_all_ingredients
+                         else self.filter_on_ingredients(filtered_recs, inventory))
 
         return filtered_recs
 

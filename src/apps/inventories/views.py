@@ -200,9 +200,9 @@ class InventoryItemViewSet(viewsets.GenericViewSet,
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def destroy(self, *args, **kwargs):
-        ii = get_object_or_404(InventoryItem, id=kwargs['pk'])
-        ii.delete()
+    def destroy(self, *_args, **kwargs):
+        inv_item = get_object_or_404(InventoryItem, id=kwargs['pk'])
+        inv_item.delete()
         return Response(
             {
                 'msg': f"Inventory item {kwargs['pk']} deleted",
@@ -356,7 +356,7 @@ class CartViewSet(viewsets.GenericViewSet,
         place = get_place_or_default(self.request.user.profile, self.request.query_params.get('place'))
         return self.filter_queryset(Cart.objects.filter(place=place).order_by('product__name'))
 
-    def destroy(self, *args, **kwargs):
+    def destroy(self, *_args, **kwargs):
         c = get_object_or_404(Cart, id=kwargs['pk'])
         c.delete()
         return Response(
