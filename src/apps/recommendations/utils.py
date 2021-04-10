@@ -5,7 +5,7 @@ from pint import errors as pint_errors
 from apps.products.utils import (convert_to_correct_unit,
                                  sub_quantities_with_units,
                                  add_quantities_with_units,
-                                )
+                                 )
 
 
 class NotEnoughError(RuntimeError):
