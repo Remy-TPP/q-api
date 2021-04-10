@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6318ef6a821f75f5f70bdbc4074e1d19867c6ede7392f581ad6d697b9b2bbbc2"
+            "sha256": "dd8e7f6fd944bf739b0385158ee62f2e41d2ec40508f7cfb57c3ef8b45eeb562"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -90,11 +90,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:32ce792ee9b6a0cbbec340123e229ac9f765dff8c2a4ae9247a14b2ba3a365a7",
-                "sha256:baf099db36ad31f970775d0be5587cc58a6256a6771a44eb795b554d45f211b8"
+                "sha256:c348b3ddc452bf4b62361f0752f71a339140c777ebea3cdaaaa8fdb7f417a862",
+                "sha256:f8393103e15ec2d2d313ccbb95a3f1da092f9f58d74ac1c61ca2ac0436ae1eac"
             ],
             "index": "pypi",
-            "version": "==3.1.7"
+            "version": "==3.1.8"
         },
         "django-allauth": {
             "hashes": [
@@ -361,11 +361,11 @@
         },
         "pint": {
             "hashes": [
-                "sha256:63ccb7153754923fd95477be69dcf8d7d0764ec2ebb3f6945f920c31fdf13392",
-                "sha256:d43a2e9ae003164978b60fdf8cd920d8581e1a5991df8dded29b00f4850ec83a"
+                "sha256:6593c5dfaf2f701c54f17453191dff05e90ec9ebc3d1901468a59cfcb3289a4c",
+                "sha256:f4d0caa713239e6847a7c6eefe2427358566451fe56497d533f21fb590a3f313"
             ],
             "index": "pypi",
-            "version": "==0.16.1"
+            "version": "==0.17"
         },
         "psycopg2": {
             "hashes": [
@@ -710,11 +710,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:60a7263104ef7a14ecfe2af1142d53924aa534ccec85cea82bb67b2b32f84421",
-                "sha256:f43ac743c34affb1c7fccca8b06450371cd482b6ddcb4110e420acb24356e70b"
+                "sha256:225314932de94c282b096f6c3aac32db50119922747ac09a8350310da44241e5",
+                "sha256:fe4bc214ba448ca52b20a0ee0ed16ded3e1ddce7874f2a95cd321d21e2e388d9"
             ],
             "index": "pypi",
-            "version": "==6.6.2"
+            "version": "==8.0.0"
         },
         "flake8": {
             "hashes": [
@@ -844,11 +844,11 @@
         },
         "pyflakes": {
             "hashes": [
-                "sha256:910208209dcea632721cb58363d0f72913d9e8cf64dc6f8ae2e02a3609aba40d",
-                "sha256:e59fd8e750e588358f1b8885e5a4751203a0516e0ee6d34811089ac294c8806f"
+                "sha256:7893783d01b8a89811dd72d7dfd4d84ff098e5eed95cfa8905b22bbffe52efc3",
+                "sha256:f5bc8ecabc05bb9d291eb5203d6810b49040f6ff446a756326104746cc00c1db"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==2.3.0"
+            "version": "==2.3.1"
         },
         "pylint": {
             "hashes": [
