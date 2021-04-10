@@ -1,2 +1,3 @@
-# Remy-api
+# Remy API
+
 [![Build Status](https://travis-ci.org/Remy-TPP/remy-api.svg?branch=master)](https://travis-ci.org/Remy-TPP/remy-api)
