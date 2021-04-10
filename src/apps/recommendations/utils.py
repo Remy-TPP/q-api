@@ -1,9 +1,7 @@
-# from dataclasses import dataclass
 from copy import deepcopy
 
 from pint import errors as pint_errors
 
-# from apps.products.dimensionality import Dimensionality
 from apps.products.utils import (convert_to_correct_unit,
                                  sub_quantities_with_units,
                                  add_quantities_with_units,
@@ -12,19 +10,6 @@ from apps.products.utils import (convert_to_correct_unit,
 
 class NotEnoughError(RuntimeError):
     pass
-
-
-# @dataclass
-# class UnitDAO:
-#     name: str
-
-
-# @dataclass
-# class ProductDAO:
-#     available_dimensionalities: str
-#     density: float
-#     avg_unit_weight: float
-#     avg_unit_volume: float
 
 
 class ComparableAmount:
@@ -66,12 +51,10 @@ class ComparableInventory:
         for item in inventory_items:
             current = self.base_inventory.get(item.product.id, None)
             addition = ComparableAmount(quantity=item.quantity, unit=item.unit, product=item.product)
-            # self.base_inventory[ii.product_id] = (current + addition) if current else addition
             if current is None:
                 self.base_inventory[item.product.id] = addition
             else:
                 _ = current + addition
-                # self.base_inventory[item.product.id] = current  # TODO: necessary?
 
         # initialize inventory
         self.inventory = deepcopy(self.base_inventory)
@@ -103,7 +86,6 @@ class ComparableInventory:
         remaining = current - amount
         if remaining < 0:
             raise NotEnoughError
-        # self.inventory[ingredient.product_id] = current  # TODO: necessary?
 
     def __sub__(self, ingredient):
         return self.substract(ingredient)

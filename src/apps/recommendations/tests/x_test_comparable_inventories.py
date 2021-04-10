@@ -41,7 +41,6 @@ class ComparableInventoryTest(TestCase):
         self.inv.substract(ing)
 
         print(self.inv.inventory.get(329))
-        # self.inv.print_inventory()
         self.inv.print_inventory(product_id=329)
 
     def test_reset(self):
