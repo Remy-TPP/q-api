@@ -429,7 +429,6 @@ class CartViewSet(viewsets.GenericViewSet,
     @action(detail=False, methods=['POST'])
     @atomic
     def add_recipe(self, request):
-        breakpoint()
         sid = savepoint()
         only_missing = request.query_params.get('only_missing')
         recipe_id = request.query_params.get('recipe')
