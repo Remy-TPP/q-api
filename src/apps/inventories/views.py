@@ -429,6 +429,7 @@ class CartViewSet(viewsets.GenericViewSet,
     @action(detail=False, methods=['POST'])
     @atomic
     def add_recipe(self, request):
+        breakpoint()
         sid = savepoint()
         only_missing = request.query_params.get('only_missing')
         recipe_id = request.query_params.get('recipe')
@@ -444,7 +445,7 @@ class CartViewSet(viewsets.GenericViewSet,
             place = get_place_or_default(request.user.profile, request.query_params.get('place'))
 
             if (
-                    only_missing == 'True' and
+                    (only_missing == 'True' or only_missing == 'true') and
                     place and
                     place.inventory.filter(product__id=ingredient.product.id).exists()
             ):
