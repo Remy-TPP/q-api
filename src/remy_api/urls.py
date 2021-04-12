@@ -9,6 +9,7 @@ from apps.api.admin import admin
 
 favicon_view = RedirectView.as_view(url=f'{settings.MEDIA_URL}favicon_v1.ico')
 
+
 def redirect_to_swagger(request):
     return redirect('/api/v1/swagger')
 
